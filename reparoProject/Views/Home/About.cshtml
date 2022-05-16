@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "About";
+
+    var listaLuthier = TempData["luthiersFiltrados"] as List<Business.Luthier>;
+}
+
+<h1>Luthiers encontrados</h1>
+<table class="table">
+    <tr>
+        <td>Nome</td>
+        <td>CPF</td>
+        <td>Tipo do serviço que presta</td>
+    </tr>
+        @{
+            if (listaLuthier != null)
+            {
+                foreach (var luthier in listaLuthier)
+                {
+                    <tr>
+                        <td>@luthier.nome</td>
+                        <td>@luthier.cpf</td>
+                    </tr>
+                }
+            }
+        }
+</table>

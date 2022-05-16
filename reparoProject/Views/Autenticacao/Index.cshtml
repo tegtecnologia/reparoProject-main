@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Autenticacao";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<style>
+    .container {
+        width: 50vw;
+        height: 65vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .centraliza {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .conteudoFixo {
+        position: absolute;
+        top: 150px;
+        left: 50px;
+        width: 25%;
+    }
+</style>
+
+<div class="conteudoFixo">
+    <button type="submit" class="btn btn-primary" style="background-color: #CF95F2; color: white; border-color: #CF95F2 " onclick="fazerCadastro()">Cadastrar</button>
+    <button type="submit" class="btn btn-primary" style="background-color: #CF95F2; color: white; border-color: #CF95F2 " onclick="fazerLogin()">Login</button>
+</div>
+
+<div id="divLogin">
+    <div class="container">
+        <div class="jumbotron">
+            <div class="centraliza">
+                <h2 class="display-4" style="color: white;">Login</h2>
+            </div>
+            <form>
+                <div class="form-group">
+                    <label style="color: #A54ED6;"> Usuário</label>
+                    <input type="text" class="form-control" id="usuario" placeholder="Insira seu nome de usuário">
+                </div>
+                <div class="form-group">
+                    <label style="color: #A54ED6;"> Senha</label>
+                    <input type="password" class="form-control" id="senha" placeholder="Insira sua senha">
+                    <small id="emailHelp" class="form-text text-muted">Nunca compartilhe sua senha com alguém.</small>
+                </div>
+                <div class="centraliza">
+                    <button type="submit" class="btn btn-primary" style="background-color: white; color: black; border-color: white">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="divCadastro">
+    <div class="container">
+        <div class="jumbotron">
+            <div class="centraliza">
+                <h2 class="display-4" style="color: white;">Cadastro</h2>
+            </div>
+            <form>
+                <div class="form-group">
+                    <label style="color: #A54ED6;">Usuário</label>
+                    <input type="text" class="form-control" id="usuario" placeholder="Insira seu nome de usuário">
+                </div>
+
+                <div class="form-group">
+                    <label style="color: #A54ED6;">E-mail</label>
+                    <input type="email" class="form-control" id="email" placeholder="Insira seu e-mail">
+                </div>
+                <div class="form-group">
+                    <label style="color: #A54ED6;"> Senha</label>
+                    <input type="password" class="form-control" id="senha" placeholder="Insira sua senha">
+                    <small id="emailHelp" class="form-text text-muted">Nunca compartilhe sua senha com alguém.</small>
+                </div>
+                <div class="centraliza">
+                    <button type="submit" class="btn btn-primary" style="background-color: white; color: black; border-color: white">Cadastro</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $().ready(function () {
+            var login = document.getElementById("divLogin");
+            login.style.display = "none";
+            var cadastro = document.getElementById("divCadastro");
+            cadastro.style.display = "none";
+        });
+
+        function fazerCadastro() {
+            var login = document.getElementById("divLogin");
+            login.style.display = "none";
+            var cadastro = document.getElementById("divCadastro");
+            cadastro.style.display = "block";
+        }
+
+        function fazerLogin() {
+            var cadastro = document.getElementById("divCadastro");
+            cadastro.style.display = "none";
+            var login = document.getElementById("divLogin");
+            login.style.display = "block";
+        }
+    </script>

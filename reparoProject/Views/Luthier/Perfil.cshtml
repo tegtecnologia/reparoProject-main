@@ -1,0 +1,44 @@
+﻿@{
+    List<Business.Luthier> luthier = ViewBag.Luthier;
+    List<Business.Servico> servicos = ViewBag.Servicos;
+    Business.Luthier dadosLuthier = ViewBag.DadosDoLuthier;
+    int idDoLuthier = 0;
+
+    List<string> servicosPrestados = new List<string> { };
+    foreach (var linha in luthier)
+    {
+        servicosPrestados.Add(servicos[linha.tipoServico - 1].descricao);
+    }
+}
+
+<h2>Dados do profissional</h2>
+<table class="table">
+    <tr>
+        <td>ID (Luthier)</td>
+        <td>Nome do luthier</td>
+        <td>ID (Usuário)</td>
+        <td>Avaliação</td>
+        <td>CNPJ</td>
+        <td>CPF</td>
+        <td>Email</td>
+    </tr>
+    <tr>
+        <td>@dadosLuthier.id</td>
+        <td>@dadosLuthier.nome</td>
+        <td>Pendente</td>
+        <td>@dadosLuthier.avaliacao</td>
+        <td>@dadosLuthier.cnpj</td>
+        <td>@dadosLuthier.cpf</td>
+        <td>@dadosLuthier.email</td>
+    </tr>
+</table><br />
+
+<h2>Serviços disponíveis pelo profissional</h2>
+<table class="table">
+    @foreach(var servico in servicosPrestados)
+    {
+        <tr>
+            <td>@servico</td>
+        </tr>
+    }
+</table>

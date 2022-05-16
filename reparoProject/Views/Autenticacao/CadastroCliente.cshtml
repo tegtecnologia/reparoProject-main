@@ -1,0 +1,178 @@
+﻿@{
+    ViewBag.Title = "Autenticacao";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string idDaSessao = Session.SessionID;
+    int ajustarFormulario = 95;
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<style>
+    .container {
+        width: 50vw;
+        height: @ajustarFormulario vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .centraliza {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .form-check-input:checked {
+        background-color: darkseagreen;
+        border-color: darkseagreen;
+    }
+
+    .jumbotron {
+        padding: 6rem 25rem;
+    }
+</style>
+
+<div id="divCadastro">
+    <div class="container">
+        <div class="jumbotron">
+            <div class="centraliza">
+                <h3 class="display-5" style="color: white;">Novo</h3>
+                <h3 class="display-5" style="color: white;">&nbsp;Cliente</h3>
+            </div>
+            <form action="/autenticacao/criarCliente" method="post">
+                <br /><h3 style="color: white; font-weight: 300;"><u>Informações pessoais</u></h3>
+                <div class="form-group">
+                    <label style="color: white;">Nome completo</label>
+                    <input type="text" class="form-control" id="txtNome" name="txtNome" placeholder="Insira seu nome completo">
+                </div>
+
+                <div class="form-group">
+                    <label style="color: white;">Nome do usuário</label>
+                    <input type="text" class="form-control" id="txtUsuario" name="txtUsuario" placeholder="Exemplo: mariogioia">
+                    <small id="emailHelp" class="form-text text-muted">Você usará este nome para acessar sua conta</small>
+                </div>
+
+                <div class="form-group">
+                    <label style="color: white;"> Senha</label>
+                    <input type="password" class="form-control" id="txtSenha" name="txtSenha" placeholder="Insira sua senha">
+                    <input style="display: none;" type="text" class="form-control" id="idSessao" name="idSessao">
+                    <!--<small id="emailHelp" class="form-text text-muted">Nunca compartilhe sua senha com alguém.</small>-->
+                </div>
+
+                <div class="form-group">
+                    <label style="color: white;">CPF</label>
+                    <input type="text" class="form-control" id="txtCpf" name="txtCpf" placeholder="Insira apenas números">
+                </div>
+
+                <div class="form-group">
+                    <h3 style="color: white; font-weight: 300;"><u>Contato</u></h3>
+                    <label style="margin-left: 10px; color: rgba(0,0,0,.5);">Celular</label>
+                    <input type="checkbox" class="form-check-input" style="margin-left: 20px;" onclick="mostrarCampoCelular();" />
+                    <label style="margin-left: 110px; color: rgba(0,0,0,.5);">Telefone</label>
+                    <input type="checkbox" class="form-check-input" style="margin-left: 20px;" onclick="mostrarCampoTelefone();" />
+                </div>
+
+                <div class="form-group" style="display: none;" id="divCelular" name="divCelular">
+                    <hr class="my-4" />
+                    <label style="color: white;">DDD</label>
+                    <input type="text" class="form-control" id="txtDddCelular" name="txtDddCelular" placeholder="Exemplo: 13"><br />
+                    <label style="color: white;">Celular</label>
+                    <input type="text" class="form-control" id="txtCelular" name="txtCelular" placeholder="Insira apenas números">
+                    <hr class="my-4" />
+                </div>
+
+                <div class="form-group" style="display: none;" id="divTelefone" name="divTelefone">
+                    <hr class="my-4" />
+                    <label style="color: white;">DDD</label>
+                    <input type="text" class="form-control" id="txtDddTelefone" name="txtDddTelefone" placeholder="Exemplo: 11"><br />
+                    <label style="color: white;">Telefone</label>
+                    <input type="text" class="form-control" id="txtTelefone" name="txtTelefone" placeholder="Insira apenas números">
+                    <hr class="my-4" />
+                </div>
+
+                <div class="form-group">
+                    <label style="color: white;">E-mail</label>
+                    <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="Insira seu e-mail">
+                </div>
+
+                <div class="form-group">
+                    <h3 style="color: white; font-weight: 300;"><u>Localização</u></h3>
+                    <label style="color: white;">CEP</label><span style="color: red; margin-left: 2px;">*</span>
+                    <input type="text" class="form-control" id="txtCep" name="txtCep" placeholder="Insira apenas números">
+                </div><br />
+
+                <div class="form-group">
+                    <label style="color: white;">Logradouro</label>
+                    <input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro">
+                </div><br />
+
+                <div class="form-group">
+                    <label style="color: white;">Bairro</label>
+                    <input type="text" class="form-control" id="txtBairro" name="txtBairro">
+                </div><br />
+
+                <div class="form-group">
+                    <label style="color: white;">Cidade</label>
+                    <input type="text" class="form-control" id="txtCidade" name="txtCidade">
+                </div><br />
+
+                <div class="form-group">
+                    <label style="color: white;">UF</label>
+                    <input type="text" class="form-control" id="txtUf" name="txtUf">
+                </div><br />
+
+                <div class="centraliza">
+                    <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="background-color: white; color: rgba(0,0,0,.5); border-color: white">Cadastro</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $().ready(function () {
+        document.getElementById('idSessao').value = '@idDaSessao';
+    });
+
+    function mostrarCampoCelular() {
+        if (document.getElementById('divCelular').style.display == "none") {
+            document.getElementById('divCelular').style.display = "block";
+        }
+        else if (document.getElementById('divCelular').style.display == "block") {
+            document.getElementById('divCelular').style.display = "none";
+        }
+    }
+
+    function mostrarCampoTelefone() {
+        if (document.getElementById('divTelefone').style.display == "none") {
+            document.getElementById('divTelefone').style.display = "block";
+        }
+        else if (document.getElementById('divTelefone').style.display == "block") {
+            document.getElementById('divTelefone').style.display = "none";
+        }
+    }
+
+    jQuery(function ($) {
+        $("input[name='txtCep']").change(function () {
+            var cep_code = $(this).val();
+            if (cep_code.length <= 0) return;
+            $.get("http://viacep.com.br/ws/" + cep_code + "/json/", { code: cep_code }, function (resultado) {
+                if (resultado.erro == 1) {
+                    alert("Endereço não encontrado!")
+                    $("input[name='cep']").val("");
+                    $("input[name='cidade']").val("");
+                    $("input[name='bairro']").val("");
+                    $("input[name='endereco']").val("");
+                    $("input[name='estado']").val("");
+                }
+                else {
+                    $("input[name='txtCidade']").val(resultado.localidade);
+                    $("input[name='txtBairro']").val(resultado.bairro);
+                    $("input[name='txtLogradouro']").val(resultado.logradouro);
+                    $("input[name='txtUf']").val(resultado.uf);
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,231 @@
+﻿@{
+    ViewBag.Title = "Autenticacao";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string tipoConta = ViewBag.TipoConta;
+    Business.Conta conta = ViewBag.Conta;
+    List<Business.Cliente> cliente = ViewBag.ClienteDaConta;
+    List<Business.Luthier> luthier = ViewBag.LuthierDaConta;
+    string donoDaContaLogada = "";
+
+    /*foreach(var luthierLogado in luthier)
+    {
+        donoDaContaLogada = luthierLogado.nome;
+    }*/
+
+    List<Business.Contato> contatos = ViewBag.ContatosDaConta;
+
+    List<Business.Endereco> enderecos = ViewBag.EnderecosDaConta;
+
+    List<Business.Servico> estadosDeUmaConta = ViewBag.EstadosDeConta;
+    string estadoDaConta = "";
+    foreach (var estado in estadosDeUmaConta)
+    {
+        if (estado.id == conta.statusConta)
+        {
+            estadoDaConta = estado.descricao;
+        }
+    }
+    string idDaSessao = Session.SessionID;
+    string nivelAcesso = "";
+
+    if (conta.nivelAcesso == 1)
+    {
+        nivelAcesso = "Usuário comum";
+    }
+    else if (conta.nivelAcesso == 2)
+    {
+        nivelAcesso = "Administrador";
+    }
+}
+
+@{
+    if (conta.usuario == null || conta.senha == null || conta.email == null)
+    {
+        <meta http-equiv="refresh" content="6; URL='https://localhost:44381/autenticacao/login'" />
+
+        <div class="alert alert-danger" style="margin-top: -50px" role="alert">
+            <h4 class="alert-heading">Conta não encontrada!</h4>
+            <p>A conta que você tentou entrar não foi encontrada em nosso banco de dados. Tente novamente...</p>
+            <hr>
+            <p class="mb-0">Você será redirecionado para a tela de login em 6 segundos.</p>
+        </div>
+
+        <style>
+            .containerGioiano {
+                width: 100%;
+                height: 65vh;
+                height: 65vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .water {
+                width: 200px;
+                height: 200px;
+                background-color: skyblue;
+                border-radius: 50%;
+                position: relative;
+                box-shadow: inset 0 0 30px 0 rgba(0,0,0,.5), 0 4px 10px 0 rgba(0,0,0,.5);
+                overflow: hidden;
+            }
+
+                .water:before, .water:after {
+                    content: '';
+                    position: absolute;
+                    width: 200px;
+                    height: 200px;
+                    top: -150px;
+                    background-color: #fff;
+                }
+
+                .water:before {
+                    border-radius: 45%;
+                    background: rgba(255,255,255,.7);
+                    animation: wave 5s linear infinite;
+                }
+
+                .water:after {
+                    border-radius: 35%;
+                    background: rgba(255,255,255,.3);
+                    animation: wave 5s linear infinite;
+                }
+
+            @@keyframes wave {
+                0% {
+                    transform: rotate(0);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+
+        <div class="containerGioiano">
+            <div class="water"></div>
+        </div>
+    }
+    else
+    {
+        /*if (TempData["contaCriada"] != null)
+        {
+            <br /><div id="divTemporaria" name="divTemporaria" class="alert alert-success">@TempData["contaCriada"]</div>
+        }*/
+
+        <h2>Informações da conta</h2>
+        <label><b>Nome de usuário: &nbsp;</b></label>@conta.usuario
+        <br />
+        <label><b>Nível de acesso: &nbsp;</b></label>@nivelAcesso
+        <br />
+        <label><b>Estado da conta: &nbsp;</b></label>@estadoDaConta
+
+        if (cliente != null)
+        {
+            foreach (var clienteLogado in cliente)
+            {
+                donoDaContaLogada = clienteLogado.nome;
+                <br /><label><b>Seu nome: </b></label> @clienteLogado.nome;
+                <br /><label><b>CPF: </b></label> @clienteLogado.cpf;
+                <br /><label><b>Seu e-mail: </b></label> @clienteLogado.email;
+                <br />
+                <br />
+            }
+        }
+
+        if (luthier != null)
+        {
+            foreach (var luthierLogado in luthier)
+            {
+                donoDaContaLogada = luthierLogado.nome;
+                <br /><label><b>Seu nome: </b></label> @luthierLogado.nome;
+                <br /><label><b>CPF: </b></label> @luthierLogado.cpf;
+                <br /><label><b>CNPJ: </b></label> @luthierLogado.cnpj;
+                <br /><label><b>Seu e-mail: </b></label> @luthierLogado.email;
+                <br />
+                <br />
+            }
+        }
+
+        <h2>Números para contato</h2>
+        <table class="table">
+            <tr>
+                <td>ID do contato</td>
+                <td>DDD</td>
+                <td>Número do contato</td>
+                <td>É celular?</td>
+                <td>Nome do dono do contato</td>
+            </tr>
+            @{
+                foreach (var contato in contatos)
+                {
+                    <tr>
+                        <td>@contato.id</td>
+                        <td>@contato.codigo</td>
+                        <td>@contato.numero</td>
+                        <td>
+                            @if (contato.celular == 1)
+                            {<div>Sim</div> }
+                            else
+                            { <div>Não</div>}
+                        </td>
+                        <td>@donoDaContaLogada</td>
+                    </tr>
+                }
+            }
+        </table>
+        <br />
+        <br />
+
+        <h2>Endereços registrados nessa conta</h2>
+        <table class="table">
+            <tr>
+                <td>ID do endereço</td>
+                <td>Logradouro</td>
+                <td>Bairro</td>
+                <td>Cidade</td>
+                <td>UF</td>
+                <td>CEP</td>
+                <td>Nome do dono do contato</td>
+            </tr>
+            @{
+                foreach (var endereco in enderecos)
+                {
+                    <tr>
+                        <td>@endereco.id</td>
+                        <td>@endereco.logradouro</td>
+                        <td>@endereco.bairro</td>
+                        <td>@endereco.cidade</td>
+                        <td>@endereco.uf</td>
+                        <td>@endereco.cep</td>
+                        <td>@donoDaContaLogada</td>
+                    </tr>
+                }
+            }
+        </table>
+
+
+    }
+}
+
+<script>
+    function desconectaxUsuario() {
+        $.ajax({
+                type: "POST",
+                url: '@Url.Action("ConfirmaLogin", "Autenticacao")',
+                data: '',
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    console.log("Mario Gioia vive!")
+                },
+                error: function () {
+                    console.log("Mario Gioia vive!")
+                }
+            });
+    }
+
+    $(document).ready(function () {
+        desconectaxUsuario();
+        // document ready
+    });
+</script>

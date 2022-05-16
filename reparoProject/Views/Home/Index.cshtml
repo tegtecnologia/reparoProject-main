@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    List<Business.Servico> servicos = ViewBag.Servicos;
+    int iterador = 0;
+}
+
+<div class="jumbotron">
+    <center>
+        <form action="/filtrar" method="post">
+            <h2 style="color: rgba(0,0,0,.5)">O que você precisa?</h2><br />
+            <label style="color: rgba(0,0,0,.5)">Tipo de serviço:</label><br />
+            <select style="color: black;" onchange="testeLesgo();" id="selServicos" name="selServicos">
+                @foreach (var servico in servicos)
+                {
+                    <option style="color: rgba(0,0,0,.5);" id="txtServico/@servico.id" name="txtServico/@servico.id" value="@servico.id">@servico.descricao</option>
+                    iterador = iterador + 1;
+                }
+            </select><br /><br />
+
+            <!---<label>Instrumento:</label><br />
+    <select>
+        <option>Teste</option>
+    </select><br /><br />
+
+    <label>CEP (Opcional):</label><br />
+    <input type="text" name="txtCep" id="txtCep" /><br /><br />-->
+            <input type="submit" class="btn btn-primary" value="Filtrar profissionais" class="btn btn-secondary" style="background: white; color: rgba(0,0,0,.5); border: white; "/>
+            <input type="text" name="servico" id="servico" style="display:none;" value="1" />
+        </form>
+    </center>
+</div>
+
+<script>
+    function testeLesgo() {
+        var select = document.getElementById("selServicos");
+
+        var opcaoTexto = select.options[select.selectedIndex].text;
+        var opcaoValor = select.options[select.selectedIndex].value;
+
+        console.log(opcaoTexto);
+        console.log(opcaoValor);
+        document.getElementById('servico').value = opcaoValor;
+        console.log("Serviço passado para o filtro: " + document.getElementById('servico').value);
+    }
+</script>

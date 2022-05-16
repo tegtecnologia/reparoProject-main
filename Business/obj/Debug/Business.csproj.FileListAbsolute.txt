@@ -1,0 +1,9 @@
+C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\Business\bin\Debug\Business.dll
+C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\Business\bin\Debug\Business.pdb
+C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\Business\bin\Debug\Database.dll
+C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\Business\bin\Debug\Database.pdb
+C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\Business\obj\Debug\Business.csproj.AssemblyReference.cache
+C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\Business\obj\Debug\Business.csproj.CoreCompileInputs.cache
+C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\Business\obj\Debug\Business.csproj.CopyComplete
+C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\Business\obj\Debug\Business.dll
+C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\Business\obj\Debug\Business.pdb

@@ -1,0 +1,26 @@
+﻿@{
+    var listaLuthier = TempData["luthiersFiltrados"] as List<Business.Luthier>;
+    var servicos = TempData["servicosRegistrados"] as List<Business.Servico>;
+}
+
+<h1>Luthiers encontrados</h1>
+<table class="table">
+    <tr>
+        <td>ID do Luthier</td>
+        <td>Tipo do serviço que presta</td>
+        <td>Perfil</td>
+    </tr>
+        @{
+            if (listaLuthier != null)
+            {
+                foreach (var luthier in listaLuthier)
+                {
+                    <tr>
+                        <td>@luthier.id</td>
+                        <td>@servicos[luthier.tipoServico - 1].descricao</td>
+                        <td><a href="/luthier/perfil/@luthier.id" class="btn btn-secondary" style="background: #ffd42a; color: white; border: white; ">Acessar perfil</a></td>
+                    </tr>
+                }
+            }
+        }
+</table>
