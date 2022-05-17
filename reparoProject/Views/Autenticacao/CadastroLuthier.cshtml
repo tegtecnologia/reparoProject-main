@@ -60,6 +60,7 @@
                 <div class="form-group">
                     <label style="color: white;">Nome completo</label>
                     <input type="text" class="form-control" id="txtNome" name="txtNome" placeholder="Insira seu nome completo">
+                    <input type="text" class="form-control" id="arrayServicos" name="arrayServicos" style="display:none;"/>
                 </div>
 
                 <div class="form-group">
@@ -87,7 +88,7 @@
 
                 <h3 style="color: white; font-weight: 300;"><u>Serviços</u></h3>
                 <div class="form-group">
-                    <select style="color: black;" onchange="lesgo(this.value, this.div);" id="selServicos" name="selServicos">
+                    <select style="color: black;" onchange="adicionaServicoNaLista(this.value, this.div);" id="selServicos" name="selServicos">
                         @foreach (var servico in servicos)
                         {
                             <option style="color: rgba(0,0,0,.5);" id="txtServico/@servico.id" name="txtServico/@servico.id" value="@servico.id">@servico.descricao</option>
@@ -163,7 +164,7 @@
                     <input type="text" class="form-control" id="txtUf" name="txtUf">
                 </div><br />
 
-                <input type="text" value="" id="arrayServicos" names="arrayServicos" style="display:none;" />
+                
 
                 <div class="centraliza">
                     <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="background-color: white; color: rgba(0,0,0,.5); border-color: white">Cadastro</button>
@@ -197,7 +198,7 @@
     }
 
     jQuery(function ($) {
-        $("input[name='txtCep']").change(function () {
+        $("input[name='txtCep']").change(function () { // Mudar para .change depois dos testes
             var cep_code = $(this).val();
             if (cep_code.length <= 0) return;
             $.get("http://viacep.com.br/ws/" + cep_code + "/json/", { code: cep_code }, function (resultado) {
@@ -219,11 +220,10 @@
         });
     });
 
-    function lesgo(idServico, div) {
+    function adicionaServicoNaLista(idServico, div) {
         document.getElementById('lbServico/' + idServico).style.display = 'block';
         let futuraArray = document.getElementById('arrayServicos').value;
         var minhaArray = futuraArray.split(",");
-        console.log();
 
         if (minhaArray.includes(idServico)) {
         }
@@ -247,17 +247,42 @@
     }
 
     function deletaServicoDaLista(label, idServico) {
+        console.log("ID do serviço selecionado para deletar: " + idServico);
         label.style.display = 'none';
 
         let futuraArray = document.getElementById('arrayServicos').value;
-        var minhaArray = futuraArray.split(",");
+        var minhaArray = futuraArray.split(',');
+        for (i = 0; i < minhaArray.length; i++) {
+            minhaArray[i] = parseInt(minhaArray[i], 10);
+        }
 
+        console.log("Index do serviço selecionado na array: " + minhaArray.indexOf(idServico) + "\nID do serviço selecionado: " + idServico);
+        console.log("Array: " + minhaArray);
         for (i = 0; i <= minhaArray.length; i++) {
-            if (minhaArray[i] == idServico) {
-                minhaArray.splice(0, i + 1);
-                document.getElementById('arrayServicos').value = minhaArray;
-                console.log("Minha array após a deleção: " + minhaArray);
+            if (minhaArray.indexOf(i) == minhaArray.indexOf(idServico)) {
+                minhaArray[minhaArray.indexOf(idServico)] = 999;
+                console.log("Array final: " + minhaArray);
+                break;
             }
         }
+        document.getElementById('arrayServicos').value = minhaArray;
+        console.log("Valores a serem transferido: " + document.getElementById('arrayServicos').value);
     }
+
+    /*jQuery(function ($) {
+        $(document).ready(function () {
+            document.getElementById('txtNome').value = "A";
+            document.getElementById('txtUsuario').value = "A";
+            document.getElementById('txtSenha').value = "123";
+            document.getElementById('txtCpf').value = "46897656754";
+            document.getElementById('txtCnpj').value = "98527671000100";
+            document.getElementById('txtDddCelular').value = "11";
+            document.getElementById('txtCelular').value = "956477543";
+            document.getElementById('txtDddTelefone').value = "16";
+            document.getElementById('txtTelefone').value = "41769504";
+            document.getElementById('txtEmail').value = "a@live.com";
+            document.getElementById('txtCep').value = "06537120";
+            document.getElementById('txtCep').dispatchEvent(new MouseEvent('click', { shiftKey: true }));
+        });
+    });*/
 </script>

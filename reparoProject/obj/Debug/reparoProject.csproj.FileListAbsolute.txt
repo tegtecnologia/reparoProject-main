@@ -1,4 +1,3 @@
-C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\reparoProject\bin\reparoProject.dll.config
 C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\reparoProject\bin\reparoProject.dll
 C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\reparoProject\bin\reparoProject.pdb
 C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\reparoProject\bin\roslyn\csc.exe
@@ -90,3 +89,4 @@ C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject
 C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\reparoProject\obj\Debug\reparoProject.csproj.CopyComplete
 C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\reparoProject\obj\Debug\reparoProject.dll
 C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\reparoProject\obj\Debug\reparoProject.pdb
+C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\reparoProject\bin\reparoProject.dll.config

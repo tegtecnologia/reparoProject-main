@@ -12,5 +12,10 @@ namespace Business
         public int id { get; set; }
         public int idLuthier { get; set; }
         public int idServico { get; set; }
+
+        public void Save()
+        {
+            new Database.LuthierServico().SalvarLuthier(this.idServico, this.idLuthier);
+        }
     }
 }

@@ -187,6 +187,18 @@ namespace freeCommerce.Controllers
                 endereco.idElemento = lastLuthierCreated.id;
                 endereco.SaveLuthier();
 
+                string servicosDoLuthier = Request["arrayServicos"];
+                string[] listaServicos = new string[] { "" };
+                listaServicos = servicosDoLuthier.Split(',');
+
+                foreach(var servico in listaServicos)
+                {
+                    var servicoDoLuthier = new LuthierServico();
+                    servicoDoLuthier.idServico = int.Parse(servico);
+                    servicoDoLuthier.idLuthier = lastLuthierCreated.id;
+                    servicoDoLuthier.Save();
+                }
+
                 Response.Redirect("/");
                 TempData["contaCriada"] = "Conta criada com sucesso! Agora você já pode fazer seu login abaixo.";
             }

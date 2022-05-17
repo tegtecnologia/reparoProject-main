@@ -1,26 +1,40 @@
 ﻿@{
     var listaLuthier = TempData["luthiersFiltrados"] as List<Business.Luthier>;
     var servicos = TempData["servicosRegistrados"] as List<Business.Servico>;
+    string servicoProcurado = "";
+
+    if (listaLuthier != null)
+    {
+        foreach (var luthier in listaLuthier)
+        {
+            servicoProcurado = servicos[luthier.tipoServico - 1].descricao;
+        }
+    }
 }
 
-<h1>Luthiers encontrados</h1>
+@if (servicoProcurado != "")
+{
+    <h1>Luthiers encontrados — Serviço: @servicoProcurado</h1>
+}
+else
+{
+    <h1>Volte à <a href="/">página de pesquisa</a> e refaça sua pesquisa</h1>
+}
 <table class="table">
     <tr>
         <td>ID do Luthier</td>
-        <td>Tipo do serviço que presta</td>
-        <td>Perfil</td>
+        <td>Acesso ao perfil do profissional</td>
     </tr>
-        @{
-            if (listaLuthier != null)
+    @{
+        if (listaLuthier != null)
+        {
+            foreach (var luthier in listaLuthier)
             {
-                foreach (var luthier in listaLuthier)
-                {
-                    <tr>
-                        <td>@luthier.id</td>
-                        <td>@servicos[luthier.tipoServico - 1].descricao</td>
-                        <td><a href="/luthier/perfil/@luthier.id" class="btn btn-secondary" style="background: #ffd42a; color: white; border: white; ">Acessar perfil</a></td>
-                    </tr>
-                }
+                <tr>
+                    <td>@luthier.id</td>
+                    <td><a href="/luthier/perfil/@luthier.id" class="btn btn-secondary" style="background: #ffd42a; color: #545255; border: white; ">Clique aqui</a></td>
+                </tr>
             }
         }
+    }
 </table>

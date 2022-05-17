@@ -18,5 +18,16 @@ namespace Database
         {
             return ConfigurationManager.AppSettings["sqlConn"];
         }
+
+        public void SalvarLuthier(int idServico, int idLuthier)
+        {
+            using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "insert into luthiersServicos values (" + idLuthier + ", " + idServico + ")";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }

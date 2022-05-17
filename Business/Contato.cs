@@ -23,7 +23,7 @@ namespace Business
         
         public void SaveLuthier()
         {
-            new Database.Contato().SalvarLuthier(this.codigo, this.numero, this.celular, this.idLuthier);
+            new Database.Contato().SalvarLuthier(this.codigo, this.numero, this.celular, this.idCliente);
         }
 
         public List<Contato> BuscaContatosDeClientesPorId(int id)
