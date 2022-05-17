@@ -124,6 +124,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AutenticacaoController.cs" />
+    <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\LuthierController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -202,10 +203,14 @@
     <Content Include="Views\Luthier\Perfil.cshtml" />
     <Content Include="Views\Autenticacao\CadastroLuthier.cshtml" />
     <Content Include="Views\Autenticacao\CadastroCliente.cshtml" />
+    <Content Include="Views\Shared\_LayoutAnexo.cshtml" />
+    <Content Include="Views\Cliente\AnexarPorId.cshtml" />
+    <Content Include="Views\Cliente\AnexarFotoCliente.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="UploadedFiles\profilePhotos\" />
     <Folder Include="UploadedFiles\src\" />
   </ItemGroup>
   <ItemGroup>

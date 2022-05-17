@@ -4,13 +4,32 @@
     string tipoConta = ViewBag.TipoConta;
     Business.Conta conta = ViewBag.Conta;
     List<Business.Cliente> cliente = ViewBag.ClienteDaConta;
-    List<Business.Luthier> luthier = ViewBag.LuthierDaConta;
-    string donoDaContaLogada = "";
+    var clienteLogado = new Business.Cliente();
+    var fotoPerfilClienteAtual = new Business.ImagemCliente();
 
-    /*foreach(var luthierLogado in luthier)
+    if(cliente != null)
     {
-        donoDaContaLogada = luthierLogado.nome;
-    }*/
+        foreach (var clienteLogadoAgora in cliente)
+        {
+            clienteLogado = clienteLogadoAgora;
+        }
+    }
+
+    List<Business.Luthier> luthier = ViewBag.LuthierDaConta;
+
+    var listaImagensDeClientes = TempData["imagensDeClientes"] as List<Business.ImagemCliente>;
+
+    foreach(var imagem in listaImagensDeClientes)
+    {
+        if(imagem.idCliente == clienteLogado.id && imagem.tipoImg == "Foto de perfil")
+        {
+            fotoPerfilClienteAtual = imagem;
+        }
+    }
+
+    string donoDaContaLogada = "";
+    string linkParaAnexoImg = "";
+    string teste = "";
 
     List<Business.Contato> contatos = ViewBag.ContatosDaConta;
 
@@ -37,6 +56,13 @@
         nivelAcesso = "Administrador";
     }
 }
+
+<style>
+    .fotoDePerfil {
+        float: right;
+    }
+</style>
+
 
 @{
     if (conta.usuario == null || conta.senha == null || conta.email == null)
@@ -113,7 +139,41 @@
             <br /><div id="divTemporaria" name="divTemporaria" class="alert alert-success">@TempData["contaCriada"]</div>
         }*/
 
-        <h2>Informações da conta</h2>
+        if (tipoConta == "Cliente")
+        {
+            <h2>Informações da conta (Conta Cliente)</h2>
+            <div class="fotoDePerfil">
+                <center>
+                    <div>
+                        @if (fotoPerfilClienteAtual.caminhoImagem == null || fotoPerfilClienteAtual.idCliente == 0 || fotoPerfilClienteAtual.nomeImagem == null || fotoPerfilClienteAtual.tipoImg == null)
+                        {
+                            <img src="~/Content/profile.jpg" width="400px" height="400px" /><br /><br />
+                            if (cliente != null)
+                            {
+                                linkParaAnexoImg = "/../cliente/" + clienteLogado.id + "/anexar";
+                            }
+
+                            <label>Você ainda está sem foto de perfil... que tal colocar uma?</label>
+                            <div style="margin-top: 0px;">
+                                <a href="@linkParaAnexoImg" target="_blank" class="btn btn-primary" style="background: darkseagreen; color: white; border: white; " data-toggle="modal" data-target="#modalExemplo">Adicionar foto de perfil</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <img src="~/UploadedFiles/profilePhotos/cliente/@fotoPerfilClienteAtual.nomeImagem" width="400px" height="400px" />
+                        }
+                    </div>
+                </center>
+            </div>
+            <br />
+            <br />
+            <br />
+            <br />
+        }
+        else
+        {
+            <h2>Informações da conta (Conta Luthier)</h2>
+        }
         <label><b>Nome de usuário: &nbsp;</b></label>@conta.usuario
         <br />
         <label><b>Nível de acesso: &nbsp;</b></label>@nivelAcesso
@@ -122,12 +182,12 @@
 
         if (cliente != null)
         {
-            foreach (var clienteLogado in cliente)
+            foreach (var clienteLogadoAqui in cliente)
             {
-                donoDaContaLogada = clienteLogado.nome;
-                <br /><label><b>Seu nome: </b></label> @clienteLogado.nome;
-                <br /><label><b>CPF: </b></label> @clienteLogado.cpf;
-                <br /><label><b>Seu e-mail: </b></label> @clienteLogado.email;
+                donoDaContaLogada = clienteLogadoAqui.nome;
+                <br /><label><b>Seu nome: </b></label> @clienteLogadoAqui.nome;
+                <br /><label><b>CPF: </b></label> @clienteLogadoAqui.cpf;
+                <br /><label><b>Seu e-mail: </b></label> @clienteLogadoAqui.email;
                 <br />
                 <br />
             }
@@ -147,7 +207,7 @@
             }
         }
 
-        <h2>Números para contato</h2>
+        <br /><br /><br /><br /><br /><br /><br /><br /><h2>Números para contato</h2>
         <table class="table">
             <tr>
                 <td>ID do contato</td>
@@ -207,6 +267,20 @@
 
     }
 }
+
+<!-- Modal -->
+<div class="modal" tabindex="-1" id="modalExemplo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     function desconectaxUsuario() {
