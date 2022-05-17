@@ -86,6 +86,12 @@ namespace reparoProject
             );
 
             routes.MapRoute(
+                "cliente-anexar-porId",
+                "cliente/{id}/anexar",
+                new { controller = "Cliente", action = "AnexarPorId", id = 0 }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

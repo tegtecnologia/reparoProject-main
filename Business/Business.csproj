@@ -46,6 +46,7 @@
     <Compile Include="Endereco.cs" />
     <Compile Include="Luthier.cs" />
     <Compile Include="EstadoConta.cs" />
+    <Compile Include="ImagemCliente.cs" />
     <Compile Include="LuthierServico.cs" />
     <Compile Include="Servico.cs" />
     <Compile Include="Conta.cs" />

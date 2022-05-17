@@ -64,6 +64,14 @@
             opacity: 0.2;
             z-index: -1;
         }
+
+        .carousel-control-prev-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffd42a' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+        }
+
+        .carousel-control-next-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffd42a'  viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
+        }
     </style>
 </head>
 <body>
@@ -131,8 +139,26 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <div>
-                            <img src="" style="margin-top: -20px;" src="~/UploadedFiles/src/default.png" id="imagemTemperatura" name="imagemTemperatura" alt="" width="40" height="34" class="d-inline-block align-text-top">
-                            <label style="color: #545255; margin-top: 10px; " id="gioiaMario" name="goiaMario"></label>
+                            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="" style="margin-top: -20px;" src="~/UploadedFiles/src/default.png" id="imagemTemperatura" name="imagemTemperatura" alt="" width="40" height="34" class="d-inline-block align-text-top">
+                                        <label style="color: #545255; margin-top: 10px; " id="gioiaMario" name="goiaMario"></label>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="" style="margin-top: -20px;" src="~/UploadedFiles/src/default.png" id="imagemTemperaturaDois" name="imagemTemperaturaDois" alt="" width="40" height="34" class="d-inline-block align-text-top">
+                                        <label style="color: #545255; margin-top: 10px; " id="gioiaMarioDois" name="gioiaMarioDois"></label>
+                                    </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true" style="margin-top: 60px;"></span>
+                                    <span class="sr-only">Anterior</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true" style="margin-top:60px;"></span>
+                                    <span class="sr-only">Próximo</span>
+                                </a>
+                            </div>
                         </div>
                     </li>
                 </ul>
@@ -221,6 +247,17 @@
                 console.log(resultado);
                 document.getElementById("imagemTemperatura").src = resultado.current.condition.icon;
                 document.getElementById('gioiaMario').innerHTML = resultado.location.name + ", " + resultado.location.region + "<br />" + resultado.current.temp_c + "ºC"  ;
+            });
+        });
+    });
+
+    jQuery(function ($) {
+        $(document).ready(function () {
+            var cidade = "Rio de Janeiro";
+            $.get("http://api.weatherapi.com/v1/current.json?key=6ff526e40a4f47b4834125549220405&q=" + cidade + "&aqi=no", { code: cidade }, function (resultado) {
+                console.log(resultado);
+                document.getElementById("imagemTemperaturaDois").src = resultado.current.condition.icon;
+                document.getElementById('gioiaMarioDois').innerHTML = resultado.location.name + ", " + resultado.location.region + "<br />" + resultado.current.temp_c + "ºC";
             });
         });
     });
