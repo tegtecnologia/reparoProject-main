@@ -29,12 +29,14 @@ namespace reparoProject.Controllers
         public ActionResult Perfil(int id)
         {
             var luthier = new Luthier().BuscarPorId(id);
-            List<Business.Luthier> listaDoLuthier = luthier;
             var dadosDoLuthier = new Luthier().BuscaDadosPorId(id);
-            
+
+            ViewBag.Instrumentos = new Instrumento().Listar();
+            ViewBag.Habilidades = new Habilidade().Listar();
+            ViewBag.HabilidadesDoLuthier = new HabilidadePorLuthier().ListarPorLuthier(id);
+            ViewBag.Servicos = new Servico().Listar();
             ViewBag.Luthier = luthier;
             ViewBag.DadosDoLuthier = dadosDoLuthier;
-            ViewBag.Servicos = new Servico().Listar();
             return View();
         }
     }

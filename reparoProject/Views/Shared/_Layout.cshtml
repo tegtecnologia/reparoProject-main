@@ -3,6 +3,8 @@
     string idDaSessao = Session.SessionID;
     string crieOuLogin = "Crie sua conta ou faça login";
     string bemVindo = "Olá, ";
+    string contaTeste = "";
+    contaTeste = ViewBag.PosDesconexao;
     if (Html.Action("UsuarioLogado", "Autenticacao") == null)
     {
         usuarioLogado = "";
@@ -232,10 +234,10 @@
                 data: '',
                 contentType: "application/json; charset=utf-8",
                 success: function () {
-                    console.log("Desconectado!")
+                    console.log("Desconectado!");
                 },
                 error: function () {
-                    console.log("Sistema tentou localizar uma View para o ActionResult Desconecta, mas ele não existe. Usuário desconectado da mesma forma!")
+                    console.log("Sistema tentou localizar uma View para o ActionResult Desconecta, mas ele não existe. Usuário desconectado da mesma forma!");
                 }
             });
     }

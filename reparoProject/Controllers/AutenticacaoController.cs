@@ -1,4 +1,5 @@
 ﻿using Business;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,6 +9,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.SessionState;
+using Newtonsoft.Json;
+using System.Web.Script.Serialization;
+using System.Collections;
+using System.Reflection;
 
 namespace freeCommerce.Controllers
 {
@@ -30,6 +35,8 @@ namespace freeCommerce.Controllers
 
         public ActionResult CadastroLuthier()
         {
+            ViewBag.Instrumentos = new Instrumento().Listar();
+            ViewBag.Habilidades = new Habilidade().Listar();
             ViewBag.Servicos = new Servico().Listar();
             return View();
         }
@@ -187,16 +194,41 @@ namespace freeCommerce.Controllers
                 endereco.idElemento = lastLuthierCreated.id;
                 endereco.SaveLuthier();
 
-                string servicosDoLuthier = Request["arrayServicos"];
-                string[] listaServicos = new string[] { "" };
-                listaServicos = servicosDoLuthier.Split(',');
+                string habilidadesDoLuthier = Request["habilidadesSelecionadas"];
+                JavaScriptSerializer j = new JavaScriptSerializer();
+                object a = j.Deserialize(habilidadesDoLuthier, typeof(object));
+                IList listaHabilidadesLuthier = a as IList;
+                List<object> listaDois = new List<object> { };
 
-                foreach(var servico in listaServicos)
+                var listaHabilidades = new List<Habilidade>();
+                int iterador = 1;
+                foreach (var item in listaHabilidadesLuthier)
                 {
-                    var servicoDoLuthier = new LuthierServico();
-                    servicoDoLuthier.idServico = int.Parse(servico);
-                    servicoDoLuthier.idLuthier = lastLuthierCreated.id;
-                    servicoDoLuthier.Save();
+                    var habilidade = new Habilidade();
+                    Dictionary<string, object> dict = new Dictionary<string, object>() { };
+                    dict = (Dictionary<string, object>)item;
+                    var foos = dict.Values.ToArray();
+                    habilidade.id = iterador;
+                    habilidade.idInstrumento = Convert.ToInt32(foos[0]);
+                    habilidade.idServico = Convert.ToInt32(foos[1]);
+                    listaHabilidades.Add(habilidade);
+                    iterador = iterador + 1;
+                }
+
+                var listaFinal = new List<Habilidade>();
+                foreach (var habilidadeFinal in listaHabilidades)
+                {
+                    var habilidadeLuthier = new Habilidade();
+                    habilidadeLuthier = habilidadeLuthier.BuscarPorInstAndServ(habilidadeFinal.idInstrumento, habilidadeFinal.idServico);
+                    listaFinal.Add(habilidadeLuthier);
+                }
+
+                foreach(var habDoLuthier in listaFinal)
+                {
+                    var especialidadeLuthier = new HabilidadePorLuthier();
+                    especialidadeLuthier.idLuthier = lastLuthierCreated.id;
+                    especialidadeLuthier.idHabilidade = habDoLuthier.id;
+                    especialidadeLuthier.Salvar();
                 }
 
                 Response.Redirect("/");
@@ -319,6 +351,7 @@ namespace freeCommerce.Controllers
         {
             var conta = new Conta();
             conta.Desconecta(Session.SessionID);
+            ViewBag.PosDesconexao = "Foi";
             string message = "Sucesso!";
             return View();
         }

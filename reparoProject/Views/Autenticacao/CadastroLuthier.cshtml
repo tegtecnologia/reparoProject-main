@@ -2,7 +2,9 @@
     ViewBag.Title = "Autenticacao";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string idDaSessao = Session.SessionID;
-    List<Business.Servico> servicos = ViewBag.Servicos;
+    List<Business.Instrumento> instrumentos = ViewBag.Instrumentos; 
+    List<Business.Habilidade> habilidades = ViewBag.Habilidades;
+    List<Business.Servico> todosServicos = ViewBag.Servicos;
     int ajustarFormulario = 95;
 }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -34,15 +36,6 @@
         /* background: none; */
         background: #4F4407;
     }
-
-    #servicosSelecionados {
-        width: 70%;
-    }
-
-        #servicosSelecionados div {
-            width: -10%;
-            display: inline-table;
-        }
 
     .jumbotron {
         padding: 6rem 25rem;
@@ -84,29 +77,58 @@
                 <div class="form-group">
                     <label style="color: white;">CNPJ</label>
                     <input type="text" class="form-control" id="txtCnpj" name="txtCnpj" placeholder="Insira apenas números">
-                </div>
+                </div><br />
 
-                <h3 style="color: white; font-weight: 300;"><u>Serviços</u></h3>
+                <!---<h3 style="color: white; font-weight: 300;"><u>Instrumentos</u></h3><span style="color: darkseagreen; margin-left: 225px;"><input type="button" id="btnInstrumentos" name="btnInstrumentos" onclick="revelaListaInstrumentos();" class="btn-info" value="Revelar lista de instrumentos" style="background-color: darkseagreen; border-color: darkseagreen" /></span>
                 <div class="form-group">
-                    <select style="color: black;" onchange="adicionaServicoNaLista(this.value, this.div);" id="selServicos" name="selServicos">
-                        @foreach (var servico in servicos)
-                        {
-                            <option style="color: rgba(0,0,0,.5);" id="txtServico/@servico.id" name="txtServico/@servico.id" value="@servico.id">@servico.descricao</option>
-                        }
-                    </select>
-                    <br /><small id="emailHelp" class="form-text text-muted"><i style="color: darkseagreen;">Clique no serviço que deseja <i style="color:red;">retirar</i> da sua Lista de Competências</i></small>
-                    <hr style="color: white;" />
-                </div>
+                    <div id="divInstrumentos" name="divInstrumentos" style="display:none;"><br />
+                        <table class="table" style="color:white;">
+                            <tr>
+                                <td><center style="font-size: 20px;">Instrumento</center></td>
+                                <td><center style="font-size: 20px;">Domino/Não domino</center></td>
+                            </tr>
+                            @{/*
+                            
+                                foreach (var instrumento in instrumentos)
+                                {
+                                    <tr>
+                                        <td><center>@instrumento.nome</center></td>
+                                        <td><center><input type="checkbox" onclick="coletaInstrumento(this);" id="cbInstrumento/@instrumento.id" name="cbInstrumento/@instrumento.id" class="form-check-input" value="@instrumento.id" /></center></td>
+                                    </tr>
+                                }
+                            */}
+                        </table>
+                    </div>
+                </div>-->
 
-                <div id="servicosSelecionados">
-                    @foreach (var servico in servicos)
-                    {
-                        <div id="labelServicos">
-                            <label id="lbServico/@servico.id" onclick="deletaServicoDaLista(this, @servico.id);" style="color:white;"></label>
-                        </div>
-                    }
-                </div>
-                <hr style="color: white;" />
+                <h3 style="color: white; font-weight: 300;"><u>Serviços e instrumentos</u></h3>
+                
+                <small id="emailHelp" class="form-text text-muted"><i style="color: darkseagreen">Marque as opções que correspondem à sua alçada</i></small><br />
+                <span style="color: darkseagreen; margin-left: 225px;">
+                    <input type="button" id="btnServicos" name="btnServicos" onclick="revelaListaServicos();" class="btn-info" value="Revelar lista de serviços" style="background-color: darkseagreen; border-color: darkseagreen" />
+                </span>
+                <div class="form-group">
+                    <div id="divServicos" name="divServicos" style="display:none;">
+                        <br />
+                        <table class="table" style="color:white;">
+                            <tr>
+                                <td><center style="font-size: 20px;">Instrumento</center></td>
+                                <td><center style="font-size: 20px;">Serviço</center></td>
+                                <td><center style="font-size: 20px;">Domino/Não domino</center></td>
+                            </tr>
+                            @{
+                                foreach (var h in habilidades)
+                                {
+                                    <tr>
+                                        <td><center><b>@instrumentos[h.idInstrumento - 1].nome</center></td>
+                                        <td><center>@todosServicos[h.idServico - 1].descricao</center></td>
+                                        <td><center><input type="checkbox" onclick="coletaHabilidade(this, '@instrumentos[h.idInstrumento - 1].id')" id="cbHabilidade/@h.id" name="cbHabilidade/@h.id" class="form-check-input" value="@h.idServico" /></center></td>
+                                    </tr>
+                                }
+                            }
+                        </table>
+                    </div>
+                </div><br />
 
                 <div class="form-group">
                     <h3 style="color: white; font-weight: 300;"><u>Contato</u></h3>
@@ -165,8 +187,8 @@
                     <input type="text" class="form-control" id="txtUf" name="txtUf">
                 </div><br />
 
-
-
+                <input type="text" name="instrumentosSelecionados" id="instrumentosSelecionados" style="display:none;" />
+                <input type="text" name="habilidadesSelecionadas" id="habilidadesSelecionadas" value="" style="display:none;" />
                 <div class="centraliza">
                     <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="background-color: white; color: rgba(0,0,0,.5); border-color: white">Cadastro</button>
                 </div>
@@ -176,6 +198,7 @@
 </div>
 
 <script>
+    var teste = 0;
     $().ready(function () {
         document.getElementById('idSessao').value = '@idDaSessao';
     });
@@ -221,55 +244,6 @@
         });
     });
 
-    function adicionaServicoNaLista(idServico, div) {
-        document.getElementById('lbServico/' + idServico).style.display = 'block';
-        let futuraArray = document.getElementById('arrayServicos').value;
-        var minhaArray = futuraArray.split(",");
-
-        if (minhaArray.includes(idServico)) {
-        }
-        else if (document.getElementById('arrayServicos').value == "") {
-            document.getElementById('arrayServicos').value = idServico;
-        }
-        else {
-            document.getElementById('arrayServicos').value = document.getElementById('arrayServicos').value + "," + idServico;
-        }
-
-        var listaDeServicos = [];
-        for (i = 1; i <= 10; i++) {
-            listaDeServicos.push(document.getElementById('txtServico/' + i).textContent);
-        }
-        document.getElementById('lbServico/' + idServico).textContent = listaDeServicos[idServico - 1];
-
-        /*var pulaLinha = document.createElement("br");
-        document.getElementById('servicosSelecionados').appendChild(pulaLinha);
-        document.getElementById('servicosSelecionados').appendChild(pulaLinha);*/
-        console.log("Minha array após adição: " + document.getElementById('arrayServicos').value);
-    }
-
-    function deletaServicoDaLista(label, idServico) {
-        console.log("ID do serviço selecionado para deletar: " + idServico);
-        label.style.display = 'none';
-
-        let futuraArray = document.getElementById('arrayServicos').value;
-        var minhaArray = futuraArray.split(',');
-        for (i = 0; i < minhaArray.length; i++) {
-            minhaArray[i] = parseInt(minhaArray[i], 10);
-        }
-
-        console.log("Index do serviço selecionado na array: " + minhaArray.indexOf(idServico) + "\nID do serviço selecionado: " + idServico);
-        console.log("Array: " + minhaArray);
-        for (i = 0; i <= minhaArray.length; i++) {
-            if (minhaArray.indexOf(i) == minhaArray.indexOf(idServico)) {
-                minhaArray[minhaArray.indexOf(idServico)] = 999;
-                console.log("Array final: " + minhaArray);
-                break;
-            }
-        }
-        document.getElementById('arrayServicos').value = minhaArray;
-        console.log("Valores a serem transferido: " + document.getElementById('arrayServicos').value);
-    }
-
     /*jQuery(function ($) {
         $(document).ready(function () {
             document.getElementById('txtNome').value = "A";
@@ -286,4 +260,119 @@
             document.getElementById('txtCep').dispatchEvent(new MouseEvent('click', { shiftKey: true }));
         });
     });*/
+
+    function revelaListaServicos() {
+        if (document.getElementById('divServicos').style.display == "none") {
+            document.getElementById('divServicos').style.display = "block";
+            document.getElementById('btnServicos').value = "Ocultar lista de serviços";
+
+        }
+        else if (document.getElementById('divServicos').style.display == "block") {
+            document.getElementById('divServicos').style.display = "none";
+            document.getElementById('btnServicos').value = "Revelar lista de serviços";
+        }
+    }
+
+    function revelaListaInstrumentos() {
+        if (document.getElementById('divInstrumentos').style.display == "none") {
+            document.getElementById('divInstrumentos').style.display = "block";
+            document.getElementById('btnInstrumentos').value = "Ocultar lista de instrumentos";
+        }
+        else if (document.getElementById('divInstrumentos').style.display == "block") {
+            document.getElementById('divInstrumentos').style.display = "none";
+            document.getElementById('btnInstrumentos').value = "Revelar lista de instrumentos";
+        }
+    }
+
+    function coletaInstrumento(checkBox) {
+        console.log("Input que guarda instrumentos antes da inserção: " + document.getElementById('instrumentosSelecionados').value);
+        var arrayAtual = JSON.parse("[" + document.getElementById('instrumentosSelecionados').value + "]");
+        var validaSeExisteValorExiste = false;
+
+        for (var i = 0; i < arrayAtual.length; i++) {
+            if (arrayAtual[i] == checkBox.value) {
+                validaSeExisteValorExiste = true;
+            }
+            else {
+                validaSeExisteValorExiste = false;
+            }
+        }
+
+        if (checkBox.checked == true) {
+            if (validaSeExisteValorExiste == true) {
+                console.log("Esse instrumento já foi adicionado na lista!");
+            }
+            else if (document.getElementById('instrumentosSelecionados').value == "") {
+                document.getElementById('instrumentosSelecionados').value = checkBox.value;
+            }
+            else if (document.getElementById('instrumentosSelecionados').value != "") {
+                document.getElementById('instrumentosSelecionados').value = document.getElementById('instrumentosSelecionados').value + "," + checkBox.value;
+            }
+        } else {
+            // Retiro o Check Box Value da lista
+            var arrayInstrumentos = JSON.parse("[" + document.getElementById('instrumentosSelecionados').value + "]");
+            const indexDoEliminado = arrayInstrumentos.indexOf(parseInt(checkBox.value), 0);
+            console.log("Array: " + arrayInstrumentos + "\nValor do item a ser eliminado: " + checkBox.value + "\nIndex do valor a ser eliminado: " + indexDoEliminado);
+            for (i = 0; i < arrayInstrumentos.length; i++) {
+                if (arrayInstrumentos[i] == parseInt(checkBox.value)) {
+                    arrayInstrumentos.splice(parseInt(indexDoEliminado), 1);
+                    document.getElementById('instrumentosSelecionados').value = arrayInstrumentos;
+                }
+            }
+        }
+        console.log("Input que guarda instrumentos após tudo: " + document.getElementById('instrumentosSelecionados').value);
+    }
+
+    var arrayDosInstrumentos = [];
+    var validador = true;
+    function coletaHabilidade(checkBox, instrumento) {
+        validador = true;
+        if (document.getElementById('habilidadesSelecionadas').value == "") {
+            document.getElementById('habilidadesSelecionadas').value = "[]";
+            validador = true;
+        }
+        else if (document.getElementById('habilidadesSelecionadas').value != "") {
+            var jay = document.getElementById('habilidadesSelecionadas').value;
+            arrayDosInstrumentos = $.parseJSON(jay);
+
+            for (i = 0; i < arrayDosInstrumentos.length; i++) {
+                if (arrayDosInstrumentos[i].inst == instrumento && arrayDosInstrumentos[i].servico == checkBox.value) {
+                    console.log("Elemento deletado! ID do index: " + i);
+                    arrayDosInstrumentos.splice(i, 1);
+                    
+                    console.log("Após a deleção: ");
+                    console.log(arrayDosInstrumentos);
+
+                    var dadoAtualizado = JSON.stringify(arrayDosInstrumentos);
+                    document.getElementById('habilidadesSelecionadas').value = dadoAtualizado;
+                    validador = true;
+                    checkBox.checked = false;
+                    return;
+                }
+            }
+        }
+
+        if (validador == true) {
+            var habilidade = {
+                inst: instrumento,
+                servico: checkBox.value
+            };
+
+            arrayDosInstrumentos.push(habilidade);
+            var dadoParaEnviar = JSON.stringify(arrayDosInstrumentos);
+            document.getElementById('habilidadesSelecionadas').value = dadoParaEnviar;
+            console.log(document.getElementById('habilidadesSelecionadas').value);
+        }
+        else if (checkBox.checked == false) {
+            // Retirar elemento do array e postar para 'habilidadesSelecionadas' novamente
+            var jsonLesgo = document.getElementById('habilidadesSelecionadas').value;
+            var servicos = $.parseJSON(jsonLesgo);
+
+            for (i = 0; i < servicos.length; i++) {
+                if (servicos[i].inst == instrumento && servicos[i].servico == checkBox.value) {
+                    console.log("Index do elemento a ser deletado: " + i);
+                }
+            }
+        }
+    }
 </script>

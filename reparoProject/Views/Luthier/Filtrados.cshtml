@@ -1,34 +1,48 @@
 ﻿@{
-    var listaLuthier = TempData["luthiersFiltrados"] as List<Business.Luthier>;
-    var servicos = TempData["servicosRegistrados"] as List<Business.Servico>;
-    string servicoProcurado = "";
-
-    if (listaLuthier != null)
+    List<Business.Luthier> luthiersEncontrados = (List<Business.Luthier>)TempData["luthiersPreparados"];
+    string instrumentoFiltrado = "";
+    string servicoFiltrado = "";
+    if (TempData["instrumentoBuscado"] != null)
     {
-        foreach (var luthier in listaLuthier)
-        {
-            servicoProcurado = servicos[luthier.tipoServico - 1].descricao;
-        }
+        instrumentoFiltrado = TempData["instrumentoBuscado"].ToString();
+    }
+
+    if(TempData["servicoBuscado"] != null)
+    {
+        servicoFiltrado = TempData["servicoBuscado"].ToString();
     }
 }
 
-@if (servicoProcurado != "")
-{
-    <h1>Luthiers encontrados — Serviço buscado: @servicoProcurado</h1>
+@{
+    if (luthiersEncontrados != null)
+    {
+        <h1>Luthiers encontrados</h1>
+        <h3>@instrumentoFiltrado > @servicoFiltrado</h3>
+        if(@luthiersEncontrados.Count == 1)
+        {
+            <small>1 profissional foi encontrado!</small><br /><br />
+        }
+        else
+        {
+            <small>@luthiersEncontrados.Count profissionais foram encontrados!</small><br /><br />
+        }
+        
+    }
+    else
+    {
+        <h1>Não foram encontrados profissionais...</h1>
+    }
 }
-else
-{
-    <h1>Volte à <a href="/">página de pesquisa</a> e refaça sua pesquisa</h1>
-}
+
 <table class="table">
     <tr>
         <td>ID do Luthier</td>
         <td>Acesso ao perfil do profissional</td>
     </tr>
     @{
-        if (listaLuthier != null)
+        if (luthiersEncontrados != null)
         {
-            foreach (var luthier in listaLuthier)
+            foreach (var luthier in luthiersEncontrados)
             {
                 <tr>
                     <td>@luthier.id</td>

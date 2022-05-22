@@ -1,45 +1,95 @@
 ﻿@{
     ViewBag.Title = "Home Page";
-    List<Business.Servico> servicos = ViewBag.Servicos;
+    List<Business.Instrumento> instrumentos = ViewBag.Instrumentos;
+    var todosServicos = TempData["servicos"] as List<Business.Servico>;
+    var servicosDoInstrumento = TempData["servicosDoInstrumento"] as List<Business.Habilidade>;
+
     int iterador = 0;
+    string manageBotao = "";
+
+    var nomeDoInstrumentoSelecionado = "Selecione";
+    var idDoInstrumentoSelecionado = 0;
+    if(servicosDoInstrumento != null)
+    {
+        nomeDoInstrumentoSelecionado = instrumentos[servicosDoInstrumento[0].idInstrumento-1].nome;
+        idDoInstrumentoSelecionado = instrumentos[servicosDoInstrumento[0].idInstrumento - 1].id;
+        manageBotao = "block";
+    }
+    else
+    {
+        manageBotao = "none";
+    }
 }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <div class="jumbotron">
     <center>
         <form action="/filtrar" method="post">
             <h2 style="color: rgba(0,0,0,.5)">O que você precisa?</h2><br />
-            <label style="color: rgba(0,0,0,.5)">Tipo de serviço:</label><br />
-            <select style="color: black;" onchange="testeLesgo();" id="selServicos" name="selServicos">
-                @foreach (var servico in servicos)
+            <label style="color: rgba(0,0,0,.5)">Qual é o seu instrumento com pendência?</label><br />
+            <select style="color: black;" onchange="coletarDadosDoSelect();" id="selInstrumentos" name="selInstrumentos">
+                <option id="optionDefault" name="optionDefault" value="@idDoInstrumentoSelecionado">@nomeDoInstrumentoSelecionado</option>
+                @foreach (var instrumento in instrumentos)
                 {
-                    <option style="color: rgba(0,0,0,.5);" id="txtServico/@servico.id" name="txtServico/@servico.id" value="@servico.id">@servico.descricao</option>
+                    <option style="color: rgba(0,0,0,.5);" id="txtInstrumento/@instrumento.id" name="txtInstrumento/@instrumento.id" value="@instrumento.id">@instrumento.nome</option>
                     iterador = iterador + 1;
                 }
-            </select><br /><br />
+            </select><br />
 
-            <!---<label>Instrumento:</label><br />
-    <select>
-        <option>Teste</option>
-    </select><br /><br />
+            @if (servicosDoInstrumento == null)
+            {
+                <small class="form-text text-muted"><i style="color: white">Selecione um instrumento</i></small>
+            }
 
-    <label>CEP (Opcional):</label><br />
-    <input type="text" name="txtCep" id="txtCep" /><br /><br />-->
-            <input type="submit" class="btn btn-primary" value="Filtrar profissionais" class="btn btn-secondary" style="background: white; color: rgba(0,0,0,.5); border: white; "/>
-            <input type="text" name="servico" id="servico" style="display:none;" value="1" />
+            @{
+                if (servicosDoInstrumento != null)
+                {
+                    <br /><select style="color: black;" id="selServicosDoInst" name="selServicosDoInst" onchange="coletarDadosDoSelectDois();">
+                        <option id="optionDefaultDois" name="optionDefaultDois">Selecione</option>
+                        @foreach (var servicoDoInstrumento in servicosDoInstrumento)
+                        {
+                            <option style="color: rgba(0,0,0,.5);" id="txtServico/@todosServicos[servicoDoInstrumento.idServico - 1].id" name="txtServico/@todosServicos[servicoDoInstrumento.idServico - 1].id" value="@todosServicos[servicoDoInstrumento.idServico - 1].id">
+                                @todosServicos[servicoDoInstrumento.idServico - 1].descricao
+                            </option>
+                        }
+                    </select>
+                }
+            }
+            <br /><br />
+            <input type="submit" name="btnSubmit" id="btnSubmit" class="btn btn-primary" value="Filtrar profissionais" class="btn btn-secondary" style="background: white; color: rgba(0,0,0,.5); border: white; display:@manageBotao;" />
+            <input type="text" name="instrumento" id="instrumento" style="display:none;" value="1" />
+            <input type="text" name="idInstrumentoFinal" id="idInstrumentoFinal" style="display:none;" />
+            <input type="text" name="idServicoFinal" id="idServicoFinal" style="display:none;" />
         </form>
     </center>
 </div>
 
 <script>
-    function testeLesgo() {
-        var select = document.getElementById("selServicos");
-
+    function coletarDadosDoSelect() {
+        var select = document.getElementById("selInstrumentos");
         var opcaoTexto = select.options[select.selectedIndex].text;
         var opcaoValor = select.options[select.selectedIndex].value;
-
-        console.log(opcaoTexto);
-        console.log(opcaoValor);
-        document.getElementById('servico').value = opcaoValor;
-        console.log("Serviço passado para o filtro: " + document.getElementById('servico').value);
+        document.getElementById('instrumento').value = opcaoValor;
+        var botao = document.getElementById('btnSubmit');
+        botao.click();
     }
+
+    function coletarDadosDoSelectDois() {
+        var select = document.getElementById("selServicosDoInst");
+        var opcaoTexto = select.options[select.selectedIndex].text;
+        var opcaoValor = select.options[select.selectedIndex].value;
+        document.getElementById('idServicoFinal').value = opcaoValor;
+    }
+
+    jQuery(function ($) {
+        $(document).ready(function () {
+            document.getElementById('idInstrumentoFinal').value = document.getElementById('optionDefault').value;
+            var options = document.getElementById("selServicosDoInst").options;
+
+            for (let i = 0; i < options.length; i++) {
+                //document.getElementById('selServicosDoInst').options[i].value = document.getElementById('selServicosDoInst').options[i].value
+                console.log(options[i].text);
+            }
+        });
+    });
 </script>

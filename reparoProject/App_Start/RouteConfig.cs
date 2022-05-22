@@ -40,7 +40,7 @@ namespace reparoProject
             routes.MapRoute(
                 "filtrar-luthier",
                 "filtrar",
-                new { controller = "Home", action = "Filtrar" }
+                new { controller = "Home", action = "FiltrarInstrumento" }
             );
 
             routes.MapRoute(

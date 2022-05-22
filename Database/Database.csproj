@@ -45,10 +45,13 @@
     <Compile Include="Contato.cs" />
     <Compile Include="Cliente.cs" />
     <Compile Include="Endereco.cs" />
+    <Compile Include="HabilidadePorLuthier.cs" />
+    <Compile Include="Habilidade.cs" />
     <Compile Include="Luthier.cs" />
     <Compile Include="EstadoConta.cs" />
     <Compile Include="ImagemCliente.cs" />
     <Compile Include="LuthierServico.cs" />
+    <Compile Include="Instrumento.cs" />
     <Compile Include="Servico.cs" />
     <Compile Include="Conta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

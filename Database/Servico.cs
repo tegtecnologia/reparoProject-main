@@ -23,7 +23,7 @@ namespace Database
         {
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
-                string queryString = "select * from tipoServico";
+                string queryString = "select * from servicos";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
 
