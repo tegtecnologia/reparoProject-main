@@ -135,6 +135,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AutenticacaoController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\LuthierController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -217,7 +218,10 @@
     <Content Include="Views\Shared\_LayoutAnexo.cshtml" />
     <Content Include="Views\Cliente\AnexarPorId.cshtml" />
     <Content Include="Views\Cliente\AnexarFotoCliente.cshtml" />
-    <Content Include="Views\Home\TesteTrazerDado.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\Instrumento.cshtml" />
+    <Content Include="Views\Admin\Servico.cshtml" />
+    <Content Include="Views\Admin\Habilidade.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

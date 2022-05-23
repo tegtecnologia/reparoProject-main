@@ -53,6 +53,18 @@ namespace Database
             }
         }
 
+        public void Salvar(int idInstrumento, int idServico)
+        {
+            var hash = new Hash(SHA512.Create());
+            using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "insert into habilidades values (" + idInstrumento + ", " + idServico + ")";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
         public DataTable BuscaPorInstrumentoAndServico(string servico, string instrumento)
         {
             using (SqlConnection connection = new SqlConnection(sqlConn()))

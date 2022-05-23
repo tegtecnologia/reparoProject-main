@@ -9,10 +9,21 @@
 
     var nomeDoInstrumentoSelecionado = "Selecione";
     var idDoInstrumentoSelecionado = 0;
+
+    if (servicosDoInstrumento != null)
+    {
+        foreach (var item in instrumentos)
+        {
+            if (item.id == servicosDoInstrumento[0].idInstrumento)
+            {
+                nomeDoInstrumentoSelecionado = item.nome;
+                idDoInstrumentoSelecionado = item.id;
+            }
+        }
+    }
+
     if(servicosDoInstrumento != null)
     {
-        nomeDoInstrumentoSelecionado = instrumentos[servicosDoInstrumento[0].idInstrumento-1].nome;
-        idDoInstrumentoSelecionado = instrumentos[servicosDoInstrumento[0].idInstrumento - 1].id;
         manageBotao = "block";
     }
     else

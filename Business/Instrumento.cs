@@ -25,5 +25,22 @@ namespace Business
             }
             return lista;
         }
+
+        public void Save()
+        {
+            new Database.Instrumento().Salvar(this.nome);
+        }
+
+        public static object BuscaUltimoCadastrado()
+        {
+            var instrumento = new Instrumento();
+            var instrumentoDb = new Database.Instrumento();
+            foreach (DataRow row in instrumentoDb.BuscaPorUltimoIdCadastrado().Rows)
+            {
+                instrumento.id = Convert.ToInt32(row["id"]);
+                instrumento.nome = row["nome"].ToString();
+            }
+            return instrumento;
+        }
     }
 }

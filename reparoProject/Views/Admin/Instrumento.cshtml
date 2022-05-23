@@ -1,0 +1,181 @@
+﻿@{
+    ViewBag.Title = "Administrador";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string idDaSessao = Session.SessionID;
+    List<Business.Instrumento> instrumentos = ViewBag.Instrumentos;
+    List<Business.Habilidade> habilidades = ViewBag.Habilidades;
+    List<Business.Servico> todosServicos = ViewBag.Servicos;
+    int ajustarFormulario = 95;
+}
+
+<style>
+    .container {
+        width: 90vw;
+        height: @ajustarFormulario vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form-check-input:checked {
+        background-color: darkseagreen;
+        border-color: darkseagreen;
+    }
+
+    .centraliza {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .jumbotron {
+        position: relative;
+        /* background: none; */
+        background: #EF8B0C;
+    }
+
+    .jumbotron table{
+        color: white;
+    }
+
+    .btn-info.focus, .btn-info:focus {
+        box-shadow: 0 0 0 0.2rem white;
+    }
+
+    .jumbotron {
+        padding: 6rem 25rem;
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<div class="centraliza">
+    <div class="jumbotron">
+        @if (TempData["instrumentoCadastrado"] != null)
+        {
+            <br /><div id="divDeuBom" name="divDeuBom" class="alert alert-success">@TempData["instrumentoCadastrado"]</div>
+        }
+
+        @if (TempData["instrumentoNaoCadastrado"] != null)
+        {
+            <div class="alert alert-danger">@TempData["instrumentoCadastrado"]</div>
+        }
+        <h2 class="display-4" style="color: white;">Novo</h2><h2 class="display-4" style="color: white;">&nbsp;Instrumento</h2>
+        <form action="/admin/cadastro/criarInstrumento" method="post">
+            <div class="form-group">
+                <h3 style="color: white; font-weight: 300;"><u>Instrumento</u></h3>
+                <label style="color: white;">Nome do instrumento</label>
+                <input type="text" class="form-control" id="txtNome" name="txtNome" placeholder="Ex: Piano"><br />
+                <h3 style="color: white; font-weight: 300;"><u>Serviços</u></h3>
+
+                <small id="emailHelp" class="form-text text-muted"><i style="color: white">Marque ao menos 1 serviço que possa ser feito no novo instrumento.</i></small><br />
+                <span style="color: darkseagreen; margin-left: 225px;">
+                    <input type="button" id="btnServicos" name="btnServicos" onclick="revelaListaServicos();" class="btn-info" value="Revelar lista de serviços" style="color: rgba(0,0,0,.5); background-color: white; border-color: white " />
+                </span>
+                <div class="form-group">
+                    <div id="divServicos" name="divServicos" style="display:none;">
+                        <br />
+                        <table class="table" style="color:white;">
+                            <tr>
+                                <td><center style="font-size: 20px;">Serviço</center></td>
+                                <td><center style="font-size: 20px;">Disponibilidade</center></td>
+                            </tr>
+                            @{
+                                foreach (var s in todosServicos)
+                                {
+                                    <tr>
+                                        <td><center>@s.descricao</center></td>
+                                        <td><center><input type="checkbox" onclick="coletaServico(this)" id="cbServico/@s.id" name="cbServico/@s.id" class="form-check-input" value="@s.id" /></center></td>
+                                    </tr>
+                                }
+                            }
+                        </table>
+                    </div>
+                </div><br />
+                <div class="centraliza">
+                    <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="background-color: white; color: rgba(0,0,0,.5); border-color: white;">Cadastro</button>
+                </div>
+            </div>
+            <input type="text" name="servicosSelecionados" id="servicosSelecionados" style="display:none;"/>
+        </form>
+
+        <div class="centraliza">
+            <div style="color:white;">
+                <br /><h3>Instrumentos existentes</h3>
+                <table class="table">
+                    <tr>
+                        <td><b><i>ID</i></b></td>
+                        <td><b><i>Nome</i></b></td>
+                    </tr>
+                    @{
+                        foreach (var instrumento in instrumentos)
+                        {
+                            <tr>
+                                <td>@instrumento.id</td>
+                                <td>@instrumento.nome</td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function revelaListaServicos() {
+        if (document.getElementById('divServicos').style.display == "none") {
+            document.getElementById('divServicos').style.display = "block";
+            document.getElementById('btnServicos').value = "Ocultar lista de serviços";
+
+        }
+        else if (document.getElementById('divServicos').style.display == "block") {
+            document.getElementById('divServicos').style.display = "none";
+            document.getElementById('btnServicos').value = "Revelar lista de serviços";
+        }
+    }
+
+    function coletaServico(checkBox) {
+        console.log("Input que guarda serviços antes da inserção: " + document.getElementById('servicosSelecionados').value);
+        var arrayAtual = JSON.parse("[" + document.getElementById('servicosSelecionados').value + "]");
+        var validaSeExisteValorExiste = false;
+
+        for (var i = 0; i < arrayAtual.length; i++) {
+            if (arrayAtual[i] == checkBox.value) {
+                validaSeExisteValorExiste = true;
+            }
+            else {
+                validaSeExisteValorExiste = false;
+            }
+        }
+        if (checkBox.checked == true) {
+            if (validaSeExisteValorExiste == true) {
+                console.log("Esse serviço já foi adicionado na lista!");
+            }
+            else if (document.getElementById('servicosSelecionados').value == "") {
+                document.getElementById('servicosSelecionados').value = checkBox.value;
+            }
+            else if (document.getElementById('servicosSelecionados').value != "") {
+                document.getElementById('servicosSelecionados').value = document.getElementById('servicosSelecionados').value + "," + checkBox.value;
+            }
+        } else {
+            // Retiro o Check Box Value da lista
+            var arrayInstrumentos = JSON.parse("[" + document.getElementById('servicosSelecionados').value + "]");
+            const indexDoEliminado = arrayInstrumentos.indexOf(parseInt(checkBox.value), 0);
+            console.log("Array: " + arrayInstrumentos + "\nValor do item a ser eliminado: " + checkBox.value + "\nIndex do valor a ser eliminado: " + indexDoEliminado);
+            for (i = 0; i < arrayInstrumentos.length; i++) {
+                if (arrayInstrumentos[i] == parseInt(checkBox.value)) {
+                    arrayInstrumentos.splice(parseInt(indexDoEliminado), 1);
+                    document.getElementById('servicosSelecionados').value = arrayInstrumentos;
+                }
+            }
+        }
+        console.log("Input que guarda serviços após tudo: " + document.getElementById('servicosSelecionados').value);
+    }
+
+    setTimeout(function () {
+        $('#divDeuBom').fadeOut('fast');
+    }, 5000);
+</script>

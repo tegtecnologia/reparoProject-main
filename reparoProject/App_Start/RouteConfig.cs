@@ -92,6 +92,36 @@ namespace reparoProject
             );
 
             routes.MapRoute(
+                "admin-portal",
+                "admin/portal",
+                new { controller = "Admin", action = "Index" }
+            );
+
+            routes.MapRoute(
+                "admin-cadastro-instrumento",
+                "admin/cadastro/instrumento",
+                new { controller = "Admin", action = "Instrumento" }
+            );
+
+            routes.MapRoute(
+                "admin-criar-instrumento",
+                "admin/cadastro/criarinstrumento",
+                new { controller = "Admin", action = "CriarInstrumento" }
+            );
+
+            routes.MapRoute(
+                "admin-cadastro-servico",
+                "admin/cadastro/servico",
+                new { controller = "Admin", action = "Servico" }
+            );
+
+            routes.MapRoute(
+                "admin-cadastro-habilidade",
+                "admin/cadastro/habilidade",
+                new { controller = "Admin", action = "Habilidade" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

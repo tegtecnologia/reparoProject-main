@@ -7,7 +7,37 @@
     List<Business.Servico> todosServicos = ViewBag.Servicos;
     int idDoLuthier = 0;
 
-
+    // Habilidade-Serviço
+    Dictionary<int, string> servicoPorHabilidade = new Dictionary<int, string>();
+    Dictionary<int, string> instrumentoPorHabilidade = new Dictionary<int, string>();
+    int idDaHab = 0;
+    int idDoServico = 0;
+    int idDoInstrumentoDaHab = 0;
+    foreach (var skill in habilidades)
+    {
+        idDoServico = skill.idServico;
+        idDaHab = skill.id;
+        foreach (var service in todosServicos)
+        {
+            if (idDoServico == service.id)
+            {
+                servicoPorHabilidade.Add(idDaHab, service.descricao);
+            }
+        }
+    }
+    // Habilidade-Instrumento
+    foreach (var habs in habilidades)
+    {
+        idDoInstrumentoDaHab = habs.idInstrumento;
+        idDaHab = habs.id;
+        foreach (var inst in instrumentos)
+        {
+            if (idDoInstrumentoDaHab == inst.id)
+            {
+                instrumentoPorHabilidade.Add(idDaHab, inst.nome);
+            }
+        }
+    }
 }
 
 <h2><u>Dados do profissional</u></h2>
@@ -44,8 +74,8 @@
         foreach (var h in habilidadesAtualLuthier)
         {
             <tr>
-                <td>@todosServicos[habilidades[h.idHabilidade-1].idServico-1].descricao</td>
-                <td>@instrumentos[habilidades[h.idHabilidade - 1].idInstrumento-1].nome</td>
+                <td>@servicoPorHabilidade[h.idHabilidade]</td>
+                <td>@instrumentoPorHabilidade[h.idHabilidade]</td>
             </tr>
         }
     }

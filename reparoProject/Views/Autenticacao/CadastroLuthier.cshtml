@@ -2,10 +2,53 @@
     ViewBag.Title = "Autenticacao";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string idDaSessao = Session.SessionID;
-    List<Business.Instrumento> instrumentos = ViewBag.Instrumentos; 
+    List<Business.Instrumento> instrumentos = ViewBag.Instrumentos;
     List<Business.Habilidade> habilidades = ViewBag.Habilidades;
     List<Business.Servico> todosServicos = ViewBag.Servicos;
+
+    Dictionary<int, string> instrumentoPorHabilidade = new Dictionary<int, string>();
+    Dictionary<int, string> servicoPorHabilidade = new Dictionary<int, string>();
+    Dictionary<int, int> idDoInstrumentoPorHabilidade = new Dictionary<int, int>();
+    int idDoInstrumentoDaHab = 0;
+    int idDaHab = 0;
+    int idDoServico = 0;
+
+    foreach(var skilla in habilidades)
+    {
+        idDoInstrumentoDaHab = skilla.idInstrumento;
+        idDaHab = skilla.id;
+        idDoInstrumentoPorHabilidade.Add(idDaHab, idDoInstrumentoDaHab);
+    }
+
+    foreach (var habs in habilidades)
+    {
+        idDoInstrumentoDaHab = habs.idInstrumento;
+        idDaHab = habs.id;
+        foreach(var inst in instrumentos)
+        {
+            if(idDoInstrumentoDaHab == inst.id)
+            {
+                instrumentoPorHabilidade.Add(idDaHab, inst.nome);
+            }
+        }
+    }
+
+    foreach(var skill in habilidades)
+    {
+        idDoServico = skill.idServico;
+        idDaHab = skill.id;
+        foreach(var service in todosServicos)
+        {
+            if(idDoServico == service.id)
+            {
+                servicoPorHabilidade.Add(idDaHab, service.descricao);
+            }
+        }
+    }
+
     int ajustarFormulario = 95;
+
+    string nomeDoInstrumento = instrumentoPorHabilidade[1];
 }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
@@ -120,9 +163,9 @@
                                 foreach (var h in habilidades)
                                 {
                                     <tr>
-                                        <td><center><b>@instrumentos[h.idInstrumento - 1].nome</center></td>
-                                        <td><center>@todosServicos[h.idServico - 1].descricao</center></td>
-                                        <td><center><input type="checkbox" onclick="coletaHabilidade(this, '@instrumentos[h.idInstrumento - 1].id')" id="cbHabilidade/@h.id" name="cbHabilidade/@h.id" class="form-check-input" value="@h.idServico" /></center></td>
+                                        <td><center><b>@instrumentoPorHabilidade[h.id]</center></td>
+                                        <td><center>@servicoPorHabilidade[h.id]</center></td>
+                                        <td><center><input type="checkbox" onclick="coletaHabilidade(this, '@idDoInstrumentoPorHabilidade[h.id]')" id="cbHabilidade/@h.id" name="cbHabilidade/@h.id" class="form-check-input" value="@h.idServico" /></center></td>
                                     </tr>
                                 }
                             }
@@ -282,45 +325,6 @@
             document.getElementById('divInstrumentos').style.display = "none";
             document.getElementById('btnInstrumentos').value = "Revelar lista de instrumentos";
         }
-    }
-
-    function coletaInstrumento(checkBox) {
-        console.log("Input que guarda instrumentos antes da inserção: " + document.getElementById('instrumentosSelecionados').value);
-        var arrayAtual = JSON.parse("[" + document.getElementById('instrumentosSelecionados').value + "]");
-        var validaSeExisteValorExiste = false;
-
-        for (var i = 0; i < arrayAtual.length; i++) {
-            if (arrayAtual[i] == checkBox.value) {
-                validaSeExisteValorExiste = true;
-            }
-            else {
-                validaSeExisteValorExiste = false;
-            }
-        }
-
-        if (checkBox.checked == true) {
-            if (validaSeExisteValorExiste == true) {
-                console.log("Esse instrumento já foi adicionado na lista!");
-            }
-            else if (document.getElementById('instrumentosSelecionados').value == "") {
-                document.getElementById('instrumentosSelecionados').value = checkBox.value;
-            }
-            else if (document.getElementById('instrumentosSelecionados').value != "") {
-                document.getElementById('instrumentosSelecionados').value = document.getElementById('instrumentosSelecionados').value + "," + checkBox.value;
-            }
-        } else {
-            // Retiro o Check Box Value da lista
-            var arrayInstrumentos = JSON.parse("[" + document.getElementById('instrumentosSelecionados').value + "]");
-            const indexDoEliminado = arrayInstrumentos.indexOf(parseInt(checkBox.value), 0);
-            console.log("Array: " + arrayInstrumentos + "\nValor do item a ser eliminado: " + checkBox.value + "\nIndex do valor a ser eliminado: " + indexDoEliminado);
-            for (i = 0; i < arrayInstrumentos.length; i++) {
-                if (arrayInstrumentos[i] == parseInt(checkBox.value)) {
-                    arrayInstrumentos.splice(parseInt(indexDoEliminado), 1);
-                    document.getElementById('instrumentosSelecionados').value = arrayInstrumentos;
-                }
-            }
-        }
-        console.log("Input que guarda instrumentos após tudo: " + document.getElementById('instrumentosSelecionados').value);
     }
 
     var arrayDosInstrumentos = [];

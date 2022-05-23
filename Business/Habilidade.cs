@@ -43,6 +43,11 @@ namespace Business
             return lista;
         }
 
+        public void Criar()
+        {
+            new Database.Habilidade().Salvar(this.idInstrumento, this.idServico);
+        }
+
         public List<Habilidade> ListarPorInstrumentoAndServico(string servico, string instrumento)
         {
             var habilidadesFiltradas = new List<Habilidade>();
