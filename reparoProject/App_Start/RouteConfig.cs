@@ -98,8 +98,8 @@ namespace reparoProject
             );
 
             routes.MapRoute(
-                "admin-cadastro-instrumento",
-                "admin/cadastro/instrumento",
+                "admin-instrumentos",
+                "admin/instrumentos",
                 new { controller = "Admin", action = "Instrumento" }
             );
 

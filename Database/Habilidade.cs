@@ -36,7 +36,7 @@ namespace Database
             }
         }
 
-        public DataTable BuscaPorId(int id)
+        public DataTable BuscaPorIdDoInstrumento(int id)
         {
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
@@ -96,6 +96,17 @@ namespace Database
                 DataTable table = new DataTable();
                 adapter.Fill(table);
                 return table;
+            }
+        }
+
+        public void Deletar(int idInstrumento)
+        {
+            using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "delete from habilidades where idInstrumento = " + idInstrumento;
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
             }
         }
     }

@@ -49,6 +49,11 @@ namespace Business
         {
             new Database.HabilidadePorLuthier().Salvar(this.idLuthier, this.idHabilidade);
         }
+
+        public void Deletar()
+        {
+            new Database.HabilidadePorLuthier().Deletar(this.idHabilidade);
+        }
     }
 }
 

@@ -38,7 +38,6 @@ namespace Database
 
         public void Salvar(string nome)
         {
-            var hash = new Hash(SHA512.Create());
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
                 string queryString = "insert into instrumentos values ('" + nome + "')";
@@ -53,6 +52,34 @@ namespace Database
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
                 string queryString = "select top 1 * from instrumentos order by id desc";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                adapter.SelectCommand = command;
+
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                return table;
+            }
+        }
+
+        public void Deletar(int idInstrumento)
+        {
+            using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "delete from instrumentos where id = " + idInstrumento;
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public DataTable BuscaPorId(int idInstrumento)
+        {
+            using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "select * from instrumentos where id = " + idInstrumento;
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
 

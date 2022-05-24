@@ -42,5 +42,24 @@ namespace Business
             }
             return instrumento;
         }
+
+        public List<Instrumento> ListarPorId(int idInstrumento)
+        {
+            var lista = new List<Instrumento>();
+            var instrummentoDb = new Database.Instrumento();
+            foreach (DataRow row in instrummentoDb.BuscaPorId(idInstrumento).Rows)
+            {
+                var instrumento = new Instrumento();
+                instrumento.id = Convert.ToInt32(row["id"]);
+                instrumento.nome = row["nome"].ToString();
+                lista.Add(instrumento);
+            }
+            return lista;
+        }
+
+        public void DeletarPorId()
+        {
+            new Database.Instrumento().Deletar(this.id);
+        }
     }
 }

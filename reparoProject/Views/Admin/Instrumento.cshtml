@@ -23,6 +23,10 @@
         border-color: darkseagreen;
     }
 
+    .instrumento:hover {
+        background-color: red;
+    }
+
     .centraliza {
         display: flex;
         flex-direction: row;
@@ -50,6 +54,7 @@
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <div class="centraliza">
     <div class="jumbotron">
@@ -67,7 +72,7 @@
             <div class="form-group">
                 <h3 style="color: white; font-weight: 300;"><u>Instrumento</u></h3>
                 <label style="color: white;">Nome do instrumento</label>
-                <input type="text" class="form-control" id="txtNome" name="txtNome" placeholder="Ex: Piano"><br />
+                <input type="text" class="form-control" id="txtNome" name="txtNome" onchange="formataInicial()" placeholder="Ex: Piano"><br />
                 <h3 style="color: white; font-weight: 300;"><u>Serviços</u></h3>
 
                 <small id="emailHelp" class="form-text text-muted"><i style="color: white">Marque ao menos 1 serviço que possa ser feito no novo instrumento.</i></small><br />
@@ -104,6 +109,7 @@
         <div class="centraliza">
             <div style="color:white;">
                 <br /><h3>Instrumentos existentes</h3>
+                <small id="emailHelp" class="form-text text-muted"><i style="color: white">Clique em um instrumento caso queira <i style="color:red;">deletá-lo.</i></i></small><br />
                 <table class="table">
                     <tr>
                         <td><b><i>ID</i></b></td>
@@ -112,7 +118,7 @@
                     @{
                         foreach (var instrumento in instrumentos)
                         {
-                            <tr>
+                            <tr class="instrumento" onclick="deletarInstrumento(@instrumento.id, '@instrumento.nome')">
                                 <td>@instrumento.id</td>
                                 <td>@instrumento.nome</td>
                             </tr>
@@ -178,4 +184,48 @@
     setTimeout(function () {
         $('#divDeuBom').fadeOut('fast');
     }, 5000);
+
+    function deletarInstrumento(idInstrumento, nomeInstrumento) {
+        swal({
+            title: "Você realmente quer deletar o(a) " + nomeInstrumento + " da Lista de Instrumentos?",
+            text: "É você quem sabe...",
+            icon: "warning",
+            buttons: true,
+            buttons: ["Não, eu desisti", "Sim, deletar o(a) " + nomeInstrumento + "."],
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax(
+                        {
+                            type: 'POST',
+                            dataType: 'JSON',
+                            url: '/Admin/ExcluirInstrumento',
+                            data: { idInstrumento: idInstrumento },
+                            success:
+                                function (response) {
+                                    console.log(response);
+                                },
+                            error:
+                                function (response) {
+                                    alert("Error: " + response);
+                                }
+                        });
+                    swal("Pronto! O instrumento foi deletado.", {
+                        icon: "success",
+                    });
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                } else {
+                    swal("Ok, o instrumento não será deletado.");
+                }
+            });
+    }
+
+    function formataInicial() {
+        var nomeInserido = document.getElementById('txtNome').value;
+        nomeInserido[0] = nomeInserido[0].toUpperCase();
+        document.getElementById('txtNome').value = nomeInserido[0].toUpperCase() + nomeInserido.slice(1).toLowerCase();
+    }
 </script>

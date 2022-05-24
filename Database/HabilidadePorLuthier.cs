@@ -63,5 +63,16 @@ namespace Database
                 command.ExecuteNonQuery();
             }
         }
+
+        public void Deletar(int idHabilidade)
+        {
+             using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "delete from habilidadesLuthiers where idHabilidade = " + idHabilidade;
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }

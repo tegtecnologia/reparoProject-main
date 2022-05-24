@@ -14,10 +14,16 @@
     {
         foreach (var item in instrumentos)
         {
-            if (item.id == servicosDoInstrumento[0].idInstrumento)
+            if(servicosDoInstrumento.Count > 0)
             {
-                nomeDoInstrumentoSelecionado = item.nome;
-                idDoInstrumentoSelecionado = item.id;
+                if (servicosDoInstrumento[0] != null)
+                {
+                    if (item.id == servicosDoInstrumento[0].idInstrumento)
+                    {
+                        nomeDoInstrumentoSelecionado = item.nome;
+                        idDoInstrumentoSelecionado = item.id;
+                    }
+                }
             }
         }
     }

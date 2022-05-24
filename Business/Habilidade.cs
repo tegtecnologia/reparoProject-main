@@ -33,9 +33,10 @@ namespace Business
         {
             var lista = new List<Habilidade>();
             var dadosDb = new Database.Habilidade();
-            foreach (DataRow row in dadosDb.BuscaPorId(idDoInstrumentoBuscado).Rows)
+            foreach (DataRow row in dadosDb.BuscaPorIdDoInstrumento(idDoInstrumentoBuscado).Rows)
             {
                 var servicosDoInstrumento = new Habilidade();
+                servicosDoInstrumento.id = Convert.ToInt32(row["id"]);
                 servicosDoInstrumento.idInstrumento = idDoInstrumentoBuscado;
                 servicosDoInstrumento.idServico = Convert.ToInt32(row["idServico"]);
                 lista.Add(servicosDoInstrumento);
@@ -76,6 +77,11 @@ namespace Business
                 habilidade.idServico = Convert.ToInt32(row["idServico"]);
             }
             return habilidade;
+        }
+
+        public void Deletar()
+        {
+            new Database.Habilidade().Deletar(this.idInstrumento);
         }
     }
 }
