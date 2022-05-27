@@ -15,83 +15,128 @@
     // Encontrando cliente logado
     var clienteLogado = new Business.Cliente();
     List<Business.Cliente> cliente = new Business.Cliente().BuscarPorId(contaLogada.id);
-    if(cliente != null)
+    if (cliente != null)
     {
-        foreach(var c in cliente)
+        foreach (var c in cliente)
         {
             clienteLogado = c;
+        }
+    }
+    string linkParaAnexoImg = "";
+
+    // Coletando os meios de contato
+    string celularCliente = "";
+    string telefoneCliente = "";
+    List<Business.Contato> contatos = new Business.Contato().BuscaContatosDeClientesPorId(clienteLogado.id);
+
+    foreach (var contato in contatos)
+    {
+        if (contato.celular == 1)
+        {
+            celularCliente = contato.codigo + contato.numero;
+        }
+        else
+        {
+            telefoneCliente = contato.codigo + contato.numero;
         }
     }
 }
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 
 
 @{
-    if (conta != null)
+    if (TempData["luthierEscolhido"] == null)
     {
-        <label>Preencha os campos e faça seu pedido</label>
+       <label>Por favor, volte à pagina do luthier escolhido e clique no botão <label style="color: red;">Solicitar serviço</label> novamente.</label>
+    }
+    else if (contaLogada.id != null && contaLogada.usuario != null && contaLogada.email != null && luthierEscolhido != null)
+    {
+        <label>Preencha todos os campos e envie seu pedido! &#128516;</label>
 
         <div id="divCadastro">
             <div class="container">
-            @if(luthierEscolhido != null)
-            {
-                <h3>Solicitação à luthieria de <u>@luthierEscolhido.nome</u></h3>
-            }
-            <form action="/autenticacao/criarCliente" method="post">
-                <br /><h3>Informações pessoais</h3>
-                <div class="form-group">
-                    <label style="color: black;">Nome completo</label>
-                    <input type="text" class="form-control" id="txtNome" name="txtNome" placeholder="Insira seu nome completo">
-                </div>
+                @if (luthierEscolhido != null)
+                {
+                    <h3>Solicitação à luthieria de <u>@luthierEscolhido.nome</u></h3>
+                }
+                <form action="/autenticacao/criarCliente" method="post">
+                    <br /><h3>Informações pessoais</h3>
+                    <div class="form-group">
+                        <label style="color: black;">Nome completo</label>
+                        <input type="text" class="form-control" id="txtNome" value="@clienteLogado.nome" name="txtNome" placeholder="Insira seu nome completo">
+                    </div>
 
-                <div class="form-group">
-                    <label style="color: black;">E-mail</label>
-                    <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="Insira seu e-mail">
-                </div>
+                    <div class="form-group">
+                        <label style="color: black;">E-mail</label>
+                        <input type="email" class="form-control" id="txtEmail" value="@clienteLogado.email" name="txtEmail" placeholder="Insira seu e-mail">
+                    </div>
 
-                <div class="form-group">
-                    <h3>Contato</h3>
-                    <label style="color: black;">Celular</label>
-                    <input type="text" class="form-control" id="txtCelular" name="txtCelular" placeholder="Insira apenas números">
-                </div>
+                    <div class="form-group">
+                        <h3>Contato</h3>
+                        <label style="color: black;">Celular</label>
+                        <input type="text" class="form-control contato" id="txtCelular" value="@celularCliente" name="txtCelular" placeholder="Insira apenas números">
+                    </div>
 
-                <div class="form-group" id="divTelefone" name="divTelefone">
-                    <label style="color: black;">Telefone</label>
-                    <input type="text" class="form-control" id="txtTelefone" name="txtTelefone" placeholder="Insira apenas números">
-                           
-                </div>
+                    <div class="form-group" id="divTelefone" name="divTelefone">
+                        <label style="color: black;">Telefone</label>
+                        <input type="text" class="form-control contato" id="txtTelefone" value="@telefoneCliente" name="txtTelefone" placeholder="Insira apenas números">
 
-                <div class="form-group">
-                    <h3>Instrumento</h3>
-                    <label style="color: black;">Seu instrumento que requer assistência técnica:</label><br />
-                    <select style="color: black;" id="selInstrumentos" name="selInstrumentos">
-                        <option id="optionDefault" name="optionDefault">Selecione</option>
-                        @foreach (var instrumento in instrumentos)
+                    </div>
+
+                    <div class="form-group">
+                        <h3>Instrumento</h3>
+                        <label style="color: black;">Instrumento com pendência:</label><br />
+                        <select style="color: black;" id="selInstrumentos" name="selInstrumentos">
+                            <option id="optionDefault" name="optionDefault">Selecione</option>
+                            @foreach (var instrumento in instrumentos)
+                            {
+                                <option style="color: rgba(0,0,0,.5);" id="txtInstrumento/@instrumento.id" name="txtInstrumento/@instrumento.id" value="@instrumento.id">@instrumento.nome</option>
+                                iterador = iterador + 1;
+                            }
+                        </select><br /><br />
+                        <label style="color: black;">Insira uma imagem do instrumento:</label><br />
+                        @if (clienteLogado.nome != null && clienteLogado.email != null && clienteLogado.cpf != null)
                         {
-                            <option style="color: rgba(0,0,0,.5);" id="txtInstrumento/@instrumento.id" name="txtInstrumento/@instrumento.id" value="@instrumento.id">@instrumento.nome</option>
-                            iterador = iterador + 1;
+                            linkParaAnexoImg = "/../pedido/" + clienteLogado.id + "/anexar";
+                            <div style="margin-top: 0px;">
+                                <a href="@linkParaAnexoImg" target="_blank" class="btn btn-primary" style="background: darkseagreen; color: white; border: white; " data-toggle="modal" data-target="#modalExemplo">Adicionar do instrumento</a>
+                            </div>
                         }
-                    </select><br /><br />
-                    <label style="color: black;">Insira uma imagem do instrumento:</label><br />
-                    <input type="file" /><br /><br />
-                </div>
+                        <br />
+                    </div>
 
-                <div class="form-group">
-                    <h3>Situação</h3>
-                    <label style="color: black;">Descreva a situação do seu instrumento</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
-                </div><br />
-                <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="background-color: rgba(0,0,0,.5); color: white; border-color: white">Cadastro</button>
-            </form>
+                    <div class="form-group">
+                        <h3>Situação</h3>
+                        <label style="color: black;">Descreva a situação do seu instrumento</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
+                    </div><br />
+                    <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="background-color: rgba(0,0,0,.5); color: white; border-color: white">Cadastro</button>
+                </form>
             </div>
         </div>
     }
-    else
+    else if(contaLogada.id == null || contaLogada.usuario == null || contaLogada.email == null)
     {
-        <label>Faça o login para solicitar um serviço</label>
+        <label>Faça o login para solicitar um serviço!</label>
     }
 }
+
+<!-- Modal -->
+<div class="modal" tabindex="-1" id="modalExemplo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     function mostrarCampoCelular() {
@@ -111,4 +156,19 @@
             document.getElementById('divTelefone').style.display = "none";
         }
     }
+
+    jQuery("input.contato")
+        .mask("(99) 9999-9999?9")
+        .focusout(function (event) {
+            var target, phone, element;
+            target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+            phone = target.value.replace(/\D/g, '');
+            element = $(target);
+            element.unmask();
+            if (phone.length > 10) {
+                element.mask("(99) 99999-999?9");
+            } else {
+                element.mask("(99) 9999-9999?9");
+            }
+        });
 </script>

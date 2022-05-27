@@ -3,7 +3,6 @@
     List<Business.Instrumento> instrumentos = ViewBag.Instrumentos;
     var todosServicos = TempData["servicos"] as List<Business.Servico>;
     var servicosDoInstrumento = TempData["servicosDoInstrumento"] as List<Business.Habilidade>;
-
     int iterador = 0;
     string manageBotao = "";
 
@@ -70,6 +69,8 @@
                             </option>
                         }
                     </select>
+                    <br />
+                    <small class="form-text text-muted"><i style="color: white">Selecione um serviço</i></small>
                 }
             }
             <br /><br />

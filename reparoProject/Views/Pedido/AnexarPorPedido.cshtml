@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Anexar";
+    dynamic view = ViewBag.IdDoCliente;
+    int idDoCliente = view;
+    Layout = "~/Views/Shared/_LayoutAnexo.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<h3>Adicione a imagem do cliente</h3>
+@using (Html.BeginForm("AnexarFotoPedido", "Pedido", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div>
+        @Html.TextBox("string", "", new { type = "string" })
+        @Html.TextBox("file", "", new { type = "file" }) <br />
+        <input type="submit" value="Upload" />
+        @ViewBag.Message
+    </div>
+}
+
+<script>
+    jQuery(function ($) {
+        $(document).ready(function () {
+            document.getElementById('string').value = "@idDoCliente";
+        });
+    });
+</script>
