@@ -1,0 +1,114 @@
+﻿@{
+    int ajustarFormulario = 95;
+    // Coletando luthier escolhido para o serviço
+    var luthierEscolhido = (Business.Luthier)TempData["luthierEscolhido"];
+
+    List<Business.Instrumento> instrumentos = new Business.Instrumento().Listar();
+    var idDoInstrumentoSelecionado = 0;
+    var nomeDoInstrumentoSelecionado = "Selecione";
+    var iterador = 0;
+
+    // Encontrando conta logada
+    var conta = Business.Conta.BuscaPorStatusLogin(Session.SessionID);
+    Business.Conta contaLogada = (Business.Conta)conta;
+
+    // Encontrando cliente logado
+    var clienteLogado = new Business.Cliente();
+    List<Business.Cliente> cliente = new Business.Cliente().BuscarPorId(contaLogada.id);
+    if(cliente != null)
+    {
+        foreach(var c in cliente)
+        {
+            clienteLogado = c;
+        }
+    }
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+@{
+    if (conta != null)
+    {
+        <label>Preencha os campos e faça seu pedido</label>
+
+        <div id="divCadastro">
+            <div class="container">
+            @if(luthierEscolhido != null)
+            {
+                <h3>Solicitação à luthieria de <u>@luthierEscolhido.nome</u></h3>
+            }
+            <form action="/autenticacao/criarCliente" method="post">
+                <br /><h3>Informações pessoais</h3>
+                <div class="form-group">
+                    <label style="color: black;">Nome completo</label>
+                    <input type="text" class="form-control" id="txtNome" name="txtNome" placeholder="Insira seu nome completo">
+                </div>
+
+                <div class="form-group">
+                    <label style="color: black;">E-mail</label>
+                    <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="Insira seu e-mail">
+                </div>
+
+                <div class="form-group">
+                    <h3>Contato</h3>
+                    <label style="color: black;">Celular</label>
+                    <input type="text" class="form-control" id="txtCelular" name="txtCelular" placeholder="Insira apenas números">
+                </div>
+
+                <div class="form-group" id="divTelefone" name="divTelefone">
+                    <label style="color: black;">Telefone</label>
+                    <input type="text" class="form-control" id="txtTelefone" name="txtTelefone" placeholder="Insira apenas números">
+                           
+                </div>
+
+                <div class="form-group">
+                    <h3>Instrumento</h3>
+                    <label style="color: black;">Seu instrumento que requer assistência técnica:</label><br />
+                    <select style="color: black;" id="selInstrumentos" name="selInstrumentos">
+                        <option id="optionDefault" name="optionDefault">Selecione</option>
+                        @foreach (var instrumento in instrumentos)
+                        {
+                            <option style="color: rgba(0,0,0,.5);" id="txtInstrumento/@instrumento.id" name="txtInstrumento/@instrumento.id" value="@instrumento.id">@instrumento.nome</option>
+                            iterador = iterador + 1;
+                        }
+                    </select><br /><br />
+                    <label style="color: black;">Insira uma imagem do instrumento:</label><br />
+                    <input type="file" /><br /><br />
+                </div>
+
+                <div class="form-group">
+                    <h3>Situação</h3>
+                    <label style="color: black;">Descreva a situação do seu instrumento</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
+                </div><br />
+                <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="background-color: rgba(0,0,0,.5); color: white; border-color: white">Cadastro</button>
+            </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        <label>Faça o login para solicitar um serviço</label>
+    }
+}
+
+<script>
+    function mostrarCampoCelular() {
+        if (document.getElementById('divCelular').style.display == "none") {
+            document.getElementById('divCelular').style.display = "block";
+        }
+        else if (document.getElementById('divCelular').style.display == "block") {
+            document.getElementById('divCelular').style.display = "none";
+        }
+    }
+
+    function mostrarCampoTelefone() {
+        if (document.getElementById('divTelefone').style.display == "none") {
+            document.getElementById('divTelefone').style.display = "block";
+        }
+        else if (document.getElementById('divTelefone').style.display == "block") {
+            document.getElementById('divTelefone').style.display = "none";
+        }
+    }
+</script>

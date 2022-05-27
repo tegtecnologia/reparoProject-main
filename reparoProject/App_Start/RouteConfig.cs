@@ -122,6 +122,18 @@ namespace reparoProject
             );
 
             routes.MapRoute(
+                "pedido-solicitar",
+                "pedido/solicitar",
+                new { controller = "Pedido", action = "Solicitar" }
+            );
+
+            routes.MapRoute(
+                "pedido-criar",
+                "pedido/criar",
+                new { controller = "Pedido", action = "CriarPedido" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

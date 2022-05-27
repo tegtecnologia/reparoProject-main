@@ -137,6 +137,7 @@
     <Compile Include="Controllers\AutenticacaoController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\PedidoController.cs" />
     <Compile Include="Controllers\LuthierController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -222,6 +223,8 @@
     <Content Include="Views\Admin\Instrumento.cshtml" />
     <Content Include="Views\Admin\Servico.cshtml" />
     <Content Include="Views\Admin\Habilidade.cshtml" />
+    <Content Include="Views\Pedido\Solicitar.cshtml" />
+    <Content Include="Views\Pedido\CriarPedido.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
