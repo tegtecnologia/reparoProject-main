@@ -21,13 +21,29 @@ namespace Database
 
         public void Salvar(int idCliente, int idLuthier, string descricao, string enderecoEntrega, int statusPedido, int instrumentoAlvo, int servicoAlvo)
         {
-            var hash = new Hash(SHA512.Create());
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
                 string queryString = "insert into pedidos (idCliente, idLuthier, descricaoSituacao, dataEmissao, enderecoEntrega, statusPedido, instrumentoAlvo, tipoServico) values (" + idCliente + ", " + idLuthier + ", '" + descricao +  "', getdate(), '" + enderecoEntrega + "', " + statusPedido + ", " + instrumentoAlvo + ", " + servicoAlvo + ")";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
                 command.ExecuteNonQuery();
+            }
+        }
+
+        public DataTable BuscarIdUltimoPedido(int idCliente, int idLuthier, string descricao, string enderecoEntrega, int statusPedido, int instrumentoAlvo, int tipoServico)
+        {
+            using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "select * from pedidos where idCliente = " + idCliente + " and idLuthier = " + idLuthier + " and descricaoSituacao = '" + descricao + "' and enderecoEntrega = '" + enderecoEntrega + "' and instrumentoAlvo = " + instrumentoAlvo + " and tipoServico = " + tipoServico;
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                adapter.SelectCommand = command;
+
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                return table;
             }
         }
     }

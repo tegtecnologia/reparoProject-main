@@ -59,7 +59,7 @@ namespace reparoProject.Controllers
                         file.SaveAs(fname);
                     }
                     // Returns message that successfully uploaded  
-                    return Json("File Uploaded Successfully!");
+                    return Json("Arquivo(s) transferidos com sucesso!");
                 }
                 catch (Exception ex)
                 {
@@ -87,10 +87,36 @@ namespace reparoProject.Controllers
                 pedido.instrumentoAlvo = Convert.ToInt32(Request["txtInstrumento"]);
                 pedido.tipoServico = Convert.ToInt32(Request["txtServico"]);
                 pedido.Save();
+   
+                var thisPedido = new Pedido().BuscarIdUltimoCadastrado(pedido.idCliente, pedido.idLuthier, pedido.descricao, pedido.enderecoEntrega, pedido.statusPedido, pedido.instrumentoAlvo, pedido.tipoServico);
+                int idDoPedidoAtual = 0;
+
+                foreach(var pedidoX in thisPedido)
+                {
+                    idDoPedidoAtual = pedidoX.id;
+                }
 
                 string imagensDoPedido = Request["arrayImagens"];
                 JavaScriptSerializer j = new JavaScriptSerializer();
                 object a = j.Deserialize(imagensDoPedido, typeof(object));
+                IList listaImagens = a as IList;
+
+                string caminhoImg = "";
+                foreach (var imagem in listaImagens)
+                {
+                    var imagemPedido = new ImagemPedido();
+                    imagemPedido.idPedido = idDoPedidoAtual;
+                    Dictionary<string, object> dict = new Dictionary<string, object>() { };
+                    dict = (Dictionary<string, object>)imagem;
+                    var foos = dict.Values.ToArray();
+                    caminhoImg = (string)foos[0];
+                    caminhoImg = Path.Combine(Server.MapPath("~/UploadedFiles/reqPhotos"), caminhoImg);
+                    imagemPedido.nomeImagem = (string)foos[0];
+                    imagemPedido.caminhoImagem = caminhoImg;
+                    imagemPedido.tipoImg = (string)foos[1];
+                    imagemPedido.dataUpload = DateTime.Now;
+                    imagemPedido.Salvar();
+                }
 
                 Response.Redirect("/");
                 TempData["pedidoCriado"] = "Pedido criado com sucesso!";

@@ -7,6 +7,28 @@
     List<Business.Servico> todosServicos = ViewBag.Servicos;
     int idDoLuthier = 0;
 
+    // Coletando servico escolhido pelo usuário
+    var idServicoEscolhidoPorUsuario = Convert.ToInt32(TempData["servicoEscolhido"]);
+    string servicoEscolhidoPorUsuario = "";
+    foreach(var ss in todosServicos)
+    {
+        if(ss.id == idServicoEscolhidoPorUsuario)
+        {
+            servicoEscolhidoPorUsuario = ss.descricao;
+        }
+    }
+
+    // Coletando instrumento escolhido pelo usuário
+    var idInstrumentoEscolhidoPorUsuario = Convert.ToInt32(TempData["instrumentoEscolhido"]);
+    string instrumentoEscolhidoPorUsuario = "";
+    foreach(var ii in instrumentos)
+    {
+        if(ii.id == idInstrumentoEscolhidoPorUsuario)
+        {
+            instrumentoEscolhidoPorUsuario = ii.nome;
+        }
+    }
+
     // Habilidade-Serviço
     Dictionary<int, string> servicoPorHabilidade = new Dictionary<int, string>();
     Dictionary<int, string> instrumentoPorHabilidade = new Dictionary<int, string>();
@@ -65,7 +87,11 @@
 
 <form action="~/pedido/solicitar" method="post">
     <input type="hidden" id="idLuthier" name="idLuthier" value="@dadosLuthier.id"/>
-    <input type="submit" id="btnSolicitarServico" name="btnSolicitarServico" class="btn btn-secondary" style="background: #ffd42a; color: rgba(0,0,0,.5); border: white;" value="Solicitar serviço" />
+    <input type="submit" id="btnSolicitarServico" name="btnSolicitarServico" class="btn btn-secondary" size="55" style="width: 1300px; background: #ffd42a; color: rgba(0,0,0,.5); border: white;" value="Solicitar serviço" />
+    @if(instrumentoEscolhidoPorUsuario != "" && servicoEscolhidoPorUsuario != "")
+    {
+        <br /><small><u>@instrumentoEscolhidoPorUsuario > @servicoEscolhidoPorUsuario</u> (Este será o serviço que você solicitará caso clique no botão acima, conforme a filtragem que realizou há pouco.)</small>
+    }
 </form>
 
 <br />

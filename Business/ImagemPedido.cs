@@ -15,5 +15,10 @@ namespace Business
         public string caminhoImagem { get; set; }
         public string tipoImg { get; set; }
         public DateTime dataUpload { get; set; }
+
+        public void Salvar()
+        {
+            new Database.ImagemPedido().Salvar(this.idPedido, this.nomeImagem, this.caminhoImagem, this.tipoImg);
+        }
     }
 }
