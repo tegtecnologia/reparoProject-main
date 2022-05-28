@@ -58,6 +58,8 @@ namespace reparoProject.Controllers
             TempData["servicos"] = servicos;
             var servico = Request["idServicoFinal"];
             var instrumento = Request["idInstrumentoFinal"];
+            TempData["instrumentoEscolhido"] = instrumento;
+            TempData["servicoEscolhido"] = servico;
 
             if(servico == "")
             {

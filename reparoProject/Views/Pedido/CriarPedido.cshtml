@@ -1,11 +1,14 @@
 ﻿@{
-    int ajustarFormulario = 95;
+    int idInstrumentoEscolhido = 345344;
+    string validadorOption = "";
+
     // Coletando luthier escolhido para o serviço
     var luthierEscolhido = (Business.Luthier)TempData["luthierEscolhido"];
 
+    // Coletando servico escolhido pelo usuário
+    var idServicoEscolhido = Convert.ToInt32(TempData["servicoEscolhido"]);
+
     List<Business.Instrumento> instrumentos = new Business.Instrumento().Listar();
-    var idDoInstrumentoSelecionado = 0;
-    var nomeDoInstrumentoSelecionado = "Selecione";
     var iterador = 0;
 
     // Encontrando conta logada
@@ -22,7 +25,6 @@
             clienteLogado = c;
         }
     }
-    string linkParaAnexoImg = "";
 
     // Coletando os meios de contato
     string celularCliente = "";
@@ -40,17 +42,23 @@
             telefoneCliente = contato.codigo + contato.numero;
         }
     }
+    var enderecoCliente = new Business.Endereco();
+    // Coletando o endereço do cliente
+    List<Business.Endereco> enderecos = new Business.Endereco().BuscaEnderecosPorIdCliente(clienteLogado.id);
+    if(enderecos.Count > 0)
+    {
+        enderecoCliente = enderecos[0];
+    }
 }
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 
-
 @{
     if (TempData["luthierEscolhido"] == null)
     {
-       <label>Por favor, volte à pagina do luthier escolhido e clique no botão <label style="color: red;">Solicitar serviço</label> novamente.</label>
+        <label>Por favor, volte à pagina do luthier escolhido e clique no botão <label style="color: red;">Solicitar serviço</label> novamente.</label>
     }
     else if (contaLogada.id != null && contaLogada.usuario != null && contaLogada.email != null && luthierEscolhido != null)
     {
@@ -62,103 +70,81 @@
                 {
                     <h3>Solicitação à luthieria de <u>@luthierEscolhido.nome</u></h3>
                 }
-                <form action="/autenticacao/criarCliente" method="post">
-                    <br /><h3>Informações pessoais</h3>
-                    <div class="form-group">
-                        <label style="color: black;">Nome completo</label>
-                        <input type="text" class="form-control" id="txtNome" value="@clienteLogado.nome" name="txtNome" placeholder="Insira seu nome completo">
-                    </div>
+            <form action="/pedido/realizarPedido" method="post">
+                <br /><h3>Informações pessoais</h3>
+                <div class="form-group">
+                    <label style="color: black;">Nome completo</label>
+                    <input type="text" disabled class="form-control" id="txtNome" value="@clienteLogado.nome" name="txtNome" placeholder="Insira seu nome completo">
+                </div>
 
-                    <div class="form-group">
-                        <label style="color: black;">E-mail</label>
-                        <input type="email" class="form-control" id="txtEmail" value="@clienteLogado.email" name="txtEmail" placeholder="Insira seu e-mail">
-                    </div>
+                <div class="form-group">
+                    <label style="color: black;">E-mail</label>
+                    <input type="email" class="form-control" id="txtEmail" value="@clienteLogado.email" name="txtEmail" placeholder="Insira seu e-mail">
+                </div>
 
-                    <div class="form-group">
-                        <h3>Contato</h3>
-                        <label style="color: black;">Celular</label>
-                        <input type="text" class="form-control contato" id="txtCelular" value="@celularCliente" name="txtCelular" placeholder="Insira apenas números">
-                    </div>
+                <div class="form-group">
+                    <h3>Contato</h3>
+                    <label style="color: black;">Celular</label>
+                    <input type="text" class="form-control contato" id="txtCelular" value="@celularCliente" name="txtCelular" placeholder="Insira apenas números">
+                </div>
 
-                    <div class="form-group" id="divTelefone" name="divTelefone">
-                        <label style="color: black;">Telefone</label>
-                        <input type="text" class="form-control contato" id="txtTelefone" value="@telefoneCliente" name="txtTelefone" placeholder="Insira apenas números">
+                <div class="form-group">
+                    <h3>Entrega</h3>
+                    <label style="color: black;">Endereço</label>
+                    <input type="text" class="form-control" id="txtEndereco" value="@enderecoCliente.logradouro, @enderecoCliente.bairro, @enderecoCliente.cidade, @enderecoCliente.cep" name="txtEndereco">
+                </div>
 
-                    </div>
+                @if (TempData["instrumentoEscolhido"] != null)
+                {
+                    idInstrumentoEscolhido = Convert.ToInt32(TempData["instrumentoEscolhido"]);
+                }
 
-                    <div class="form-group">
-                        <h3>Instrumento</h3>
-                        <label style="color: black;">Instrumento com pendência:</label><br />
-                        <select style="color: black;" id="selInstrumentos" name="selInstrumentos">
-                            <option id="optionDefault" name="optionDefault">Selecione</option>
-                            @foreach (var instrumento in instrumentos)
-                            {
-                                <option style="color: rgba(0,0,0,.5);" id="txtInstrumento/@instrumento.id" name="txtInstrumento/@instrumento.id" value="@instrumento.id">@instrumento.nome</option>
-                                iterador = iterador + 1;
-                            }
-                        </select><br /><br />
-                        <label style="color: black;">Insira uma imagem do instrumento:</label><br />
-                        @if (clienteLogado.nome != null && clienteLogado.email != null && clienteLogado.cpf != null)
+                <div class="form-group">
+                    <h3>Instrumento</h3>
+                    <label style="color: black;">Instrumento com pendência:</label><br />
+                    <select style="color: black;" id="selInstrumentos" name="selInstrumentos">
+                        @foreach (var instrumento in instrumentos)
                         {
-                            linkParaAnexoImg = "/../pedido/" + clienteLogado.id + "/anexar";
-                            <div style="margin-top: 0px;">
-                                <a href="@linkParaAnexoImg" target="_blank" class="btn btn-primary" style="background: darkseagreen; color: white; border: white; " data-toggle="modal" data-target="#modalExemplo">Adicionar do instrumento</a>
-                            </div>
-                        }
-                        <br />
-                    </div>
+                            <option @validadorOption style="color: rgba(0,0,0,.5);" value="@instrumento.id">@instrumento.nome</option>
+                            iterador = iterador + 1;
 
-                    <div class="form-group">
-                        <h3>Situação</h3>
-                        <label style="color: black;">Descreva a situação do seu instrumento</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
-                    </div><br />
-                    <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="background-color: rgba(0,0,0,.5); color: white; border-color: white">Cadastro</button>
-                </form>
+                            if (instrumento.id == idInstrumentoEscolhido)
+                            {
+                                validadorOption = "checked";
+                                break;
+                            }
+                        }
+                    </select><br /><br />
+                    <label style="color: black;">Insira uma ou mais imagem(ns) do instrumento:</label><br />
+                    <input type="file" id="FileUpload1" multiple onchange="lesgo()" /><br /><br />
+                    <input onclick="liberarTextArea()" class="btn btn-primary" style="background: darkseagreen; color: white; border: white; " type="button" id="btnUpload" value="Anexar imagens do instrumento" />
+                    <br />
+                </div>
+
+                <div class="form-group">
+                    <h3 onclick="validaUpload()">Situação</h3>
+                    <label style="color: black;">Descreva a situação do seu instrumento (somente após subir ao menos uma imagem do instrumento)</label>
+                    <textarea disabled class="form-control" id="txtSituacao" name="txtSituacao" rows="2"></textarea>
+                </div><br />
+                <input type="text" id="arrayImagens" name="arrayImagens" style="display:none" />
+                <input type="text" id="txtInstrumento" name="txtInstrumento" value="@idInstrumentoEscolhido" style="display:none" />
+                <input type="text" id="txtServico" name="txtServico" style="display:none" value="@idServicoEscolhido" />
+                <input type="text" id="idCliente" name="idCliente" value="@clienteLogado.id" style="display:none" />
+                <input type="text" id="idLuthier" name="idLuthier" value="@luthierEscolhido.id" style="display:none" />
+                <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="background-color: rgba(0,0,0,.5); color: white; border-color: white">Cadastro</button>
+            </form>
             </div>
         </div>
     }
-    else if(contaLogada.id == null || contaLogada.usuario == null || contaLogada.email == null)
+    else if (contaLogada.id == null || contaLogada.usuario == null || contaLogada.email == null)
     {
         <label>Faça o login para solicitar um serviço!</label>
     }
 }
 
-<!-- Modal -->
-<div class="modal" tabindex="-1" id="modalExemplo">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
-    function mostrarCampoCelular() {
-        if (document.getElementById('divCelular').style.display == "none") {
-            document.getElementById('divCelular').style.display = "block";
-        }
-        else if (document.getElementById('divCelular').style.display == "block") {
-            document.getElementById('divCelular').style.display = "none";
-        }
-    }
-
-    function mostrarCampoTelefone() {
-        if (document.getElementById('divTelefone').style.display == "none") {
-            document.getElementById('divTelefone').style.display = "block";
-        }
-        else if (document.getElementById('divTelefone').style.display == "block") {
-            document.getElementById('divTelefone').style.display = "none";
-        }
-    }
-
     jQuery("input.contato")
-        .mask("(99) 9999-9999?9")
+        .mask("(99) 99999-9999")
         .focusout(function (event) {
             var target, phone, element;
             target = (event.currentTarget) ? event.currentTarget : event.srcElement;
@@ -171,4 +157,85 @@
                 element.mask("(99) 9999-9999?9");
             }
         });
+
+    $(document).ready(function () {
+        $('#btnUpload').click(function () {
+
+            // Checking whether FormData is available in browser  
+            if (window.FormData !== undefined) {
+
+                var fileUpload = $("#FileUpload1").get(0);
+                var files = fileUpload.files;
+
+                // Create FormData object  
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object  
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                // Adding one more key to FormData object  
+                fileData.append('username', "Manas");
+
+                $.ajax({
+                    url: '/Pedido/UploadFiles',
+                    type: "POST",
+                    contentType: false, // Not to set any content header  
+                    processData: false, // Not to process data  
+                    data: fileData,
+                    success: function (result) {
+                        console.log(result);
+                    },
+                    error: function (err) {
+                        console.log(err.statusText);
+                    }
+                });
+            } else {
+                alert("FormData is not supported.");
+            }
+        });
+    });
+
+    var validaUploadImg = false;
+    function validaUpload() {
+        var armazenamentoDeImagens = document.getElementById('FileUpload1');
+
+        if (armazenamentoDeImagens.files.length == 0) {
+            console.log("Nenhuma imagem foi carregada.");
+        }
+        else {
+            console.log("Ao menos uma imagem foi carregada.");
+            validaUploadImg = true;
+        }
+    }
+
+    function liberarTextArea() {
+        validaUpload();
+        if (validaUploadImg == true) {
+            document.getElementById("txtSituacao").disabled = false;
+        }
+        else {
+            document.getElementById("txtSituacao").disabled = true;
+        }
+    }
+
+    var arrayImagens = [];
+    function lesgo() {
+        var fileList = document.getElementById("FileUpload1").files;
+        
+        for (var i = 0; i < fileList.length; i++) {
+            console.log(fileList[i]);
+
+            var imagem = {
+                nomeDaImagem: fileList[i].name,
+                tipo: fileList[i].type
+            };
+
+            arrayImagens.push(imagem)
+        }
+
+        document.getElementById('arrayImagens').value = JSON.stringify(arrayImagens);
+        console.log(document.getElementById('arrayImagens').value);
+    }
 </script>

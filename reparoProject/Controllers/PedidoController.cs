@@ -1,10 +1,12 @@
 ﻿using Business;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace reparoProject.Controllers
 {
@@ -23,53 +25,79 @@ namespace reparoProject.Controllers
             return View();
         }
 
-        public ActionResult AnexarPorPedido(int id)
+        [HttpPost]
+        public ActionResult UploadFiles()
         {
-            ViewBag.IdDoCliente = id;
-            return View();
+            // Checking no of files injected in Request object  
+            if (Request.Files.Count > 0)
+            {
+                try
+                {
+                    //  Get all files from Request object  
+                    HttpFileCollectionBase files = Request.Files;
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";  
+                        //string filename = Path.GetFileName(Request.Files[i].FileName);  
+
+                        HttpPostedFileBase file = files[i];
+                        string fname;
+
+                        // Checking for Internet Explorer  
+                        if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                        {
+                            string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                            fname = testfiles[testfiles.Length - 1];
+                        }
+                        else
+                        {
+                            fname = file.FileName;
+                        }
+
+                        // Get the complete folder path and store the file inside it.  
+                        fname = Path.Combine(Server.MapPath("~/UploadedFiles/reqPhotos"), fname);
+                        file.SaveAs(fname);
+                    }
+                    // Returns message that successfully uploaded  
+                    return Json("File Uploaded Successfully!");
+                }
+                catch (Exception ex)
+                {
+                    return Json("Error occurred. Error details: " + ex.Message);
+                }
+            }
+            else
+            {
+                return Json("No files selected.");
+            }
         }
 
         [HttpPost]
-        public ActionResult AnexarFotoPedido(HttpPostedFileBase file)
+        [ValidateInput(false)]
+        public void RealizarPedido()
         {
             try
             {
-                int idDoCliente = int.Parse(Request["string"]);
-                string nomeDoArquivo = "";
-                string caminhoDoArquivo = "";
+                var pedido = new Pedido();
+                pedido.idCliente = Convert.ToInt32(Request["idCliente"]);
+                pedido.idLuthier = Convert.ToInt32(Request["idLuthier"]);
+                pedido.descricao = Request["txtSituacao"];
+                pedido.enderecoEntrega = Request["txtEndereco"];
+                pedido.statusPedido = 1;
+                pedido.instrumentoAlvo = Convert.ToInt32(Request["txtInstrumento"]);
+                pedido.tipoServico = Convert.ToInt32(Request["txtServico"]);
+                pedido.Save();
 
-                if (file.ContentLength > 0)
-                {
-                    string _FileName = Path.GetFileName(file.FileName);
-                    string _path = Path.Combine(Server.MapPath("~/UploadedFiles/reqPhotos"), _FileName);
-                    // _FileName = Nome do arquivo
-                    // _path = Caminho do arquivo (exemplo: "C:\\Users\\mario\\source\\repos\\freeCommerce\\freeCommerce\\UploadedFiles\\Screenshot_6.png")
-                    file.SaveAs(_path);
-                    nomeDoArquivo = _FileName;
-                    caminhoDoArquivo = _path;
-                }
-                string dataAgora = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                string imagensDoPedido = Request["arrayImagens"];
+                JavaScriptSerializer j = new JavaScriptSerializer();
+                object a = j.Deserialize(imagensDoPedido, typeof(object));
 
-                var imagemDePedido = new ImagemPedido();
-                imagemDePedido.idCliente = idDoCliente;
-                imagemDePedido.nomeImagem = nomeDoArquivo;
-                imagemDePedido.caminhoImagem = caminhoDoArquivo;
-                imagemDePedido.tipoImg = "Imagem de referência";
-                imagemDePedido.Save();
-
-                /*var produto = new Item();
-                produto.id = 4;
-                produto.imgPath = caminhoDoArquivo;
-                produto.imgFile = nomeDoArquivo;
-                produto.SalvarImg();*/
-                ViewBag.Message = "File Uploaded Successfully!!";
                 Response.Redirect("/");
-                return View();
+                TempData["pedidoCriado"] = "Pedido criado com sucesso!";
             }
-            catch (Exception err)
+            catch (Exception erro)
             {
-                ViewBag.Message = "File upload failed! " + err.Message;
-                return View();
+                TempData["pedidoNaoCriado"] = "O pedido não foi criado (" + erro.Message + ")!";
             }
         }
     }
