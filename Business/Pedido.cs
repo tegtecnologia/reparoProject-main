@@ -48,5 +48,105 @@ namespace Business
             }
             return lista;
         }
+
+        public List<Pedido> BuscarPedidoPorId(int id)
+        {
+            var lista = new List<Pedido>();
+            var pedidosDb = new Database.Pedido();
+            foreach (DataRow row in pedidosDb.BuscaPorId(id).Rows)
+            {
+                var pedido = new Pedido();
+                pedido.id = Convert.ToInt32(row["id"]);
+                pedido.idCliente = Convert.ToInt32(row["idCliente"]);
+                pedido.idLuthier = Convert.ToInt32(row["idLuthier"]);
+                pedido.descricao= row["descricaoSituacao"].ToString();
+                if(row["valor"] != null && row["valor"].ToString().Length > 0)
+                {
+                    pedido.valor = Convert.ToDouble(row["valor"]);
+                }
+                else
+                {
+                    pedido.valor = 0;
+                }
+                pedido.dataEmissao = Convert.ToDateTime(row["dataEmissao"]);
+                
+                if(row["dataUltAtualiza"] != null && row["dataUltAtualiza"].ToString().Length > 0)
+                {
+                    pedido.dataUltAtualiza = Convert.ToDateTime(row["dataUltAtualiza"]);
+                }
+                else
+                {
+                    DateTime dataQualquer = DateTime.MinValue;
+                    pedido.dataUltAtualiza = dataQualquer;
+                }
+                
+                pedido.enderecoEntrega = row["enderecoEntrega"].ToString();
+                pedido.statusPedido = Convert.ToInt32(row["statusPedido"]);
+                pedido.obsLuthier = row["obsLuthier"].ToString();
+                pedido.instrumentoAlvo = Convert.ToInt32(row["instrumentoAlvo"]);
+                pedido.tipoServico = Convert.ToInt32(row["tipoServico"]);
+                if(row["avaliacao"] != null && row["avaliacao"].ToString().Length > 0)
+                {
+                    pedido.avaliacao = Convert.ToDouble(row["avaliacao"]);
+                }
+                else
+                {
+                    pedido.avaliacao = 0;
+                }
+                
+                lista.Add(pedido);
+            }
+            return lista;
+        }
+
+        public List<Pedido> BuscarPedidoPorCliente(int idClienteLogado)
+        {
+            var lista = new List<Pedido>();
+            var pedidosDb = new Database.Pedido();
+            foreach (DataRow row in pedidosDb.BuscaPorCliente(idClienteLogado).Rows)
+            {
+                var pedido = new Pedido();
+                pedido.id = Convert.ToInt32(row["id"]);
+                pedido.idCliente = Convert.ToInt32(row["idCliente"]);
+                pedido.idLuthier = Convert.ToInt32(row["idLuthier"]);
+                pedido.descricao = row["descricaoSituacao"].ToString();
+                if (row["valor"] != null && row["valor"].ToString().Length > 0)
+                {
+                    pedido.valor = Convert.ToDouble(row["valor"]);
+                }
+                else
+                {
+                    pedido.valor = 0;
+                }
+                pedido.dataEmissao = Convert.ToDateTime(row["dataEmissao"]);
+
+                if (row["dataUltAtualiza"] != null && row["dataUltAtualiza"].ToString().Length > 0)
+                {
+                    pedido.dataUltAtualiza = Convert.ToDateTime(row["dataUltAtualiza"]);
+                }
+                else
+                {
+                    DateTime dataQualquer = DateTime.MinValue;
+                    pedido.dataUltAtualiza = dataQualquer;
+                }
+
+                pedido.enderecoEntrega = row["enderecoEntrega"].ToString();
+                pedido.statusPedido = Convert.ToInt32(row["statusPedido"]);
+                pedido.obsLuthier = row["obsLuthier"].ToString();
+                pedido.instrumentoAlvo = Convert.ToInt32(row["instrumentoAlvo"]);
+                pedido.tipoServico = Convert.ToInt32(row["tipoServico"]);
+                if (row["avaliacao"] != null && row["avaliacao"].ToString().Length > 0)
+                {
+                    pedido.avaliacao = Convert.ToDouble(row["avaliacao"]);
+                }
+                else
+                {
+                    pedido.avaliacao = 0;
+                }
+
+                lista.Add(pedido);
+            }
+            return lista;
+        }
     }
 }

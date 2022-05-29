@@ -134,6 +134,12 @@ namespace reparoProject
             );
 
             routes.MapRoute(
+                "pedido-gerenciamento",
+                "pedido/{id}/meuspedidos",
+                new { controller = "Pedido", action = "MeuPedido" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

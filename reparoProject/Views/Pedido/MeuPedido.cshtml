@@ -1,0 +1,39 @@
+﻿@{ 
+    var pedido = ViewBag.Pedido;
+}
+
+<h3>Informações do pedido</h3>
+
+<table class="table">
+    <tr>
+        <td>ID do pedido</td>
+        <td>ID do Cliente solicitante</td>
+        <td>ID do Luthier responsável</td>
+        <td>Descrição da situação</td>
+        <td>Data de emissão do pedido</td>
+        <td>Data da última atualizãção do Luthier</td>
+        <td>Endereço registrado para entrega</td>
+        <td>Status do pedido</td>
+        <td>Observações do Luthier</td>
+        <td>Instrumento alvo</td>
+        <td>Tipo do serviço</td>
+        <td>Avaliação do pedido</td>
+    </tr>
+    @if(pedido.id != null && pedido.idCliente != null && pedido.idLuthier != null)
+    {
+        <tr>
+            <td>@pedido.id</td>
+            <td>@pedido.idCliente</td>
+            <td>@pedido.idLuthier</td>
+            <td>@pedido.descricao</td>
+            <td>@pedido.dataEmissao</td>
+            <td>@pedido.dataUltAtualiza</td>
+            <td>@pedido.enderecoEntrega</td>
+            <td>@pedido.statusPedido</td>
+            <td>@pedido.obsLuthier</td>
+            <td>@pedido.instrumentoAlvo</td>
+            <td>@pedido.tipoServico</td>
+            <td>@pedido.avaliacao</td>
+        </tr>
+     }
+</table>

@@ -322,6 +322,7 @@ namespace freeCommerce.Controllers
                 ViewBag.ClienteDaConta = new Cliente().BuscarPorId(contaLogada.id);
                 ViewBag.ContatosDaConta = new Contato().BuscaContatosDeClientesPorId(idClienteLogado);
                 ViewBag.EnderecosDaConta = new Endereco().BuscaEnderecosPorIdCliente(idClienteLogado);
+                ViewBag.Pedidos = new Pedido().BuscarPedidoPorCliente(idClienteLogado);
             }
             else if(tipoConta == "Luthier")
             {

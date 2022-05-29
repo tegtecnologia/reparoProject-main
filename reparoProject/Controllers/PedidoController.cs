@@ -118,13 +118,38 @@ namespace reparoProject.Controllers
                     imagemPedido.Salvar();
                 }
 
-                Response.Redirect("/");
+                Response.Redirect("/pedido/" + idDoPedidoAtual + "/meuspedidos");
                 TempData["pedidoCriado"] = "Pedido criado com sucesso!";
             }
             catch (Exception erro)
             {
                 TempData["pedidoNaoCriado"] = "O pedido não foi criado (" + erro.Message + ")!";
             }
+        }
+
+        public ActionResult MeuPedido(int id)
+        {
+            var meuPedido = new Pedido().BuscarPedidoPorId(id);
+            var pedidoDef = new Pedido();
+            List<Pedido> pedido = meuPedido;
+            foreach(var p in pedido)
+            {
+                pedidoDef.id = p.id;
+                pedidoDef.idCliente = p.idCliente;
+                pedidoDef.idLuthier = p.idLuthier;
+                pedidoDef.descricao = p.descricao;
+                pedidoDef.valor = p.valor;
+                pedidoDef.dataEmissao = p.dataEmissao;
+                pedidoDef.dataUltAtualiza = p.dataUltAtualiza;
+                pedidoDef.enderecoEntrega = p.enderecoEntrega;
+                pedidoDef.statusPedido = p.statusPedido;
+                pedidoDef.obsLuthier = p.obsLuthier;
+                pedidoDef.instrumentoAlvo = p.instrumentoAlvo;
+                pedidoDef.tipoServico = p.tipoServico;
+                pedidoDef.avaliacao = p.avaliacao;
+            }
+            ViewBag.Pedido = pedidoDef;
+            return View();
         }
     }
 }

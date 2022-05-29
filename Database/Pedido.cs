@@ -46,5 +46,39 @@ namespace Database
                 return table;
             }
         }
+
+        public DataTable BuscaPorId(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "select * from pedidos where id = " + id;
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                adapter.SelectCommand = command;
+
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                return table;
+            }
+        }
+
+        public DataTable BuscaPorCliente(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "select * from pedidos where idCliente = " + id;
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                adapter.SelectCommand = command;
+
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                return table;
+            }
+        }
     }
 }

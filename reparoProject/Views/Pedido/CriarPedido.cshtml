@@ -1,12 +1,13 @@
 ﻿@{
-    int idInstrumentoEscolhido = 345344;
     string validadorOption = "";
 
     // Coletando luthier escolhido para o serviço
     var luthierEscolhido = (Business.Luthier)TempData["luthierEscolhido"];
 
+    var idInstrumentoEscolhido = Convert.ToInt32(TempData["instFinal"]);
+
     // Coletando servico escolhido pelo usuário
-    var idServicoEscolhido = Convert.ToInt32(TempData["servicoEscolhido"]);
+    var idServicoEscolhido = Convert.ToInt32(TempData["servFinal"]);
 
     List<Business.Instrumento> instrumentos = new Business.Instrumento().Listar();
     var iterador = 0;
@@ -94,9 +95,9 @@
                     <input type="text" class="form-control" id="txtEndereco" value="@enderecoCliente.logradouro, @enderecoCliente.bairro, @enderecoCliente.cidade, @enderecoCliente.cep" name="txtEndereco">
                 </div>
 
-                @if (TempData["instrumentoEscolhido"] != null)
+                @if (TempData["instFinal"] != null)
                 {
-                    idInstrumentoEscolhido = Convert.ToInt32(TempData["instrumentoEscolhido"]);
+                    idInstrumentoEscolhido = Convert.ToInt32(TempData["instFinal"]);
                 }
 
                 <div class="form-group">

@@ -9,6 +9,7 @@
 
     // Coletando servico escolhido pelo usuário
     var idServicoEscolhidoPorUsuario = Convert.ToInt32(TempData["servicoEscolhido"]);
+    TempData["servFinal"] = idServicoEscolhidoPorUsuario;
     string servicoEscolhidoPorUsuario = "";
     foreach(var ss in todosServicos)
     {
@@ -20,6 +21,7 @@
 
     // Coletando instrumento escolhido pelo usuário
     var idInstrumentoEscolhidoPorUsuario = Convert.ToInt32(TempData["instrumentoEscolhido"]);
+    TempData["instFinal"] = idInstrumentoEscolhidoPorUsuario;
     string instrumentoEscolhidoPorUsuario = "";
     foreach(var ii in instrumentos)
     {
