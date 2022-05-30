@@ -148,7 +148,14 @@ namespace reparoProject.Controllers
                 pedidoDef.tipoServico = p.tipoServico;
                 pedidoDef.avaliacao = p.avaliacao;
             }
+
+            ViewBag.LuthierResponsavel = new Luthier().BuscaDadosPorId(pedidoDef.idLuthier);
+            ViewBag.Instrumento = new Instrumento().ListarPorId(pedidoDef.instrumentoAlvo);
+            ViewBag.Servico = new Servico().ListarPorId(pedidoDef.tipoServico);
+            ViewBag.ImagensDoPedido = new ImagemPedido().BuscarPorPedido(pedidoDef.id);
             ViewBag.Pedido = pedidoDef;
+            ViewBag.StatusPedido = new StatusPedido().ListarPorId(pedidoDef.statusPedido);
+            ViewBag.ClienteResponsavel = new Cliente().BuscarPorCliente(pedidoDef.idCliente);
             return View();
         }
     }

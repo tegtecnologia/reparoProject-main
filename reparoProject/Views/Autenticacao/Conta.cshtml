@@ -8,7 +8,7 @@
     var clienteLogado = new Business.Cliente();
     var fotoPerfilClienteAtual = new Business.ImagemCliente();
 
-    if(cliente != null)
+    if (cliente != null)
     {
         foreach (var clienteLogadoAgora in cliente)
         {
@@ -20,9 +20,9 @@
 
     var listaImagensDeClientes = TempData["imagensDeClientes"] as List<Business.ImagemCliente>;
 
-    foreach(var imagem in listaImagensDeClientes)
+    foreach (var imagem in listaImagensDeClientes)
     {
-        if(imagem.idCliente == clienteLogado.id && imagem.tipoImg == "Foto de perfil")
+        if (imagem.idCliente == clienteLogado.id && imagem.tipoImg == "Foto de perfil")
         {
             fotoPerfilClienteAtual = imagem;
         }
@@ -157,7 +157,7 @@
                             <label>Você ainda está sem foto de perfil... que tal colocar uma?</label>
                             <div style="margin-top: 0px;">
                                 <a href="@linkParaAnexoImg" target="_blank" class="btn btn-primary" style="background: darkseagreen; color: white; border: white; " data-toggle="modal" data-target="#modalExemplo">Adicionar foto de perfil</a>
-                            </div>
+                            </div><br /><br />
                         }
                         else
                         {
@@ -170,6 +170,46 @@
             <br />
             <br />
             <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <h2>Meus Pedidos</h2>
+            <table class="table">
+                <tr>
+                    <td>Número do pedido</td>
+                    <td>Instrumento necessitado</td>
+                    <td>Tipo de serviço solicitado</td>
+                    <td>Mais informações sobre o pedido</td>
+                </tr>
+                @{
+                    foreach (var pedido in meusPedidos)
+                    {
+                        <tr>
+                            <td>@pedido.id</td>
+                            <td>@pedido.instrumentoAlvo</td>
+                            <td>@pedido.tipoServico</td>
+                            <td><a href="/pedido/@pedido.id/meuspedidos" class="btn btn-secondary" style="background: #ffd42a; color: rgba(0,0,0,.5); border: white;">Clique aqui</a></td>
+                        </tr>
+                    }
+                }
+            </table>
+            <br />
+            <br />
+            <h2>Informações da conta (Conta Cliente)</h2>
         }
         else
         {
@@ -203,34 +243,12 @@
                 <br /><label><b>CPF: </b></label> @luthierLogado.cpf;
                 <br /><label><b>CNPJ: </b></label> @luthierLogado.cnpj;
                 <br /><label><b>Seu e-mail: </b></label> @luthierLogado.email;
-                <br />
-                <br />
             }
         }
 
-        <br /><br /><br /><br /><br /><br /><br /><br />
+        <br />
+        <br />
 
-        <h2>Meus Pedidos</h2>
-        <table class="table">
-            <tr>
-                <td>Número do pedido</td>
-                <td>Instrumento necessitado</td>
-                <td>Tipo de serviço solicitado</td>
-                <td>Mais informações sobre o pedido</td>
-            </tr>
-            @{ 
-                foreach(var pedido in meusPedidos)
-                {
-                    <tr>
-                        <td>@pedido.id</td>
-                        <td>@pedido.instrumentoAlvo</td>
-                        <td>@pedido.tipoServico</td>
-                        <td><a href="/pedido/@pedido.id/meuspedidos" class="btn btn-secondary" style="background: #ffd42a; color: rgba(0,0,0,.5); border: white;">Clique aqui</a></td>
-                    </tr>
-                }
-            }
-        </table><br /><br />
-        
         <h2>Números para contato</h2>
         <table class="table">
             <tr>

@@ -71,5 +71,23 @@ namespace Business
             }
             return lista;
         }
+
+        public List<Cliente> BuscarPorCliente(int idCliente)
+        {
+            var lista = new List<Cliente>();
+            var clienteDb = new Database.Cliente();
+            foreach (DataRow row in clienteDb.BuscarPorIdCliente(idCliente).Rows)
+            {
+                var cliente = new Cliente();
+                cliente.id = Convert.ToInt32(row["id"]);
+                cliente.nome = row["nome"].ToString();
+                cliente.cpf = row["cpf"].ToString();
+                cliente.email = row["email"].ToString();
+                cliente.img = row["img"].ToString();
+                cliente.usuario = Convert.ToInt32(row["usuario"]);
+                lista.Add(cliente);
+            }
+            return lista;
+        }
     }
 }

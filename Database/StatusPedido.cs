@@ -12,29 +12,35 @@ using System.Threading.Tasks;
 
 namespace Database
 {
-    public class ImagemPedido
+    public class StatusPedido
     {
         private string sqlConn()
         {
             return ConfigurationManager.AppSettings["sqlConn"];
         }
 
-        public void Salvar(int idPedido, string nomeImagem, string caminhoImagem, string tipoImg)
+        public DataTable ListaEstadosDePedido()
         {
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
-                string queryString = "insert into imagensPedidos values (" + idPedido + ", '" + nomeImagem + "', '" + caminhoImagem + "', '" + tipoImg + "', getdate())";
+                string queryString = "select * from statusPedido";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
-                command.ExecuteNonQuery();
+
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                adapter.SelectCommand = command;
+
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                return table;
             }
         }
 
-        public DataTable BuscaPorPedido(int idPedido)
+        public DataTable ListaEstadosDePedidoPorStatus(int id)
         {
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
-                string queryString = "select * from imagensPedidos where idPedido = " + idPedido;
+                string queryString = "select * from statusPedido where id = " + id;
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
 
