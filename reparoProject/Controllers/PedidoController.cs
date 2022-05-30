@@ -233,7 +233,7 @@ namespace reparoProject.Controllers
                 if (p != null)
                 {
                     pedidoAtual = p[0];
-                    pedidoAtual.AtualizaStatus();
+                    pedidoAtual.AtualizaPrimeiraVez();
                 }
             }
 
@@ -241,6 +241,22 @@ namespace reparoProject.Controllers
             var obs = new ObsLuthier();
             obs.Adicionar(conteudo, idPedido, idLuthier);
             result = this.Json(JsonConvert.SerializeObject(obs), JsonRequestBehavior.AllowGet);
+            return result;
+        }
+
+        public ActionResult AtualizaStatus(int idPedido, int idStatus)
+        {
+            var p = new Pedido().BuscarPedidoPorId(idPedido);
+            var pedidoAtual = new Pedido();
+
+            if (p != null)
+                {
+                    pedidoAtual = p[0];
+                    pedidoAtual.AtualizaStatus(idPedido, idStatus);
+                }
+
+            JsonResult result = new JsonResult();
+            result = this.Json(JsonConvert.SerializeObject(p[0]), JsonRequestBehavior.AllowGet);
             return result;
         }
     }

@@ -109,11 +109,22 @@ namespace Database
             }
         }
 
-        public void AtualizarStatus(int idPedido)
+        public void AtualizarPrimeiroStatus(int idPedido)
         {
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
                 string queryString = "update pedidos set statusPedido = 2 where id = " + idPedido;
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void AtualizarStatus(int idPedido, int idStatus)
+        {
+            using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "update pedidos set statusPedido = " + idStatus + " where id = " + idPedido;
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
                 command.ExecuteNonQuery();

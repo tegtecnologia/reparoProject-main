@@ -204,9 +204,14 @@ namespace Business
             new Database.Pedido().Atualizar(this.id);
         }
 
-        public void AtualizaStatus()
+        public void AtualizaPrimeiraVez()
         {
-            new Database.Pedido().AtualizarStatus(this.id);
+            new Database.Pedido().AtualizarPrimeiroStatus(this.id);
+        }
+
+        public void AtualizaStatus(int idPedido, int idStatus)
+        {
+            new Database.Pedido().AtualizarStatus(idPedido, idStatus);
         }
     }
 }
