@@ -135,8 +135,8 @@ namespace reparoProject
 
             routes.MapRoute(
                 "pedido-gerenciamento",
-                "pedido/{id}/meuspedidos",
-                new { controller = "Pedido", action = "MeuPedido" }
+                "pedido/{id}",
+                new { controller = "Pedido", action = "PedidoEspec" }
             );
 
             routes.MapRoute(

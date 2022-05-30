@@ -1,27 +1,27 @@
-﻿@{ 
+﻿@{
     var pedido = ViewBag.Pedido;
     List<Business.ImagemPedido> listaImagens = ViewBag.ImagensDoPedido;
     var luthierResponsavel = ViewBag.LuthierResponsavel;
     var instrumento = new Business.Instrumento();
-    if(ViewBag.Instrumento.Count > 0)
+    if (ViewBag.Instrumento.Count > 0)
     {
         instrumento = ViewBag.Instrumento[0];
     }
 
     var servicoDoPedido = new Business.Servico();
-    if(ViewBag.Servico.Count > 0)
+    if (ViewBag.Servico.Count > 0)
     {
         servicoDoPedido = ViewBag.Servico[0];
     }
 
     var statusPedido = new Business.StatusPedido();
-    if(ViewBag.StatusPedido.Count > 0)
+    if (ViewBag.StatusPedido.Count > 0)
     {
         statusPedido = ViewBag.StatusPedido[0];
     }
 
     var clienteDoPedido = new Business.Cliente();
-    if(ViewBag.ClienteResponsavel.Count > 0)
+    if (ViewBag.ClienteResponsavel.Count > 0)
     {
         clienteDoPedido = ViewBag.ClienteResponsavel[0];
     }
@@ -71,7 +71,6 @@
         <td><b>Data da última atualizãção do Luthier</b></td>
         <td><b>Endereço registrado para entrega</b></td>
         <td><b>Status do pedido</b></td>
-        <td><b>Observações do Luthier</b></td>
         <td><b>Instrumento alvo</b></td>
         <td><b>Serviço solicitado</b></td>
         <td><b>Avaliação do pedido</b></td>
@@ -81,7 +80,7 @@
         <tr>
             <td>@pedido.id</td>
             <td>@clienteDoPedido.nome</td>
-            <td>@luthierResponsavel.nome</td>
+            <td><a style="color: #E1BE34 " href="/luthier/perfil/@luthierResponsavel.id">@luthierResponsavel.nome</a></td>
             <td>@pedido.descricao</td>
             <td>@pedido.dataEmissao</td>
             <td>
@@ -106,16 +105,6 @@
                 }
             </td>
             <td>
-                @if(pedido.obsLuthier == "" || pedido.obsLuthier.ToString().Length < 2)
-                {
-                    <label>Sem observações registradas</label>
-                }
-                else
-                {
-                    @pedido.obsLuthier;
-                }
-            </td>
-            <td>
                 @if (ViewBag.Instrumento.Count > 0)
                 {
                     @instrumento.nome;
@@ -128,15 +117,43 @@
             <td>@servicoDoPedido.descricao</td>
             <td>@pedido.avaliacao</td>
         </tr>
-     }
+    }
 </table>
 
-<br /><br /><h3>Imagens do pedido</h3>
-@{ 
-    string caminhoImg = "";
-    foreach (var img in listaImagens)
-    {
-        caminhoImg = "/../../UploadedFiles/reqPhotos/" + img.nomeImagem;
-        <img src="@caminhoImg" widht="400" height="300"/>
-    }
-}
+<br />
+
+<div style="margin-bottom: 10px;">
+    <div style="float:right;">
+        <h3>Imagens do pedido</h3>
+        @{
+            string caminhoImg = "";
+            foreach (var img in listaImagens)
+            {
+                caminhoImg = "/../../UploadedFiles/reqPhotos/" + img.nomeImagem;
+                <img src="@caminhoImg" widht="400" height="300" />
+            }
+        }
+    </div>
+    <div style="float:left;">
+        <h3>Observações do Luthier</h3>
+        <table class="table">
+            <tr>
+                <td><b>Observação</b></td>
+                <td><b>Data da criação da observação</b></td>
+            </tr>
+            @{ 
+                if(ViewBag.ObservacoesPedido.Count > 0)
+                {
+                    foreach (var obs in ViewBag.ObservacoesPedido)
+                    {
+                        <tr>
+                            <td>@obs.conteudo</td>
+                            <td>@obs.dataCriacao</td>
+                        </tr>
+                    }
+                }
+            }
+        </table>
+    </div>
+</div>
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />

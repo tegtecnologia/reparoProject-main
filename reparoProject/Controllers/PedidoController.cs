@@ -118,7 +118,7 @@ namespace reparoProject.Controllers
                     imagemPedido.Salvar();
                 }
 
-                Response.Redirect("/pedido/" + idDoPedidoAtual + "/meuspedidos");
+                Response.Redirect("/pedido/" + idDoPedidoAtual);
                 TempData["pedidoCriado"] = "Pedido criado com sucesso!";
             }
             catch (Exception erro)
@@ -127,7 +127,7 @@ namespace reparoProject.Controllers
             }
         }
 
-        public ActionResult MeuPedido(int id)
+        public ActionResult PedidoEspec(int id)
         {
             var meuPedido = new Pedido().BuscarPedidoPorId(id);
             var pedidoDef = new Pedido();
@@ -156,6 +156,7 @@ namespace reparoProject.Controllers
             ViewBag.Pedido = pedidoDef;
             ViewBag.StatusPedido = new StatusPedido().ListarPorId(pedidoDef.statusPedido);
             ViewBag.ClienteResponsavel = new Cliente().BuscarPorCliente(pedidoDef.idCliente);
+            ViewBag.ObservacoesPedido = new ObsLuthier().ListarPorPedido(pedidoDef.id);
             return View();
         }
     }

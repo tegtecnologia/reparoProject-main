@@ -15,16 +15,17 @@ namespace Business
         public string cidade { get; set; }
         public string uf { get; set; }
         public int cep { get; set; }
+        public int numero { get; set; }
         public int idElemento { get; set; }
 
         public void SaveCliente()
         {
-            new Database.Endereco().SalvarCliente(this.logradouro, this.bairro, this.cidade, this.uf, this.cep, this.idElemento);
+            new Database.Endereco().SalvarCliente(this.logradouro, this.bairro, this.cidade, this.uf, this.cep, this.idElemento, this.numero);
         }
 
         public void SaveLuthier()
         {
-            new Database.Endereco().SalvarLuthier(this.logradouro, this.bairro, this.cidade, this.uf, this.cep, this.idElemento);
+            new Database.Endereco().SalvarLuthier(this.logradouro, this.bairro, this.cidade, this.uf, this.cep, this.idElemento, this.numero);
         }
 
         public List<Endereco> BuscaEnderecosPorIdCliente(int id)
@@ -41,6 +42,7 @@ namespace Business
                 endereco.uf = row["uf"].ToString();
                 endereco.cep = Convert.ToInt32(row["cep"]);
                 endereco.idElemento = Convert.ToInt32(row["idCliente"]);
+                endereco.numero = Convert.ToInt32(row["numero"]);
                 listaEnderecos.Add(endereco);
             }
             return listaEnderecos;
@@ -60,6 +62,14 @@ namespace Business
                 endereco.uf = row["uf"].ToString();
                 endereco.cep = Convert.ToInt32(row["cep"]);
                 endereco.idElemento = Convert.ToInt32(row["idLuthier"]);
+                if(row["numero"] != null && row["numero"].ToString().Length > 0)
+                {
+                    endereco.numero = Convert.ToInt32(row["numero"]);
+                }
+                else
+                {
+                    endereco.numero = 0;
+                }
                 listaEnderecos.Add(endereco);
             }
             return listaEnderecos;

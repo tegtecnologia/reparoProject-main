@@ -122,6 +122,7 @@ namespace freeCommerce.Controllers
                 endereco.cidade = Request["txtCidade"];
                 endereco.uf = Request["txtUf"];
                 endereco.cep = int.Parse(Request["txtCep"]);
+                endereco.numero = int.Parse(Request["txtNumero"]);
                 endereco.idElemento = lastClientCreated.id;
                 endereco.SaveCliente();
 
@@ -191,6 +192,14 @@ namespace freeCommerce.Controllers
                 endereco.cidade = Request["txtCidade"];
                 endereco.uf = Request["txtUf"];
                 endereco.cep = int.Parse(Request["txtCep"]);
+                if(Request["txtNumero"] != null)
+                {
+                    endereco.numero = int.Parse(Request["txtNumero"]);
+                }
+                else
+                {
+                    endereco.numero = 0;
+                }
                 endereco.idElemento = lastLuthierCreated.id;
                 endereco.SaveLuthier();
 

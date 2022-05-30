@@ -19,22 +19,22 @@ namespace Database
             return ConfigurationManager.AppSettings["sqlConn"];
         }
 
-        public void SalvarCliente(string logradouro, string bairro, string cidade, string uf, int cep, int idCliente)
+        public void SalvarCliente(string logradouro, string bairro, string cidade, string uf, int cep, int idCliente, int numero)
         {
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
-                string queryString = "insert into enderecosClientes values ('" + logradouro + "', '" + bairro + "', '" + cidade + "', '" + uf + "', " + cep + ", " + idCliente + ")";
+                string queryString = "insert into enderecosClientes values ('" + logradouro + "', '" + bairro + "', '" + cidade + "', '" + uf + "', " + cep + ", " + idCliente + ", " + numero + ")";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
                 command.ExecuteNonQuery();
             }
         }
 
-        public void SalvarLuthier(string logradouro, string bairro, string cidade, string uf, int cep, int idCliente)
+        public void SalvarLuthier(string logradouro, string bairro, string cidade, string uf, int cep, int idCliente, int numero)
         {
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
-                string queryString = "insert into enderecosLuthiers values ('" + logradouro + "', '" + bairro + "', '" + cidade + "', '" + uf + "', " + cep + ", " + idCliente + ")";
+                string queryString = "insert into enderecosLuthiers values ('" + logradouro + "', '" + bairro + "', '" + cidade + "', '" + uf + "', " + cep + ", " + idCliente + ", " + numero + ")";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
                 command.ExecuteNonQuery();
@@ -58,11 +58,11 @@ namespace Database
             }
         }
 
-        public DataTable BuscaEnderecosDeLuthierPorId(int idCliente)
+        public DataTable BuscaEnderecosDeLuthierPorId(int idLuthier)
         {
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
-                string queryString = "select * from enderecosLuthiers where idLuthier = " + idCliente;
+                string queryString = "select * from enderecosLuthiers where idLuthier = " + idLuthier;
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
 

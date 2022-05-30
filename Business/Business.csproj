@@ -55,6 +55,7 @@
     <Compile Include="ImagemCliente.cs" />
     <Compile Include="LuthierServico.cs" />
     <Compile Include="Instrumento.cs" />
+    <Compile Include="ObsLuthier.cs" />
     <Compile Include="StatusPedido.cs" />
     <Compile Include="Servico.cs" />
     <Compile Include="Conta.cs" />

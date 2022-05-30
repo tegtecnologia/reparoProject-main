@@ -226,7 +226,7 @@
     <Content Include="Views\Pedido\Solicitar.cshtml" />
     <Content Include="Views\Pedido\CriarPedido.cshtml" />
     <Content Include="Views\Pedido\RealizarPedido.cshtml" />
-    <Content Include="Views\Pedido\MeuPedido.cshtml" />
+    <Content Include="Views\Pedido\PedidoEspec.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
