@@ -35,5 +35,16 @@ namespace Database
                 return table;
             }
         }
+
+        public void Salvar(string conteudo, int idPedido, int idLuthier)
+        {
+            using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "insert into observacoesPedidos values (" + idPedido + ", " + idLuthier + ", getdate(), '" + conteudo + "')";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }

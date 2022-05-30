@@ -1,4 +1,5 @@
 ﻿using Business;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -157,7 +158,90 @@ namespace reparoProject.Controllers
             ViewBag.StatusPedido = new StatusPedido().ListarPorId(pedidoDef.statusPedido);
             ViewBag.ClienteResponsavel = new Cliente().BuscarPorCliente(pedidoDef.idCliente);
             ViewBag.ObservacoesPedido = new ObsLuthier().ListarPorPedido(pedidoDef.id);
+
+            // Encontrando conta logada
+            var conta = Business.Conta.BuscaPorStatusLogin(Session.SessionID);
+            ViewBag.Conta = conta;
+            Business.Conta contaLogada = (Conta)conta;
+
+            // Diferenciando a conta de cliente para luthier
+            var clientesCadastrados = new Cliente().ListarTodosClientes();
+            List<Business.Cliente> clientes = clientesCadastrados;
+
+            bool validaTipoConta = false;
+
+            var luthiersCadastrados = new Luthier().ListarTodosLuthiers();
+            List<Business.Luthier> luthiers = luthiersCadastrados;
+
+            int idClienteLogado = 0;
+            int idLuthierLogado = 0;
+
+            foreach (var luthier in luthiersCadastrados)
+            {
+                if (luthier.usuario == contaLogada.id)
+                {
+                    idLuthierLogado = luthier.id;
+                    break;
+                }
+                else
+                {
+                }
+            }
+            foreach (var cliente in clientesCadastrados)
+            {
+                if (cliente.usuario == contaLogada.id)
+                {
+                    validaTipoConta = true;
+                    idClienteLogado = cliente.id;
+                    break;
+                }
+                else
+                {
+                    validaTipoConta = false;
+                }
+            }
+            string tipoConta = "";
+            if (validaTipoConta == false)
+            {
+                tipoConta = "Luthier";
+            }
+            else
+            {
+                tipoConta = "Cliente";
+            }
+
+            // Conteúdo transportado para a página HTML
+            ViewBag.TipoConta = tipoConta;
             return View();
+        }
+
+        public ActionResult AdicionarObs(string conteudo, int idPedido, int idLuthier)
+        {
+            
+
+            var p = new Pedido().BuscarPedidoPorId(idPedido);
+            var pedidoAtual = new Pedido();
+            if(p != null)
+            {
+                pedidoAtual = p[0];
+                pedidoAtual.Atualiza();
+            }
+
+            var o = new ObsLuthier().ListarPorPedido(idPedido);
+            if (o.Count == 0)
+            {
+                if (p != null)
+                {
+                    pedidoAtual = p[0];
+                    pedidoAtual.AtualizaStatus();
+                }
+            }
+
+            JsonResult result = new JsonResult();
+            var obs = new ObsLuthier();
+            obs.Adicionar(conteudo, idPedido, idLuthier);
+            result = this.Json(JsonConvert.SerializeObject(obs), JsonRequestBehavior.AllowGet);
+            return result;
         }
     }
 }

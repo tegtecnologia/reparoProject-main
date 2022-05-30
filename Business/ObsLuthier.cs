@@ -31,5 +31,10 @@ namespace Business
             }
             return lista;
         }
+
+        public void Adicionar(string conteudo, int idPedido, int idLuthier)
+        {
+            new Database.ObsLuthier().Salvar(conteudo, idPedido, idLuthier);
+        }
     }
 }

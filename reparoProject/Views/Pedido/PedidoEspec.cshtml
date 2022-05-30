@@ -1,4 +1,5 @@
 ﻿@{
+    string tipoDaConta = ViewBag.TipoConta.ToString();
     var pedido = ViewBag.Pedido;
     List<Business.ImagemPedido> listaImagens = ViewBag.ImagensDoPedido;
     var luthierResponsavel = ViewBag.LuthierResponsavel;
@@ -58,6 +59,18 @@
         }
     }*/
 }
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<style>
+    .swal-button {
+        padding: 7px 19px;
+        border-radius: 2px;
+        background-color: #ffd42a;
+        font-size: 16px;
+        border: #ffd42a;
+        text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+    }
+</style>
 
 <h3>Informações do pedido</h3>
 
@@ -135,14 +148,25 @@
         }
     </div>
     <div style="float:left;">
+        @{
+            if (tipoDaConta == "Luthier")
+            {
+                <h3>Criar nova observação</h3>
+                <div class="form-group">
+                    <label style="color: black;">Qual é a observação que precisa ser feita?</label>
+                    <textarea class="form-control" id="txtObs" name="txtObs" rows="3"></textarea>
+                </div>
+                <input onclick="adicionarObs()" class="btn btn-primary" style="background: darkseagreen; color: white; border: white; " type="button" id="btnUpload" value="Adicionar observação" /><br /><br />
+            }
+        }
         <h3>Observações do Luthier</h3>
         <table class="table">
             <tr>
                 <td><b>Observação</b></td>
                 <td><b>Data da criação da observação</b></td>
             </tr>
-            @{ 
-                if(ViewBag.ObservacoesPedido.Count > 0)
+            @{
+                if (ViewBag.ObservacoesPedido.Count > 0)
                 {
                     foreach (var obs in ViewBag.ObservacoesPedido)
                     {
@@ -157,3 +181,49 @@
     </div>
 </div>
 <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+<script>
+    function adicionarObs() {
+        var conteudo = document.getElementById('txtObs').value;
+        var pedidoId = '@pedido.id';
+        var luthierId = '@luthierResponsavel.id';
+
+        var data = JSON.stringify({
+            'conteudo': conteudo,
+            'idPedido': pedidoId,
+            'idLuthier': luthierId
+        });
+
+        var id = 0;
+
+        if (conteudo.length < 5) {
+            swal("Tem algo de errado...", "Para criar uma nova observação, você deve escrever um pouco mais.", "error");
+        }
+        else {
+            $.ajax(
+            {
+                type: 'POST',
+                dataType: 'JSON',
+                url: '@Url.Action("AdicionarObs", "Pedido")' + '/' + id,
+                data: { 'conteudo': conteudo, 'idPedido': pedidoId, 'idLuthier': luthierId },
+                success:
+                    function (response) {
+                        console.log(response);
+                        swal({
+                            title: "Boa, comunicação é tudo!",
+                            text: "Observação adicionada com sucesso!",
+                            icon: "success",
+                            buttons: false
+                        });
+                        setTimeout(function () {
+                            location.reload();
+                        }, 4500);
+                    },
+                error:
+                    function (response) {
+                        alert("Error: " + response);
+                    }
+            });
+        }
+    }
+</script>
