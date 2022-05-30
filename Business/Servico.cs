@@ -25,5 +25,19 @@ namespace Business
             }
             return lista;
         }
+
+        public List<Servico> ListarPorId(int id)
+        {
+            var lista = new List<Servico>();
+            var itensDoBanco = new Database.Servico();
+            foreach (DataRow row in itensDoBanco.ListaServicoPorId(id).Rows)
+            {
+                var servico = new Servico();
+                servico.id = Convert.ToInt32(row["id"]);
+                servico.descricao = row["descricaoServico"].ToString();
+                lista.Add(servico);
+            }
+            return lista;
+        }
     }
 }

@@ -1,39 +1,142 @@
 ﻿@{ 
     var pedido = ViewBag.Pedido;
+    List<Business.ImagemPedido> listaImagens = ViewBag.ImagensDoPedido;
+    var luthierResponsavel = ViewBag.LuthierResponsavel;
+    var instrumento = new Business.Instrumento();
+    if(ViewBag.Instrumento.Count > 0)
+    {
+        instrumento = ViewBag.Instrumento[0];
+    }
+
+    var servicoDoPedido = new Business.Servico();
+    if(ViewBag.Servico.Count > 0)
+    {
+        servicoDoPedido = ViewBag.Servico[0];
+    }
+
+    var statusPedido = new Business.StatusPedido();
+    if(ViewBag.StatusPedido.Count > 0)
+    {
+        statusPedido = ViewBag.StatusPedido[0];
+    }
+
+    var clienteDoPedido = new Business.Cliente();
+    if(ViewBag.ClienteResponsavel.Count > 0)
+    {
+        clienteDoPedido = ViewBag.ClienteResponsavel[0];
+    }
+
+    /*Habilidade-Serviço
+    Dictionary<int, string> servicoPorHabilidade = new Dictionary<int, string>();
+    Dictionary<int, string> instrumentoPorHabilidade = new Dictionary<int, string>();
+    int idDaHab = 0;
+    int idDoServico = 0;
+    int idDoInstrumentoDaHab = 0;
+    foreach (var skill in habilidades)
+    {
+        idDoServico = skill.idServico;
+        idDaHab = skill.id;
+        foreach (var service in todosServicos)
+        {
+            if (idDoServico == service.id)
+            {
+                servicoPorHabilidade.Add(idDaHab, service.descricao);
+            }
+        }
+    }
+    // Habilidade-Instrumento
+    foreach (var habs in habilidades)
+    {
+        idDoInstrumentoDaHab = habs.idInstrumento;
+        idDaHab = habs.id;
+        foreach (var inst in instrumentos)
+        {
+            if (idDoInstrumentoDaHab == inst.id)
+            {
+                instrumentoPorHabilidade.Add(idDaHab, inst.nome);
+            }
+        }
+    }*/
 }
 
 <h3>Informações do pedido</h3>
 
 <table class="table">
     <tr>
-        <td>ID do pedido</td>
-        <td>ID do Cliente solicitante</td>
-        <td>ID do Luthier responsável</td>
-        <td>Descrição da situação</td>
-        <td>Data de emissão do pedido</td>
-        <td>Data da última atualizãção do Luthier</td>
-        <td>Endereço registrado para entrega</td>
-        <td>Status do pedido</td>
-        <td>Observações do Luthier</td>
-        <td>Instrumento alvo</td>
-        <td>Tipo do serviço</td>
-        <td>Avaliação do pedido</td>
+        <td><b>ID do pedido</b></td>
+        <td><b>Cliente solicitante</b></td>
+        <td><b>Luthier responsável</b></td>
+        <td><b>Descrição da situação</b></td>
+        <td><b>Data de emissão do pedido</b></td>
+        <td><b>Data da última atualizãção do Luthier</b></td>
+        <td><b>Endereço registrado para entrega</b></td>
+        <td><b>Status do pedido</b></td>
+        <td><b>Observações do Luthier</b></td>
+        <td><b>Instrumento alvo</b></td>
+        <td><b>Serviço solicitado</b></td>
+        <td><b>Avaliação do pedido</b></td>
     </tr>
-    @if(pedido.id != null && pedido.idCliente != null && pedido.idLuthier != null)
+    @if (pedido.id != null && pedido.idCliente != null && pedido.idLuthier != null)
     {
         <tr>
             <td>@pedido.id</td>
-            <td>@pedido.idCliente</td>
-            <td>@pedido.idLuthier</td>
+            <td>@clienteDoPedido.nome</td>
+            <td>@luthierResponsavel.nome</td>
             <td>@pedido.descricao</td>
             <td>@pedido.dataEmissao</td>
-            <td>@pedido.dataUltAtualiza</td>
+            <td>
+                @if (@pedido.dataUltAtualiza == DateTime.MinValue)
+                {
+                    <label>Ainda não foi feita uma atualização por parte do Luthier</label>
+                }
+                else
+                {
+                    @pedido.dataUltAtualiza
+                }
+            </td>
             <td>@pedido.enderecoEntrega</td>
-            <td>@pedido.statusPedido</td>
-            <td>@pedido.obsLuthier</td>
-            <td>@pedido.instrumentoAlvo</td>
-            <td>@pedido.tipoServico</td>
+            <td>
+                @if (ViewBag.StatusPedido.Count > 0)
+                {
+                    @statusPedido.descricao
+                }
+                else
+                {
+                    <label>Desconhecido</label>
+                }
+            </td>
+            <td>
+                @if(pedido.obsLuthier == "" || pedido.obsLuthier.ToString().Length < 2)
+                {
+                    <label>Sem observações registradas</label>
+                }
+                else
+                {
+                    @pedido.obsLuthier;
+                }
+            </td>
+            <td>
+                @if (ViewBag.Instrumento.Count > 0)
+                {
+                    @instrumento.nome;
+                }
+                else
+                {
+                    <label>Desconhecido</label>
+                }
+            </td>
+            <td>@servicoDoPedido.descricao</td>
             <td>@pedido.avaliacao</td>
         </tr>
      }
 </table>
+
+<br /><br /><h3>Imagens do pedido</h3>
+@{ 
+    string caminhoImg = "";
+    foreach (var img in listaImagens)
+    {
+        caminhoImg = "/../../UploadedFiles/reqPhotos/" + img.nomeImagem;
+        <img src="@caminhoImg" widht="400" height="300"/>
+    }
+}

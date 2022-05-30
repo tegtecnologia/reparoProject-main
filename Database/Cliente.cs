@@ -80,5 +80,22 @@ namespace Database
                 return table;
             }
         }
+
+        public DataTable BuscarPorIdCliente(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "select * from clientes where id = " + id;
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                adapter.SelectCommand = command;
+
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                return table;
+            }
+        }
     }
 }
