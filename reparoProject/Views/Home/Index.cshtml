@@ -43,7 +43,7 @@
         <form action="/filtrar" method="post">
             <h2 style="color: rgba(0,0,0,.5)">O que você precisa?</h2><br />
             <label style="color: rgba(0,0,0,.5)">Qual é o seu instrumento com pendência?</label><br />
-            <select style="color: black;" onchange="coletarDadosDoSelect();" id="selInstrumentos" name="selInstrumentos">
+            <select class="form-select" style="color: black;" onchange="coletarDadosDoSelect();" id="selInstrumentos" name="selInstrumentos">
                 <option id="optionDefault" name="optionDefault" value="@idDoInstrumentoSelecionado">@nomeDoInstrumentoSelecionado</option>
                 @foreach (var instrumento in instrumentos)
                 {
@@ -60,7 +60,7 @@
             @{
                 if (servicosDoInstrumento != null)
                 {
-                    <br /><select style="color: black;" id="selServicosDoInst" name="selServicosDoInst" onchange="coletarDadosDoSelectDois();">
+                    <br /><select class="form-select" style="color: black;" id="selServicosDoInst" name="selServicosDoInst" onchange="coletarDadosDoSelectDois();">
                         <option id="optionDefaultDois" name="optionDefaultDois">Selecione</option>
                         @foreach (var servicoDoInstrumento in servicosDoInstrumento)
                         {

@@ -6,13 +6,13 @@
     Layout = "~/Views/Shared/_LayoutAnexo.cshtml";
 }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<h3>Adicione a imagem do cliente</h3>
+<h3 style="margin-top: 10px;">Adicione a imagem do cliente</h3>
 @using (Html.BeginForm("AnexarFotoCliente", "Cliente", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div>
         @Html.TextBox("string", "", new { type = "string" })
-        @Html.TextBox("file", "", new { type = "file" }) <br />
-        <input type="submit" value="Upload" />
+        @Html.TextBox("file", "", new { type = "file" }) <br /><br />
+        <input class="btn-primary" style="background-color: darkseagreen; border-color: darkseagreen; color: white;" type="submit" value="Atualizar foto de perfil" />
         @ViewBag.Message
     </div>
 }
@@ -20,6 +20,7 @@
 <script>
     jQuery(function ($) {
         $(document).ready(function () {
+            document.getElementById('string').style.display = "none";
             document.getElementById('string').value = "@idDoCliente";
         });
     });

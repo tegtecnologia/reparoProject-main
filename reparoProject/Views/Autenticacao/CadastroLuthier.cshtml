@@ -83,158 +83,159 @@
         padding: 6rem 25rem;
     }
 </style>
+<div class="centraliza">
+    <div id="divCadastro">
+        <div class="container">
+            <div class="jumbotron">
 
-<div id="divCadastro">
-    <div class="container">
-        <div class="jumbotron">
-            <div class="centraliza">
                 <h2 class="display-4" style="color: white;">Novo Luthier</h2>
+
+                <form action="/autenticacao/criarLuthier" method="post">
+                    <br /><h3 style="color: white; font-weight: 300;"><u>Informações pessoais</u></h3>
+                    <div class="form-group">
+                        <label style="color: white;">Nome completo</label>
+                        <input type="text" class="form-control" id="txtNome" name="txtNome" placeholder="Insira seu nome completo">
+                        <input type="text" class="form-control" id="arrayServicos" name="arrayServicos" style="display:none;" />
+                    </div>
+
+                    <div class="form-group">
+                        <label style="color: white;">Nome do usuário</label>
+                        <input type="text" class="form-control" id="txtUsuario" name="txtUsuario" placeholder="Exemplo: mariogioia">
+                        <small id="emailHelp" class="form-text text-muted"><i style="color: darkseagreen">Você usará este nome para acessar sua conta</i></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="color: white;"> Senha</label>
+                        <input type="password" class="form-control" id="txtSenha" name="txtSenha" placeholder="Insira sua senha">
+                        <input style="display: none;" type="text" class="form-control" id="idSessao" name="idSessao">
+                        <!--<small id="emailHelp" class="form-text text-muted">Nunca compartilhe sua senha com alguém.</small>-->
+                    </div>
+
+                    <div class="form-group">
+                        <label style="color: white;">CPF</label>
+                        <input type="text" class="form-control" id="txtCpf" name="txtCpf" placeholder="Insira apenas números">
+                    </div>
+
+                    <div class="form-group">
+                        <label style="color: white;">CNPJ</label>
+                        <input type="text" class="form-control" id="txtCnpj" name="txtCnpj" placeholder="Insira apenas números">
+                    </div><br />
+
+                    <!---<h3 style="color: white; font-weight: 300;"><u>Instrumentos</u></h3><span style="color: darkseagreen; margin-left: 225px;"><input type="button" id="btnInstrumentos" name="btnInstrumentos" onclick="revelaListaInstrumentos();" class="btn-info" value="Revelar lista de instrumentos" style="background-color: darkseagreen; border-color: darkseagreen" /></span>
+                    <div class="form-group">
+                        <div id="divInstrumentos" name="divInstrumentos" style="display:none;"><br />
+                            <table class="table" style="color:white;">
+                                <tr>
+                                    <td><center style="font-size: 20px;">Instrumento</center></td>
+                                    <td><center style="font-size: 20px;">Domino/Não domino</center></td>
+                                </tr>
+                                @{/*
+
+                                    foreach (var instrumento in instrumentos)
+                                    {
+                                        <tr>
+                                            <td><center>@instrumento.nome</center></td>
+                                            <td><center><input type="checkbox" onclick="coletaInstrumento(this);" id="cbInstrumento/@instrumento.id" name="cbInstrumento/@instrumento.id" class="form-check-input" value="@instrumento.id" /></center></td>
+                                        </tr>
+                                    }
+                                */}
+                            </table>
+                        </div>
+                    </div>-->
+
+                    <h3 style="color: white; font-weight: 300;"><u>Serviços e instrumentos</u></h3>
+
+                    <small id="emailHelp" class="form-text text-muted"><i style="color: darkseagreen">Marque as opções que correspondem à sua alçada</i></small><br />
+                    <span style="color: darkseagreen; margin-left: 225px;">
+                        <input type="button" id="btnServicos" name="btnServicos" onclick="revelaListaServicos();" class="btn-info" value="Revelar lista de serviços" style="background-color: darkseagreen; border-color: darkseagreen" />
+                    </span>
+                    <div class="form-group">
+                        <div id="divServicos" name="divServicos" style="display:none;">
+                            <br />
+                            <table class="table" style="color:white;">
+                                <tr>
+                                    <td><center style="font-size: 20px;">Instrumento</center></td>
+                                    <td><center style="font-size: 20px;">Serviço</center></td>
+                                    <td><center style="font-size: 20px;">Domino/Não domino</center></td>
+                                </tr>
+                                @{
+                                    foreach (var h in habilidades)
+                                    {
+                                        <tr>
+                                            <td><center><b>@instrumentoPorHabilidade[h.id]</center></td>
+                                            <td><center>@servicoPorHabilidade[h.id]</center></td>
+                                            <td><center><input type="checkbox" onclick="coletaHabilidade(this, '@idDoInstrumentoPorHabilidade[h.id]')" id="cbHabilidade/@h.id" name="cbHabilidade/@h.id" class="form-check-input" value="@h.idServico" /></center></td>
+                                        </tr>
+                                    }
+                                }
+                            </table>
+                        </div>
+                    </div><br />
+
+                    <div class="form-group">
+                        <h3 style="color: white; font-weight: 300;"><u>Contato</u></h3>
+                        <label style="margin-left: 10px; color: white;">Celular</label>
+                        <input type="checkbox" class="form-check-input" style="margin-left: 20px;" onclick="mostrarCampoCelular();" />
+                        <label style="margin-left: 110px; color: white;">Telefone</label>
+                        <input type="checkbox" class="form-check-input" style="margin-left: 20px;" onclick="mostrarCampoTelefone();" />
+                    </div>
+
+                    <div class="form-group" style="display: none;" id="divCelular" name="divCelular">
+                        <hr class="my-4" />
+                        <label style="color: white;">DDD</label>
+                        <input type="text" class="form-control" id="txtDddCelular" name="txtDddCelular" placeholder="Exemplo: 13"><br />
+                        <label style="color: white;">Celular</label>
+                        <input type="text" class="form-control" id="txtCelular" name="txtCelular" placeholder="Insira apenas números">
+                        <hr class="my-4" />
+                    </div>
+
+                    <div class="form-group" style="display: none;" id="divTelefone" name="divTelefone">
+                        <hr class="my-4" />
+                        <label style="color: white;">DDD</label>
+                        <input type="text" class="form-control" id="txtDddTelefone" name="txtDddTelefone" placeholder="Exemplo: 11"><br />
+                        <label style="color: white;">Telefone</label>
+                        <input type="text" class="form-control" id="txtTelefone" name="txtTelefone" placeholder="Insira apenas números">
+                        <hr class="my-4" />
+                    </div>
+
+                    <div class="form-group">
+                        <label style="color: white;">E-mail</label>
+                        <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="Insira seu e-mail">
+                    </div>
+
+                    <div class="form-group">
+                        <h3 style="color: white; font-weight: 300;"><u>Localização</u></h3>
+                        <label style="color: white;">CEP</label><span style="color: red; margin-left: 2px;">*</span>
+                        <input type="text" class="form-control" id="txtCep" name="txtCep" placeholder="Insira apenas números">
+                    </div><br />
+
+                    <div class="form-group">
+                        <label style="color: white;">Logradouro</label>
+                        <input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro">
+                    </div><br />
+
+                    <div class="form-group">
+                        <label style="color: white;">Bairro</label>
+                        <input type="text" class="form-control" id="txtBairro" name="txtBairro">
+                    </div><br />
+
+                    <div class="form-group">
+                        <label style="color: white;">Cidade</label>
+                        <input type="text" class="form-control" id="txtCidade" name="txtCidade">
+                    </div><br />
+
+                    <div class="form-group">
+                        <label style="color: white;">UF</label>
+                        <input type="text" class="form-control" id="txtUf" name="txtUf">
+                    </div><br />
+
+                    <input type="text" name="instrumentosSelecionados" id="instrumentosSelecionados" style="display:none;" />
+                    <input type="text" name="habilidadesSelecionadas" id="habilidadesSelecionadas" value="" style="display:none;" />
+                    <div class="centraliza">
+                        <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="background-color: white; color: rgba(0,0,0,.5); border-color: white">Cadastro</button>
+                    </div>
+                </form>
             </div>
-            <form action="/autenticacao/criarLuthier" method="post">
-                <br /><h3 style="color: white; font-weight: 300;"><u>Informações pessoais</u></h3>
-                <div class="form-group">
-                    <label style="color: white;">Nome completo</label>
-                    <input type="text" class="form-control" id="txtNome" name="txtNome" placeholder="Insira seu nome completo">
-                    <input type="text" class="form-control" id="arrayServicos" name="arrayServicos" style="display:none;" />
-                </div>
-
-                <div class="form-group">
-                    <label style="color: white;">Nome do usuário</label>
-                    <input type="text" class="form-control" id="txtUsuario" name="txtUsuario" placeholder="Exemplo: mariogioia">
-                    <small id="emailHelp" class="form-text text-muted"><i style="color: darkseagreen">Você usará este nome para acessar sua conta</i></small>
-                </div>
-
-                <div class="form-group">
-                    <label style="color: white;"> Senha</label>
-                    <input type="password" class="form-control" id="txtSenha" name="txtSenha" placeholder="Insira sua senha">
-                    <input style="display: none;" type="text" class="form-control" id="idSessao" name="idSessao">
-                    <!--<small id="emailHelp" class="form-text text-muted">Nunca compartilhe sua senha com alguém.</small>-->
-                </div>
-
-                <div class="form-group">
-                    <label style="color: white;">CPF</label>
-                    <input type="text" class="form-control" id="txtCpf" name="txtCpf" placeholder="Insira apenas números">
-                </div>
-
-                <div class="form-group">
-                    <label style="color: white;">CNPJ</label>
-                    <input type="text" class="form-control" id="txtCnpj" name="txtCnpj" placeholder="Insira apenas números">
-                </div><br />
-
-                <!---<h3 style="color: white; font-weight: 300;"><u>Instrumentos</u></h3><span style="color: darkseagreen; margin-left: 225px;"><input type="button" id="btnInstrumentos" name="btnInstrumentos" onclick="revelaListaInstrumentos();" class="btn-info" value="Revelar lista de instrumentos" style="background-color: darkseagreen; border-color: darkseagreen" /></span>
-                <div class="form-group">
-                    <div id="divInstrumentos" name="divInstrumentos" style="display:none;"><br />
-                        <table class="table" style="color:white;">
-                            <tr>
-                                <td><center style="font-size: 20px;">Instrumento</center></td>
-                                <td><center style="font-size: 20px;">Domino/Não domino</center></td>
-                            </tr>
-                            @{/*
-                            
-                                foreach (var instrumento in instrumentos)
-                                {
-                                    <tr>
-                                        <td><center>@instrumento.nome</center></td>
-                                        <td><center><input type="checkbox" onclick="coletaInstrumento(this);" id="cbInstrumento/@instrumento.id" name="cbInstrumento/@instrumento.id" class="form-check-input" value="@instrumento.id" /></center></td>
-                                    </tr>
-                                }
-                            */}
-                        </table>
-                    </div>
-                </div>-->
-
-                <h3 style="color: white; font-weight: 300;"><u>Serviços e instrumentos</u></h3>
-                
-                <small id="emailHelp" class="form-text text-muted"><i style="color: darkseagreen">Marque as opções que correspondem à sua alçada</i></small><br />
-                <span style="color: darkseagreen; margin-left: 225px;">
-                    <input type="button" id="btnServicos" name="btnServicos" onclick="revelaListaServicos();" class="btn-info" value="Revelar lista de serviços" style="background-color: darkseagreen; border-color: darkseagreen" />
-                </span>
-                <div class="form-group">
-                    <div id="divServicos" name="divServicos" style="display:none;">
-                        <br />
-                        <table class="table" style="color:white;">
-                            <tr>
-                                <td><center style="font-size: 20px;">Instrumento</center></td>
-                                <td><center style="font-size: 20px;">Serviço</center></td>
-                                <td><center style="font-size: 20px;">Domino/Não domino</center></td>
-                            </tr>
-                            @{
-                                foreach (var h in habilidades)
-                                {
-                                    <tr>
-                                        <td><center><b>@instrumentoPorHabilidade[h.id]</center></td>
-                                        <td><center>@servicoPorHabilidade[h.id]</center></td>
-                                        <td><center><input type="checkbox" onclick="coletaHabilidade(this, '@idDoInstrumentoPorHabilidade[h.id]')" id="cbHabilidade/@h.id" name="cbHabilidade/@h.id" class="form-check-input" value="@h.idServico" /></center></td>
-                                    </tr>
-                                }
-                            }
-                        </table>
-                    </div>
-                </div><br />
-
-                <div class="form-group">
-                    <h3 style="color: white; font-weight: 300;"><u>Contato</u></h3>
-                    <label style="margin-left: 10px; color: white;">Celular</label>
-                    <input type="checkbox" class="form-check-input" style="margin-left: 20px;" onclick="mostrarCampoCelular();" />
-                    <label style="margin-left: 110px; color: white;">Telefone</label>
-                    <input type="checkbox" class="form-check-input" style="margin-left: 20px;" onclick="mostrarCampoTelefone();" />
-                </div>
-
-                <div class="form-group" style="display: none;" id="divCelular" name="divCelular">
-                    <hr class="my-4" />
-                    <label style="color: white;">DDD</label>
-                    <input type="text" class="form-control" id="txtDddCelular" name="txtDddCelular" placeholder="Exemplo: 13"><br />
-                    <label style="color: white;">Celular</label>
-                    <input type="text" class="form-control" id="txtCelular" name="txtCelular" placeholder="Insira apenas números">
-                    <hr class="my-4" />
-                </div>
-
-                <div class="form-group" style="display: none;" id="divTelefone" name="divTelefone">
-                    <hr class="my-4" />
-                    <label style="color: white;">DDD</label>
-                    <input type="text" class="form-control" id="txtDddTelefone" name="txtDddTelefone" placeholder="Exemplo: 11"><br />
-                    <label style="color: white;">Telefone</label>
-                    <input type="text" class="form-control" id="txtTelefone" name="txtTelefone" placeholder="Insira apenas números">
-                    <hr class="my-4" />
-                </div>
-
-                <div class="form-group">
-                    <label style="color: white;">E-mail</label>
-                    <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="Insira seu e-mail">
-                </div>
-
-                <div class="form-group">
-                    <h3 style="color: white; font-weight: 300;"><u>Localização</u></h3>
-                    <label style="color: white;">CEP</label><span style="color: red; margin-left: 2px;">*</span>
-                    <input type="text" class="form-control" id="txtCep" name="txtCep" placeholder="Insira apenas números">
-                </div><br />
-
-                <div class="form-group">
-                    <label style="color: white;">Logradouro</label>
-                    <input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro">
-                </div><br />
-
-                <div class="form-group">
-                    <label style="color: white;">Bairro</label>
-                    <input type="text" class="form-control" id="txtBairro" name="txtBairro">
-                </div><br />
-
-                <div class="form-group">
-                    <label style="color: white;">Cidade</label>
-                    <input type="text" class="form-control" id="txtCidade" name="txtCidade">
-                </div><br />
-
-                <div class="form-group">
-                    <label style="color: white;">UF</label>
-                    <input type="text" class="form-control" id="txtUf" name="txtUf">
-                </div><br />
-
-                <input type="text" name="instrumentosSelecionados" id="instrumentosSelecionados" style="display:none;" />
-                <input type="text" name="habilidadesSelecionadas" id="habilidadesSelecionadas" value="" style="display:none;" />
-                <div class="centraliza">
-                    <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="background-color: white; color: rgba(0,0,0,.5); border-color: white">Cadastro</button>
-                </div>
-            </form>
         </div>
     </div>
 </div>

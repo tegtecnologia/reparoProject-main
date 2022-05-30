@@ -16,6 +16,35 @@
         }
     }
 
+    Dictionary<int, string> todosInstrumentos = new Dictionary<int, string>();
+    List<Business.Instrumento> instrumentos = new Business.Instrumento().Listar();
+    int idElemento = 0;
+    string nomElemento = "";
+    foreach (var i in instrumentos)
+    {
+        idElemento = i.id;
+        nomElemento = i.nome;
+        todosInstrumentos.Add(idElemento, nomElemento);
+    }
+
+    Dictionary<int, string> todosServicos = new Dictionary<int, string>();
+    List<Business.Servico> servicos = new Business.Servico().Listar();
+    foreach (var s in servicos)
+    {
+        idElemento = s.id;
+        nomElemento = s.descricao;
+        todosServicos.Add(idElemento, nomElemento);
+    }
+
+    Dictionary<int, string> todosEstados = new Dictionary<int, string>();
+    List<Business.StatusPedido> estados = new Business.StatusPedido().Listar();
+    foreach (var e in estados)
+    {
+        idElemento = e.id;
+        nomElemento = e.descricao;
+        todosEstados.Add(idElemento, nomElemento);
+    }
+
     List<Business.Luthier> luthier = ViewBag.LuthierDaConta;
     List<Business.Pedido> pedidosDoLuthier = new List<Business.Pedido> { };
     if (luthier != null && luthier.Count > 0)
@@ -75,7 +104,8 @@
     {
         <meta http-equiv="refresh" content="6; URL='https://localhost:44381/autenticacao/login'" />
 
-        <div class="alert alert-danger" style="margin-top: -50px" role="alert">
+        <br />
+        <br /><div class="alert alert-danger" style="margin-top: -50px" role="alert">
             <h4 class="alert-heading">Conta não encontrada!</h4>
             <p>A conta que você tentou entrar não foi encontrada em nosso banco de dados. Tente novamente...</p>
             <hr>
@@ -147,7 +177,26 @@
 
         if (tipoConta == "Cliente")
         {
-            <h2>Informações da conta (Conta Cliente)</h2>
+            <div>
+                <div style="float: left;">
+                    <h2>Informações da conta (Conta Cliente)</h2>
+                    @if (cliente != null)
+                    {
+                        foreach (var clienteLogadoAqui in cliente)
+                        {
+                            donoDaContaLogada = clienteLogadoAqui.nome;
+                            <br /><label><b>Seu nome: </b></label> @clienteLogadoAqui.nome;
+                            <br /><label><b>CPF: </b></label> @clienteLogadoAqui.cpf;
+                            <br /><label><b>Seu e-mail: </b></label> @clienteLogadoAqui.email;
+                            <br /><label><b>Nome de usuário: &nbsp;</b></label>@conta.usuario
+                            <br />
+                            <label><b>Nível de acesso: &nbsp;</b></label>@nivelAcesso
+                            <br />
+                            <label><b>Estado da conta: &nbsp;</b></label>@estadoDaConta
+                        }
+                    }
+                </div>
+            </div>
             <div class="fotoDePerfil">
                 <center>
                     <div>
@@ -171,42 +220,24 @@
                     </div>
                 </center>
             </div>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
+            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
             <h2>Meus Pedidos</h2>
             <table class="table">
                 <tr>
-                    <td>Número do pedido</td>
-                    <td>Instrumento necessitado</td>
-                    <td>Tipo de serviço solicitado</td>
-                    <td>Mais informações sobre o pedido</td>
+                    <td><b>Número do pedido</b></td>
+                    <td><b>Status do pedido</b></td>
+                    <td><b>Instrumento necessitado</b></td>
+                    <td><b>Tipo de serviço solicitado</b></td>
+                    <td><b>Mais informações sobre o pedido</b></td>
                 </tr>
                 @{
                     foreach (var pedido in meusPedidos)
                     {
                         <tr>
                             <td>@pedido.id</td>
-                            <td>@pedido.instrumentoAlvo</td>
-                            <td>@pedido.tipoServico</td>
+                            <td>@todosEstados[pedido.statusPedido]</td>
+                            <td>@todosInstrumentos[pedido.instrumentoAlvo]</td>
+                            <td>@todosServicos[pedido.tipoServico]</td>
                             <td><a href="/pedido/visualizar/@pedido.id" class="btn btn-secondary" style="background: #ffd42a; color: rgba(0,0,0,.5); border: white;">Clique aqui</a></td>
                         </tr>
                     }
@@ -214,31 +245,11 @@
             </table>
             <br />
             <br />
-            <h2>Informações da conta (Conta Cliente)</h2>
         }
         else
         {
             <h2>Informações da conta (Conta Luthier)</h2>
         }
-        <label><b>Nome de usuário: &nbsp;</b></label>@conta.usuario
-        <br />
-        <label><b>Nível de acesso: &nbsp;</b></label>@nivelAcesso
-        <br />
-        <label><b>Estado da conta: &nbsp;</b></label>@estadoDaConta
-
-        if (cliente != null)
-        {
-            foreach (var clienteLogadoAqui in cliente)
-            {
-                donoDaContaLogada = clienteLogadoAqui.nome;
-                <br /><label><b>Seu nome: </b></label> @clienteLogadoAqui.nome;
-                <br /><label><b>CPF: </b></label> @clienteLogadoAqui.cpf;
-                <br /><label><b>Seu e-mail: </b></label> @clienteLogadoAqui.email;
-                <br />
-                <br />
-            }
-        }
-
         if (luthier != null)
         {
             foreach (var luthierLogado in luthier)
@@ -250,40 +261,42 @@
                 <br /><label><b>Seu e-mail: </b></label> @luthierLogado.email;
             }
 
-            <br /><br /><h2>Pedidos requisitados a mim</h2>
+            <br />
+            <br />
+            <h2>Pedidos requisitados a mim</h2>
             <table class="table">
                 <tr>
-                    <td>Número do pedido</td>
-                    <td>Instrumento necessitado</td>
-                    <td>Tipo de serviço solicitado</td>
-                    <td>Mais informações do pedido</td>
+                    <td><b>Número do pedido</b></td>
+                    <td><b>Status do pedido</b></td>
+                    <td><b>Instrumento necessitado</b></td>
+                    <td><b>Tipo de serviço solicitado</b></td>
+                    <td><b>Mais informações do pedido</b></td>
                 </tr>
-                @{ 
-                    foreach(var p in pedidosDoLuthier)
+                @{
+                    foreach (var p in pedidosDoLuthier)
                     {
                         <tr>
                             <td>@p.id</td>
-                            <td>@p.instrumentoAlvo</td>
-                            <td>@p.tipoServico</td>
+                            <td>@todosEstados[p.statusPedido]</td>
+                            <td>@todosInstrumentos[p.instrumentoAlvo]</td>
+                            <td>@todosServicos[p.tipoServico]</td>
                             <td><a href="/pedido/visualizar/@p.id" class="btn btn-secondary" style="background: #ffd42a; color: rgba(0,0,0,.5); border: white;">Clique aqui</a></td>
                         </tr>
                     }
                 }
-                
+
             </table>
         }
-
-        <br />
         <br />
 
         <h2>Números para contato</h2>
         <table class="table">
             <tr>
-                <td>ID do contato</td>
-                <td>DDD</td>
-                <td>Número do contato</td>
-                <td>É celular?</td>
-                <td>Nome do dono do contato</td>
+                <td><b>ID do contato</b></td>
+                <td><b>DDD</b></td>
+                <td><b>Número do contato</b></td>
+                <td><b>É celular?</b></td>
+                <td><b>Nome do dono do contato</b></td>
             </tr>
             @{
                 foreach (var contato in contatos)
@@ -309,13 +322,13 @@
         <h2>Endereços registrados nessa conta</h2>
         <table class="table">
             <tr>
-                <td>ID do endereço</td>
-                <td>Logradouro</td>
-                <td>Bairro</td>
-                <td>Cidade</td>
-                <td>UF</td>
-                <td>CEP</td>
-                <td>Nome do dono do contato</td>
+                <td><b>ID do endereço</b></td>
+                <td><b>Logradouro</b></td>
+                <td><b>Bairro</b></td>
+                <td><b>Cidade</b></td>
+                <td><b>UF</b></td>
+                <td><b>CEP</b></td>
+                <td><b>Nome do dono do contato</b></td>
             </tr>
             @{
                 foreach (var endereco in enderecos)
