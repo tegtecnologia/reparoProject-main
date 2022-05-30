@@ -106,14 +106,18 @@
                     <select style="color: black;" id="selInstrumentos" name="selInstrumentos">
                         @foreach (var instrumento in instrumentos)
                         {
-                            <option @validadorOption style="color: rgba(0,0,0,.5);" value="@instrumento.id">@instrumento.nome</option>
-                            iterador = iterador + 1;
-
+                            if(instrumento.id != idInstrumentoEscolhido)
+                            {
+                                validadorOption = "disabled";
+                                <option @validadorOption style="color: rgba(0,0,0,.5);" value="@instrumento.id">@instrumento.nome</option>
+                            }
                             if (instrumento.id == idInstrumentoEscolhido)
                             {
-                                validadorOption = "checked";
-                                break;
+                                validadorOption = "selected";
+                                <option @validadorOption style="color: rgba(0,0,0,.5);" value="@instrumento.id">@instrumento.nome</option>
+                                
                             }
+                            iterador = iterador + 1;
                         }
                     </select><br /><br />
                     <label style="color: black;">Insira uma ou mais imagem(ns) do instrumento:</label><br />

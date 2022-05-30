@@ -119,7 +119,7 @@ namespace reparoProject.Controllers
                     imagemPedido.Salvar();
                 }
 
-                Response.Redirect("/pedido/" + idDoPedidoAtual);
+                Response.Redirect("/pedido/visualizar/" + idDoPedidoAtual.ToString());                
                 TempData["pedidoCriado"] = "Pedido criado com sucesso!";
             }
             catch (Exception erro)
@@ -217,8 +217,6 @@ namespace reparoProject.Controllers
 
         public ActionResult AdicionarObs(string conteudo, int idPedido, int idLuthier)
         {
-            
-
             var p = new Pedido().BuscarPedidoPorId(idPedido);
             var pedidoAtual = new Pedido();
             if(p != null)
