@@ -213,6 +213,7 @@ namespace reparoProject.Controllers
             // Conteúdo transportado para a página HTML
             ViewBag.TipoConta = tipoConta;
             ViewBag.IdLuthierLogado = idLuthierLogado;
+            ViewBag.IdClienteLogado = idClienteLogado;
             return View();
         }
 

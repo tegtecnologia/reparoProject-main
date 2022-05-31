@@ -86,7 +86,7 @@
 </style>
 
 @{
-    if (luthierResponsavel.id == Convert.ToInt32(ViewBag.IdLuthierLogado))
+    if (luthierResponsavel.id == Convert.ToInt32(ViewBag.IdLuthierLogado) || clienteDoPedido.id == Convert.ToInt32(ViewBag.IdClienteLogado))
     {
         <h3>Informações do pedido</h3>
 
@@ -295,10 +295,21 @@
     }
     else
     {
-        <center>
-            <h1>Luthier, você não foi responsabilizado por esse pedido, portanto, não pode ter acesso a esse conteúdo.</h1>
-            <img width="50%" height="50%" src="~/UploadedFiles/src/erro.png" />
-        </center>
+        if (tipoDaConta == "Luthier")
+        {
+            <center>
+                <h1>Luthier, você não foi responsabilizado por esse pedido, portanto, não pode ter acesso a esse conteúdo.</h1>
+                <img width="50%" height="50%" src="~/UploadedFiles/src/erro.png" />
+            </center>
+        }
+        else if (tipoDaConta == "Cliente")
+        {
+            <center>
+                <h1>Cliente, você não tem acesso às informações desse pedido porque não é o autor dele.</h1>
+                <img width="50%" height="50%" src="~/UploadedFiles/src/erro.png" />
+            </center>
+        }
+
     }
 }
 
