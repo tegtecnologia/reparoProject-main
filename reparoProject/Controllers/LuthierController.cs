@@ -1,4 +1,5 @@
 ﻿using Business;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,16 @@ namespace reparoProject.Controllers
             ViewBag.Luthier = luthier;
             ViewBag.DadosDoLuthier = dadosDoLuthier;
             return View();
+        }
+
+        public ActionResult EditarEndereco(int idLuthier, int idEndereco, string cep, string numero, string logradouro, string bairro, string cidade, string uf)
+        {
+            var endereco = new Endereco();
+            endereco.AtualizarLuthier(idLuthier, idEndereco, cep, numero, logradouro, bairro, cidade, uf);
+
+            JsonResult result = new JsonResult();
+            result = this.Json(JsonConvert.SerializeObject(endereco), JsonRequestBehavior.AllowGet);
+            return result;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Business;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -82,6 +83,15 @@ namespace reparoProject.Controllers
                 ViewBag.Message = "File upload failed! " + err.Message;
                 return View();
             }
+        }
+        public ActionResult EditarEndereco(int idCliente, int idEndereco, string cep, string numero, string logradouro, string bairro, string cidade, string uf)
+        {
+            var endereco = new Endereco();
+            endereco.AtualizarCliente(idCliente, idEndereco, cep, numero, logradouro, bairro, cidade, uf);
+
+            JsonResult result = new JsonResult();
+            result = this.Json(JsonConvert.SerializeObject(endereco), JsonRequestBehavior.AllowGet);
+            return result;
         }
     }
 }

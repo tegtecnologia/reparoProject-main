@@ -98,6 +98,9 @@
     }
 </style>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 
 @{
     if (conta.usuario == null || conta.senha == null || conta.email == null)
@@ -170,6 +173,11 @@
     }
     else
     {
+        <style>
+            .editar:hover {
+                background-color: #ffd42a;
+            }
+        </style>
         /*if (TempData["contaCriada"] != null)
         {
             <br /><div id="divTemporaria" name="divTemporaria" class="alert alert-success">@TempData["contaCriada"]</div>
@@ -220,7 +228,24 @@
                     </div>
                 </center>
             </div>
-            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
             <h2>Meus Pedidos</h2>
             <table class="table">
                 <tr>
@@ -301,7 +326,7 @@
             @{
                 foreach (var contato in contatos)
                 {
-                    <tr>
+                    <tr class="editar">
                         <td>@contato.id</td>
                         <td>@contato.codigo</td>
                         <td>@contato.numero</td>
@@ -318,29 +343,28 @@
         </table>
         <br />
         <br />
-
-        <h2>Endereços registrados nessa conta</h2>
+        <h2>Seu endereço</h2>
+        <small id="emailHelp" class="form-text text-muted">Clique nele caso queira alterá-lo</small>
+        <button style="display:none;" type="button" class="btn btn-primary" id="btnModalEnd" name="btnModalEnd" data-toggle="modal" data-target="#modalEnd">
+            Launch demo modal
+        </button>
         <table class="table">
             <tr>
-                <td><b>ID do endereço</b></td>
                 <td><b>Logradouro</b></td>
                 <td><b>Bairro</b></td>
                 <td><b>Cidade</b></td>
                 <td><b>UF</b></td>
                 <td><b>CEP</b></td>
-                <td><b>Nome do dono do contato</b></td>
             </tr>
             @{
                 foreach (var endereco in enderecos)
                 {
-                    <tr>
-                        <td>@endereco.id</td>
+                    <tr class="editar" onclick="abrirModalEndereco(@endereco.id, @endereco.idElemento)">
                         <td>@endereco.logradouro</td>
                         <td>@endereco.bairro</td>
                         <td>@endereco.cidade</td>
                         <td>@endereco.uf</td>
                         <td>@endereco.cep</td>
-                        <td>@donoDaContaLogada</td>
                     </tr>
                 }
             }
@@ -359,6 +383,57 @@
             <div class="modal-body">
             </div>
             <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 2 -->
+<div class="modal fade" id="modalEnd" name="modalEnd" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Editar endereço</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label style="color: black;">CEP</label><span style="color: red; margin-left: 2px;">*</span>
+                    <input type="text" class="form-control" id="txtCep" name="txtCep" placeholder="Insira apenas números">
+                </div><br />
+
+                <div class="form-group">
+                    <label style="color: black;">Número</label><span style="color: red; margin-left: 2px;">*</span>
+                    <input type="text" class="form-control" id="txtNumero" name="txtNumero" placeholder="Insira apenas números">
+                </div><br />
+
+                <div class="form-group">
+                    <label style="color: black;">Logradouro</label>
+                    <input type="text" class="form-control" id="txtLogradouro" name="txtLogradouro">
+                </div><br />
+
+                <div class="form-group">
+                    <label style="color: black;">Bairro</label>
+                    <input type="text" class="form-control" id="txtBairro" name="txtBairro">
+                </div><br />
+
+                <div class="form-group">
+                    <label style="color: black;">Cidade</label>
+                    <input type="text" class="form-control" id="txtCidade" name="txtCidade">
+                </div><br />
+
+                <div class="form-group">
+                    <label style="color: black;">UF</label>
+                    <input type="text" class="form-control" id="txtUf" name="txtUf">
+                </div><br />
+            </div>
+            <input style="display:none;" type="text" id="idEndereco" name="idEndereco" />
+            <input style="display:none;" type="text" id="idDonoEndereco" name="idDonoEndereco" />
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" onclick="alterarEndereco()" style="background-color: #ffd42a; border-color: #ffd42a ">Salvar endereço</button>
             </div>
         </div>
     </div>
@@ -383,5 +458,108 @@
     $(document).ready(function () {
         desconectaxUsuario();
         // document ready
+    });
+
+    function abrirModalEndereco(idEndereco, idDono) {
+        document.getElementById('idDonoEndereco').value = idDono;
+        document.getElementById('idEndereco').value = idEndereco;
+        console.log('@tipoConta');
+        document.getElementById('btnModalEnd').click();
+    }
+
+    function alterarEndereco() {
+        var idDono = document.getElementById('idDonoEndereco').value;
+        var enderecoId = document.getElementById('idEndereco').value;
+        var cep = document.getElementById('txtCep').value;
+        var numero = document.getElementById('txtNumero').value;
+        var logradouro = document.getElementById('txtLogradouro').value;
+        var bairro = document.getElementById('txtBairro').value;
+        var cidade = document.getElementById('txtCidade').value;
+        var uf = document.getElementById('txtUf').value;
+        var id = 0;
+
+        if (cep != "" && numero != "" && logradouro != "" && bairro != "" && cidade != "" && uf != "" && '@tipoConta' == "Luthier") {
+            $.ajax(
+                {
+                    type: 'POST',
+                    dataType: 'JSON',
+                    url: '@Url.Action("EditarEndereco", "Luthier")' + '/' + id,
+                    data: { 'idLuthier': idDono, 'idEndereco': enderecoId, 'cep': cep, 'numero': numero, 'logradouro': logradouro, 'bairro': bairro, 'cidade': cidade, 'uf': uf },
+                    success:
+                        function (response) {
+                            console.log(response);
+                            swal({
+                                title: "É sempre bom manter tudo atualizado, boa!",
+                                text: "Seu endereço foi atualizado.",
+                                icon: "success",
+                                buttons: false
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 4500);
+                        },
+                    error:
+                        function (response) {
+                            alert("Error: " + response);
+                        }
+                });
+        }
+        else if (cep != "" && numero != "" && logradouro != "" && bairro != "" && cidade != "" && uf != "" && '@tipoConta' == "Cliente") {
+            $.ajax(
+                {
+                    type: 'POST',
+                    dataType: 'JSON',
+                    url: '@Url.Action("EditarEndereco", "Cliente")' + '/' + id,
+                    data: { 'idCliente': idDono, 'idEndereco': enderecoId, 'cep': cep, 'numero': numero, 'logradouro': logradouro, 'bairro': bairro, 'cidade': cidade, 'uf': uf },
+                    success:
+                        function (response) {
+                            console.log(response);
+                            swal({
+                                title: "É sempre bom manter tudo atualizado, boa!",
+                                text: "Seu endereço foi atualizado.",
+                                icon: "success",
+                                buttons: false
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 4500);
+                        },
+                    error:
+                        function (response) {
+                            alert("Error: " + response);
+                        }
+                });
+        }
+        else {
+            swal({
+                title: "Opa, calma aí...",
+                text: "Você precisa preencher todos os campos antes de tentar atualizar seu endereço.",
+                icon: "error",
+                buttons: false
+            });
+        }
+    }
+
+    jQuery(function ($) {
+        $("input[name='txtCep']").change(function () {
+            var cep_code = $(this).val();
+            if (cep_code.length <= 0) return;
+            $.get("http://viacep.com.br/ws/" + cep_code + "/json/", { code: cep_code }, function (resultado) {
+                if (resultado.erro == 1) {
+                    alert("Endereço não encontrado!")
+                    $("input[name='cep']").val("");
+                    $("input[name='cidade']").val("");
+                    $("input[name='bairro']").val("");
+                    $("input[name='endereco']").val("");
+                    $("input[name='estado']").val("");
+                }
+                else {
+                    $("input[name='txtCidade']").val(resultado.localidade);
+                    $("input[name='txtBairro']").val(resultado.bairro);
+                    $("input[name='txtLogradouro']").val(resultado.logradouro);
+                    $("input[name='txtUf']").val(resultado.uf);
+                }
+            });
+        });
     });
 </script>

@@ -74,5 +74,15 @@ namespace Business
             }
             return listaEnderecos;
         }
+
+        public void AtualizarCliente(int idCliente, int idEndereco, string cep, string numero, string logradouro, string bairro, string cidade, string uf)
+        {
+            new Database.Endereco().AtualizarEndCliente(idCliente, idEndereco, cep, numero, logradouro, bairro, cidade, uf);
+        }
+
+        public void AtualizarLuthier(int idCliente, int idEndereco, string cep, string numero, string logradouro, string bairro, string cidade, string uf)
+        {
+            new Database.Endereco().AtualizarEndLuthier(idCliente, idEndereco, cep, numero, logradouro, bairro, cidade, uf);
+        }
     }
 }

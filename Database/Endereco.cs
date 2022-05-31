@@ -74,5 +74,27 @@ namespace Database
                 return table;
             }
         }
+
+        public void AtualizarEndCliente(int idCliente, int idEndereco, string cep, string numero, string logradouro, string bairro, string cidade, string uf)
+        {
+            using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "update enderecosClientes set logradouro = '" + logradouro + "', bairro = '" + bairro + "', cidade = '" + cidade + "', uf = '" + uf + "', cep = " + cep + ", numero = " + numero + " where idCliente = " + idCliente + " and id = " + idEndereco;
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void AtualizarEndLuthier(int idLuthier, int idEndereco, string cep, string numero, string logradouro, string bairro, string cidade, string uf)
+        {
+            using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "update enderecosLuthiers set logradouro = '" + logradouro + "', bairro = '" + bairro + "', cidade = '" + cidade + "', uf = '" + uf + "', cep = " + cep + ", numero = " + numero + " where idLuthier = " + idLuthier + " and id = " + idEndereco;
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }
