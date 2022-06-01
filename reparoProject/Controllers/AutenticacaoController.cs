@@ -271,6 +271,7 @@ namespace freeCommerce.Controllers
         public ActionResult Conta()
         {
             TempData["imagensDeClientes"] = new ImagemCliente().ListarTodas();
+            TempData["imagensDeLuthiers"] = new ImagemLuthier().ListarTodas();
 
             // Encontrando conta logada
             var conta = Business.Conta.BuscaPorStatusLogin(Session.SessionID);

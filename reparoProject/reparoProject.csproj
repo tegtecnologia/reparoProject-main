@@ -217,7 +217,7 @@
     <Content Include="Views\Autenticacao\CadastroLuthier.cshtml" />
     <Content Include="Views\Autenticacao\CadastroCliente.cshtml" />
     <Content Include="Views\Shared\_LayoutAnexo.cshtml" />
-    <Content Include="Views\Cliente\AnexarPorId.cshtml" />
+    <Content Include="Views\Luthier\AnexarPorId.cshtml" />
     <Content Include="Views\Cliente\AnexarFotoCliente.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\Instrumento.cshtml" />
@@ -227,6 +227,8 @@
     <Content Include="Views\Pedido\CriarPedido.cshtml" />
     <Content Include="Views\Pedido\RealizarPedido.cshtml" />
     <Content Include="Views\Pedido\PedidoEspec.cshtml" />
+    <Content Include="Views\Cliente\AnexarPorId.cshtml" />
+    <Content Include="Views\Luthier\AnexarFotoLuthier.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

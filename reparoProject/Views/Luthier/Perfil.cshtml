@@ -7,6 +7,24 @@
     List<Business.Servico> todosServicos = ViewBag.Servicos;
     int idDoLuthier = 0;
 
+    if(luthier != null)
+    {
+        if(luthier.Count > 0)
+        {
+            idDoLuthier = luthier[0].id;
+        }
+    }
+
+    var fotoPerfilLuthierAtual = new Business.ImagemLuthier();
+    List<Business.ImagemLuthier> imagensDoAtualLuthier = new Business.ImagemLuthier().ListarTodas();
+    foreach (var imagem in imagensDoAtualLuthier)
+    {
+        if (imagem.idLuthier == dadosLuthier.id && imagem.tipoImg == "Foto de perfil")
+        {
+            fotoPerfilLuthierAtual = imagem;
+        }
+    }
+
     // Coletando servico escolhido pelo usuário
     var idServicoEscolhidoPorUsuario = Convert.ToInt32(TempData["servicoEscolhido"]);
     TempData["servFinal"] = idServicoEscolhidoPorUsuario;
@@ -64,28 +82,43 @@
     }
 }
 
-<h2><u>Dados do profissional</u></h2>
-<table class="table">
-    <tr>
-        <td>ID (Luthier)</td>
-        <td>Nome do luthier</td>
-        <td>ID (Usuário)</td>
-        <td>Avaliação</td>
-        <td>CNPJ</td>
-        <td>CPF</td>
-        <td>Email</td>
-    </tr>
-    <tr>
-        <td>@dadosLuthier.id</td>
-        <td>@dadosLuthier.nome</td>
-        <td>Pendente</td>
-        <td>@dadosLuthier.avaliacao</td>
-        <td>@dadosLuthier.cnpj</td>
-        <td>@dadosLuthier.cpf</td>
-        <td>@dadosLuthier.email</td>
-    </tr>
-</table>
-<br />
+<div>
+    <div style="float:left;">
+        <h2><u>Dados do profissional</u></h2>
+        <table class="table">
+            <tr>
+                <td>ID (Luthier)</td>
+                <td>Nome do luthier</td>
+                <td>ID (Usuário)</td>
+                <td>Avaliação</td>
+                <td>CNPJ</td>
+                <td>CPF</td>
+                <td>Email</td>
+                <td>Foto de perfil</td>
+            </tr>
+            <tr>
+                <td>@dadosLuthier.id</td>
+                <td>@dadosLuthier.nome</td>
+                <td>Pendente</td>
+                <td>@dadosLuthier.avaliacao</td>
+                <td>@dadosLuthier.cnpj</td>
+                <td>@dadosLuthier.cpf</td>
+                <td>@dadosLuthier.email</td>
+                <td>
+                    @if (fotoPerfilLuthierAtual.caminhoImagem == null || fotoPerfilLuthierAtual.idLuthier == 0 || fotoPerfilLuthierAtual.nomeImagem == null || fotoPerfilLuthierAtual.tipoImg == null)
+                    {
+                        <label>O Luthier ainda não cadastrou uma foto</label>
+                    }
+                    else
+                    {
+                        <img src="~/UploadedFiles/profilePhotos/luthier/@fotoPerfilLuthierAtual.nomeImagem" width="200px" height="200px" />
+                    }
+                </td>
+            </tr>
+        </table>
+        <br />
+    </div>
+</div>
 
 <form action="~/pedido/solicitar" method="post">
     <input type="hidden" id="idLuthier" name="idLuthier" value="@dadosLuthier.id"/>
@@ -97,7 +130,7 @@
 </form>
 
 <br />
-<br />
+
 <h2><u>Serviços disponíveis pelo profissional</u></h2>
 <table class="table">
     <tr >

@@ -5,6 +5,7 @@
     int ajustarFormulario = 95;
 }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <style>
     .container {
@@ -78,7 +79,7 @@
                     <label style="color: white;">DDD</label>
                     <input type="text" class="form-control" id="txtDddCelular" name="txtDddCelular" placeholder="Exemplo: 13"><br />
                     <label style="color: white;">Celular</label>
-                    <input type="text" class="form-control" id="txtCelular" name="txtCelular" placeholder="Insira apenas números">
+                    <input type="text" class="form-control" maxlength="9" id="txtCelular" name="txtCelular" placeholder="Insira apenas números">
                     <hr class="my-4" />
                 </div>
 
@@ -87,7 +88,7 @@
                     <label style="color: white;">DDD</label>
                     <input type="text" class="form-control" id="txtDddTelefone" name="txtDddTelefone" placeholder="Exemplo: 11"><br />
                     <label style="color: white;">Telefone</label>
-                    <input type="text" class="form-control" id="txtTelefone" name="txtTelefone" placeholder="Insira apenas números">
+                    <input type="text" class="form-control" maxlength="8" id="txtTelefone" name="txtTelefone" placeholder="Insira apenas números">
                     <hr class="my-4" />
                 </div>
 
@@ -127,9 +128,10 @@
                     <input type="text" class="form-control" id="txtUf" name="txtUf">
                 </div><br />
 
-                <div class="centraliza">
-                    <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="background-color: white; color: rgba(0,0,0,.5); border-color: white">Cadastro</button>
-                </div>
+                      <div class="centraliza">
+                          <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="display:none;">Cadastro</button>
+                          <button type="button" onclick="validaCampos()" id="botaoFake" name="botaoFake" class="btn btn-primary" style="background-color: white; color: rgba(0,0,0,.5); border-color: white">Cadastro</button>
+                      </div>
             </form>
         </div>
     </div>
@@ -180,4 +182,31 @@
             });
         });
     });
+
+    function validaCampos() {
+        var nome = document.getElementById('txtNome').value;
+        var nomeUsuario = document.getElementById('txtUsuario').value;
+        var senha = document.getElementById('txtSenha').value;
+        var cpf = document.getElementById('txtCpf').value;
+        var dddCelular = document.getElementById('txtDddCelular').value;
+        var celular = document.getElementById('txtCelular').value;
+        var dddTelefone = document.getElementById('txtDddTelefone').value;
+        var telefone = document.getElementById('txtTelefone').value;
+        var email = document.getElementById('txtEmail').value;
+        var cep = document.getElementById('txtCep').value;
+        var numero = document.getElementById('txtNumero').value;
+        console.log(numero);
+
+        if (nome != "" && nomeUsuario != "" && senha != "" && cpf != "" && dddCelular != "" && celular != "" && dddTelefone != "" && telefone != "" && email != "" && cep != "" && numero != "") {
+            document.getElementById('botaoCadastro').click();
+        }
+        else {
+            swal({
+                title: "Opa, calma aí...",
+                text: "Para ter uma conta em nosso site, é preciso preencher todos os campos antes de tentar o cadastro.",
+                icon: "error",
+                buttons: false
+            });
+        }
+    }
 </script>

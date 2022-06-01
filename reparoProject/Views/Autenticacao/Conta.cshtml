@@ -7,6 +7,7 @@
     List<Business.Cliente> cliente = ViewBag.ClienteDaConta;
     var clienteLogado = new Business.Cliente();
     var fotoPerfilClienteAtual = new Business.ImagemCliente();
+    var fotoPerfilLuthierAtual = new Business.ImagemLuthier();
 
     if (cliente != null)
     {
@@ -46,6 +47,15 @@
     }
 
     List<Business.Luthier> luthier = ViewBag.LuthierDaConta;
+    int idLuthierLogado = 0;
+
+    if(luthier != null)
+    {
+        if (luthier.Count > 0)
+        {
+            idLuthierLogado = luthier[0].id;
+        }
+    }
     List<Business.Pedido> pedidosDoLuthier = new List<Business.Pedido> { };
     if (luthier != null && luthier.Count > 0)
     {
@@ -59,6 +69,15 @@
         if (imagem.idCliente == clienteLogado.id && imagem.tipoImg == "Foto de perfil")
         {
             fotoPerfilClienteAtual = imagem;
+        }
+    }
+
+    var listaImagensDeLuthiers = TempData["imagensDeLuthiers"] as List<Business.ImagemLuthier>;
+    foreach(var imagem in listaImagensDeLuthiers)
+    {
+        if(imagem.idLuthier == idLuthierLogado && imagem.tipoImg == "Foto de perfil")
+        {
+            fotoPerfilLuthierAtual = imagem;
         }
     }
 
@@ -277,18 +296,53 @@
         }
         if (luthier != null)
         {
-            foreach (var luthierLogado in luthier)
+            <div>
+                <div style="float:left;">
+            @foreach (var luthierLogado in luthier)
             {
                 donoDaContaLogada = luthierLogado.nome;
+                idLuthierLogado = luthierLogado.id;
                 <br /><label><b>Seu nome: </b></label> @luthierLogado.nome;
                 <br /><label><b>CPF: </b></label> @luthierLogado.cpf;
                 <br /><label><b>CNPJ: </b></label> @luthierLogado.cnpj;
                 <br /><label><b>Seu e-mail: </b></label> @luthierLogado.email;
+                <br /><label><b>Nome de usuário: &nbsp;</b></label>@conta.usuario
+                <br />
+                <label><b>Nível de acesso: &nbsp;</b></label>@nivelAcesso
+                <br />
+                <label><b>Estado da conta: &nbsp;</b></label>@estadoDaConta
             }
+                </div>
+                <div style="float:right;">
+                    <div class="fotoDePerfil">
+                        <center>
+                            <div>
+                                @if (fotoPerfilLuthierAtual.caminhoImagem == null || fotoPerfilLuthierAtual.idLuthier == 0 || fotoPerfilLuthierAtual.nomeImagem == null || fotoPerfilLuthierAtual.tipoImg == null)
+                                {
+                                    <img src="~/Content/profile.jpg" width="400px" height="400px" /><br /><br />
+                                    if (luthier != null)
+                                    {
+                                        linkParaAnexoImg = "/../luthier/" + idLuthierLogado + "/anexar";
+                                    }
 
-            <br />
-            <br />
-            <h2>Pedidos requisitados a mim</h2>
+                                    <label>Você ainda está sem foto de perfil... que tal colocar uma?</label>
+                                    <div style="margin-top: 0px;">
+                                        <a href="@linkParaAnexoImg" target="_blank" class="btn btn-primary" style="background: darkseagreen; color: white; border: white; " data-toggle="modal" data-target="#modalExemplo">Adicionar foto de perfil</a>
+                                    </div><br /><br />
+                                }
+                                else
+                                {
+                                    <img src="~/UploadedFiles/profilePhotos/luthier/@fotoPerfilLuthierAtual.nomeImagem" width="400px" height="400px" />
+                                }
+                            </div>
+                        </center>
+                    </div>
+                </div>
+            </div>
+
+            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+            
+            <br /><br /><br /><br /><br /><h2>Pedidos requisitados a mim</h2>
             <table class="table">
                 <tr>
                     <td><b>Número do pedido</b></td>

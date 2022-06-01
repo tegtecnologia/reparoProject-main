@@ -92,6 +92,12 @@ namespace reparoProject
             );
 
             routes.MapRoute(
+                "luthier-anexar-porId",
+                "luthier/{id}/anexar",
+                new { controller = "Luthier", action = "AnexarPorId", id = 0 }
+            );
+
+            routes.MapRoute(
                 "admin-portal",
                 "admin/portal",
                 new { controller = "Admin", action = "Index" }

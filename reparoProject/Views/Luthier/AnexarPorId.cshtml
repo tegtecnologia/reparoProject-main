@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Anexar";
+    dynamic view = ViewBag.IdDoLuthier;
+    int IdDoLuthier = view;
+    Layout = "~/Views/Shared/_LayoutAnexo.cshtml";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<h3 style="margin-top: 10px;">Adicione a imagem do luthier</h3>
+@using (Html.BeginForm("AnexarFotoLuthier", "Luthier", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div>
+        @Html.TextBox("string", "", new { type = "string" })
+        @Html.TextBox("file", "", new { type = "file" }) <br /><br />
+        <input class="btn-primary" style="background-color: darkseagreen; border-color: darkseagreen; color: white;" type="submit" value="Atualizar foto de perfil" />
+        @ViewBag.Message
+    </div>
+}
+
+<script>
+    jQuery(function ($) {
+        $(document).ready(function () {
+            document.getElementById('string').style.display = "none";
+            document.getElementById('string').value = "@IdDoLuthier";
+        });
+    });
+</script>
