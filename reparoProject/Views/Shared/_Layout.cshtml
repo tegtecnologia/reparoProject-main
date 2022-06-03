@@ -121,20 +121,8 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/admin/portal">Administrador</a>
                 </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/">A1</a>
-                        <a class="dropdown-item" href="/">A2</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">A3</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">A4</a>
+                <li>
+                    <a class="nav-link" href="/">Procurar profissionais</a>
                 </li>
             </ul>
             <div class="collapse navbar-collapse">
@@ -217,12 +205,12 @@
         $(window).scroll(function () {
             var scroll = $(window).scrollTop();
             //>=, not <=
-            if (scroll >= 60) {
+            /*if (scroll >= 60) {
                 //clearHeader, not clearheader - caps H
                 $(".navbar").addClass("bg-light");
             } else {
                 $(".navbar").removeClass("bg-light");
-            }
+            }*/
         }); //missing );
         // document ready
     });

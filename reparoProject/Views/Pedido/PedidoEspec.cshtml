@@ -6,6 +6,18 @@
     var pedido = ViewBag.Pedido;
     List<Business.ImagemPedido> listaImagens = ViewBag.ImagensDoPedido;
     var luthierResponsavel = ViewBag.LuthierResponsavel;
+
+    var contatosLuthier = new Business.Contato().BuscaContatosDeLuthiersPorId(luthierResponsavel.id);
+    string celularLuthier = "";
+
+    foreach(var contato in contatosLuthier)
+    {
+        if(contato.celular == 1)
+        {
+            celularLuthier = "55" + contato.codigo + contato.numero;
+        }
+    }
+
     var instrumento = new Business.Instrumento();
     if (ViewBag.Instrumento.Count > 0)
     {
@@ -88,6 +100,10 @@
 @{
     if (luthierResponsavel.id == Convert.ToInt32(ViewBag.IdLuthierLogado) || clienteDoPedido.id == Convert.ToInt32(ViewBag.IdClienteLogado))
     {
+        string textoWpp = "Olá, eu sou " + clienteDoPedido.nome + ", dono do pedido " + pedido.id + " no Réparo.";
+        <h3>Fale com o Luthier via WhatsApp</h3>
+        <a href="https://wa.me/@celularLuthier?text=@textoWpp" class="btn btn-secondary" style="width: 300px; background: #ffd42a; color: rgba(0,0,0,.5); border: white;">Abrir conversa</a>
+        <br /><hr class="my-4" />
         <h3>Informações do pedido</h3>
 
         <table class="table">
@@ -185,13 +201,13 @@
                                 if (iteradorCarousel == 0)
                                 {
                                     <div class="carousel-item active">
-                                        <img width="400px" height="400px" src="@caminhoImg" alt="First slide">
+                                        <img width="500px" height="500px" src="@caminhoImg" alt="First slide">
                                     </div>
                                 }
                                 else if (iteradorCarousel != 0)
                                 {
                                     <div class="carousel-item">
-                                        <img width="400px" height="400px" src="@caminhoImg" alt="Second slide">
+                                        <img width="300px" height="300px" src="@caminhoImg" alt="Second slide">
                                     </div>
                                 }
                                 iteradorCarousel = iteradorCarousel + 1;
@@ -274,24 +290,7 @@
                 </table>
             </div>
         </div>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
+        <br /><br /><br /><br /><br /><br /> <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><label></label>
     }
     else
     {

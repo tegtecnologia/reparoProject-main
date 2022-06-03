@@ -57,11 +57,11 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 
 @{
-    if (TempData["luthierEscolhido"] == null)
+    if (TempData["luthierEscolhido"] == null || TempData["instFinal"] == null)
     {
-        <label>Por favor, volte à pagina do luthier escolhido e clique no botão <label style="color: red;">Solicitar serviço</label> novamente.</label>
+        <label style="font-size: 20px;">Por favor, volte à <a href="/" style="color: rgba(0,0,0,.5); font-size: 40px">página principal</a>, refaça a filtragem e tente realizar seu pedido novamente.</label>
     }
-    else if (contaLogada.id != null && contaLogada.usuario != null && contaLogada.email != null && luthierEscolhido != null)
+    else if (contaLogada.id != null && contaLogada.usuario != null && contaLogada.email != null && luthierEscolhido != null && clienteLogado.id != 0) // X
     {
         <label>Preencha todos os campos e envie seu pedido! &#128516;</label>
 

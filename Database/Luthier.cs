@@ -53,6 +53,23 @@ namespace Database
             }
         }
 
+        public DataTable BuscaTudoPorId(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "select * from luthiers where id = " + id;
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                adapter.SelectCommand = command;
+
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                return table;
+            }
+        }
+
         public DataTable BuscarDadosPorId(int id)
         {
             using (SqlConnection connection = new SqlConnection(sqlConn()))
@@ -74,7 +91,7 @@ namespace Database
         {
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
-                string queryString = "insert into luthiers (nome, cpf, cnpj, email, usuario) values ('" + nome + "', " + cpf + ", '" + cnpj + "', '" + email + "', '" + usuario + "')";
+                string queryString = "insert into luthiers (nome, cpf, cnpj, email, usuario, dataCriacao) values ('" + nome + "', " + cpf + ", '" + cnpj + "', '" + email + "', '" + usuario + "', getdate())";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
                 command.ExecuteNonQuery();

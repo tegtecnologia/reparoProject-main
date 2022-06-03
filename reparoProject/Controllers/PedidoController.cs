@@ -252,6 +252,7 @@ namespace reparoProject.Controllers
             if (p != null)
                 {
                     pedidoAtual = p[0];
+                    pedidoAtual.Atualiza();
                     pedidoAtual.AtualizaStatus(idPedido, idStatus);
                 }
 

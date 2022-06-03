@@ -38,11 +38,93 @@
 }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+<style>
+    body {
+        background-color: #000;
+    }
+
+    .jumbotron {
+        position: relative;
+        /*background: none;*/
+        background: black;
+    }
+
+        .jumbotron:after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            width: 100%;
+            height: 100%;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+    .about_us {
+        display: flex;
+        margin-top: 100px;
+    }
+
+    .video_about_us {
+        width: 60%;
+    }
+
+    .button_text_about_us {
+        width: 40%;
+    }
+
+    .text_about_us h1 {
+        color: #FFF;
+    }
+
+    .text_about_us p {
+        color: #FFF;
+        font-size: 15px;
+    }
+
+    .btn_about_us {
+        padding: 15px 50px;
+        border-radius: 10px;
+        background: #F7AA1C;
+        color: #FFF;
+        font-weight: bold;
+    }
+
+    .button_about_us {
+        margin-top: 62px;
+        margin-left: 70px;
+    }
+
+    .news {
+        background-color: #F7AA1C;
+        margin-top: 100px;
+    }
+
+    .specialist {
+        margin-top: 100px;
+    }
+
+    .specialist_text {
+        color: #FFF;
+        font-weight: bold;
+        font-size: 40px;
+        width: 60%;
+    }
+
+    .img_specialist {
+        margin-top: 50px;
+    }
+</style>
+
 <div class="jumbotron">
     <center>
         <form action="/filtrar" method="post">
-            <h2 style="color: rgba(0,0,0,.5)">O que você precisa?</h2><br />
-            <label style="color: rgba(0,0,0,.5)">Qual é o seu instrumento com pendência?</label><br />
+            <h2 style="color: white;">O que você precisa?</h2>
+            <label style="color: white">Qual é o seu instrumento com pendência?</label><br />
             <select class="form-select" style="color: black;" onchange="coletarDadosDoSelect();" id="selInstrumentos" name="selInstrumentos">
                 <option id="optionDefault" name="optionDefault" value="@idDoInstrumentoSelecionado">@nomeDoInstrumentoSelecionado</option>
                 @foreach (var instrumento in instrumentos)
@@ -75,6 +157,48 @@
             }
             <br /><br />
             <input type="submit" name="btnSubmit" id="btnSubmit" class="btn btn-primary" value="Filtrar profissionais" class="btn btn-secondary" style="background: white; color: rgba(0,0,0,.5); border: white; display:@manageBotao;" />
+
+
+
+            <div class="about_us">
+                <div class="video_about_us">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/SViXoFL6iyc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+
+                <div class="button_text_about_us">
+                    <div class="text_about_us">
+                        <h1>A <span style="color: #F7AA1C">primeira</span> plataforma voltada para serviços em instrumentos.</h1>
+                        <p>Conheça mais sobre a nossa plataforma e como podemos te ajudar com (Ré)paros de seus instrumentos.</p>
+                    </div>
+
+                    <div class="button_about_us">
+                        <button class="btn_about_us">VEJA COMO FUNCIONA</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="news">
+                <img src="~/UploadedFiles/src/Alo-removebg-preview.png" width="40%">
+
+            </div>
+
+            <div class="specialist">
+                <h1 class="specialist_text">Conheça alguns de nossos melhores profissionais</h1>
+
+                <div class="img_specialist">
+                    <img src="~/UploadedFiles/src/espe-removebg-preview.png" width="33%" />
+                    <img src="~/UploadedFiles/src/espe-removebg-preview.png" width="33%" />
+                    <img src="~/UploadedFiles/src/espe-removebg-preview.png" width="33%" />
+                </div>
+            </div>
+
+
+
+
+
+
+
+
             <input type="text" name="instrumento" id="instrumento" style="display:none;" value="1" />
             <input type="text" name="idInstrumentoFinal" id="idInstrumentoFinal" style="display:none;" />
             <input type="text" name="idServicoFinal" id="idServicoFinal" style="display:none;" />

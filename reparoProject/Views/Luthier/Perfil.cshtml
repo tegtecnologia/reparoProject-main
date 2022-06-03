@@ -6,10 +6,12 @@
     List<Business.HabilidadePorLuthier> habilidadesAtualLuthier = ViewBag.HabilidadesDoLuthier;
     List<Business.Servico> todosServicos = ViewBag.Servicos;
     int idDoLuthier = 0;
+    int qtdPedidosRecebidos = 0;
+    var qtdPedidosDoLuthier = new Business.Pedido().BuscarPedidoPorLuthier(dadosLuthier.id);
 
-    if(luthier != null)
+    if (luthier != null)
     {
-        if(luthier.Count > 0)
+        if (luthier.Count > 0)
         {
             idDoLuthier = luthier[0].id;
         }
@@ -29,9 +31,9 @@
     var idServicoEscolhidoPorUsuario = Convert.ToInt32(TempData["servicoEscolhido"]);
     TempData["servFinal"] = idServicoEscolhidoPorUsuario;
     string servicoEscolhidoPorUsuario = "";
-    foreach(var ss in todosServicos)
+    foreach (var ss in todosServicos)
     {
-        if(ss.id == idServicoEscolhidoPorUsuario)
+        if (ss.id == idServicoEscolhidoPorUsuario)
         {
             servicoEscolhidoPorUsuario = ss.descricao;
         }
@@ -41,9 +43,9 @@
     var idInstrumentoEscolhidoPorUsuario = Convert.ToInt32(TempData["instrumentoEscolhido"]);
     TempData["instFinal"] = idInstrumentoEscolhidoPorUsuario;
     string instrumentoEscolhidoPorUsuario = "";
-    foreach(var ii in instrumentos)
+    foreach (var ii in instrumentos)
     {
-        if(ii.id == idInstrumentoEscolhidoPorUsuario)
+        if (ii.id == idInstrumentoEscolhidoPorUsuario)
         {
             instrumentoEscolhidoPorUsuario = ii.nome;
         }
@@ -82,27 +84,42 @@
     }
 }
 
+@if (instrumentoEscolhidoPorUsuario != "" && servicoEscolhidoPorUsuario != "")
+{
+    <form action="~/pedido/solicitar" method="post">
+        <input type="hidden" id="idLuthier" name="idLuthier" value="@dadosLuthier.id" />
+        <input type="submit" id="btnSolicitarServico" name="btnSolicitarServico" class="btn btn-secondary" size="55" style="width: 1300px; background: #ffd42a; color: rgba(0,0,0,.5); border: white;" value="Solicitar serviço" />
+        <br /><small><u>@instrumentoEscolhidoPorUsuario > @servicoEscolhidoPorUsuario</u> (Este será o serviço que você solicitará caso clique no botão acima, conforme a filtragem que realizou há pouco.)</small>
+    </form>
+    <br />
+}
+else
+{
+    <label>Para contratar algum serviço deste profissional, volte à <a href="/" style="color: #ffd42a">página inicial</a>, realiza a filtragem e escolha @dadosLuthier.nome! &#128516;</label>
+}
+
 <div>
     <div style="float:left;">
         <h2><u>Dados do profissional</u></h2>
         <table class="table">
             <tr>
-                <td>ID (Luthier)</td>
-                <td>Nome do luthier</td>
-                <td>ID (Usuário)</td>
-                <td>Avaliação</td>
-                <td>CNPJ</td>
-                <td>CPF</td>
-                <td>Email</td>
-                <td>Foto de perfil</td>
+                <td><b>ID (Luthier)</b></td>
+                <td><b>Nome do luthier</b></td>
+                <td><b>Pedidos recebidos</b></td>
+                <td><b>CNPJ</b></td>
+                <td><b>CPF</b></td>
+                <td><b>Email</b></td>
+                <td><b>Foto de perfil</b></td>
             </tr>
             <tr>
+                @{
+                    string cpfDoLuthier = "********" + Convert.ToString(dadosLuthier.cpf[dadosLuthier.cpf.ToString().Length - 3]) + Convert.ToString(dadosLuthier.cpf[dadosLuthier.cpf.ToString().Length - 2]) + Convert.ToString(dadosLuthier.cpf[dadosLuthier.cpf.ToString().Length - 1]);
+                }
                 <td>@dadosLuthier.id</td>
                 <td>@dadosLuthier.nome</td>
-                <td>Pendente</td>
-                <td>@dadosLuthier.avaliacao</td>
+                <td>@qtdPedidosDoLuthier.Count</td>
                 <td>@dadosLuthier.cnpj</td>
-                <td>@dadosLuthier.cpf</td>
+                <td>@cpfDoLuthier</td>
                 <td>@dadosLuthier.email</td>
                 <td>
                     @if (fotoPerfilLuthierAtual.caminhoImagem == null || fotoPerfilLuthierAtual.idLuthier == 0 || fotoPerfilLuthierAtual.nomeImagem == null || fotoPerfilLuthierAtual.tipoImg == null)
@@ -119,23 +136,13 @@
         <br />
     </div>
 </div>
-
-<form action="~/pedido/solicitar" method="post">
-    <input type="hidden" id="idLuthier" name="idLuthier" value="@dadosLuthier.id"/>
-    <input type="submit" id="btnSolicitarServico" name="btnSolicitarServico" class="btn btn-secondary" size="55" style="width: 1300px; background: #ffd42a; color: rgba(0,0,0,.5); border: white;" value="Solicitar serviço" />
-    @if(instrumentoEscolhidoPorUsuario != "" && servicoEscolhidoPorUsuario != "")
-    {
-        <br /><small><u>@instrumentoEscolhidoPorUsuario > @servicoEscolhidoPorUsuario</u> (Este será o serviço que você solicitará caso clique no botão acima, conforme a filtragem que realizou há pouco.)</small>
-    }
-</form>
-
 <br />
 
 <h2><u>Serviços disponíveis pelo profissional</u></h2>
 <table class="table">
-    <tr >
-        <td>Serviço</td>
-        <td>Instrumento alvo</td>
+    <tr>
+        <td><b>Serviço</b></td>
+        <td><b>Instrumento alvo</b></td>
     </tr>
     @{
         int teste = 0;

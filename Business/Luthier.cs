@@ -19,7 +19,7 @@ namespace Business
         public int tipoServico { get; set; }
         public double avaliacao { get; set; }
         public string img { get; set; }
-
+        public DateTime dataCriacao { get; set; }
         public List<Luthier> BuscarPorId(int id)
         {
             var lista = new List<Luthier>();
@@ -27,8 +27,13 @@ namespace Business
             foreach (DataRow row in luthierDb.BuscaPorId(id).Rows)
             {
                 var luthier = new Luthier();
-                luthier.id = Convert.ToInt32(row["idLuthier"]);
-                luthier.tipoServico = Convert.ToInt32(row["idServico"]);
+                luthier.id = Convert.ToInt32(row["id"]);
+                luthier.nome = row["nome"].ToString();
+                luthier.cpf = row["cpf"].ToString();
+                luthier.cnpj = row["cnpj"].ToString();
+                luthier.email = row["email"].ToString();
+                luthier.usuario = Convert.ToInt32(row["usuario"]);
+                luthier.dataCriacao = Convert.ToDateTime(row["dataCriacao"]);
                 lista.Add(luthier);
             }
             return lista;
@@ -46,6 +51,7 @@ namespace Business
                 luthier.cnpj = row["cnpj"].ToString();
                 luthier.email = row["email"].ToString();
                 luthier.usuario = Convert.ToInt32(row["usuario"]);
+                luthier.dataCriacao = Convert.ToDateTime(row["dataCriacao"]);
             }
             return luthier;
         }
@@ -57,8 +63,13 @@ namespace Business
             foreach (DataRow row in itensDoBanco.FiltroLuthierPorServico(tipoServico).Rows)
             {
                 var luthier = new Luthier();
-                luthier.id = Convert.ToInt32(row["idLuthier"]);
-                luthier.tipoServico = Convert.ToInt32(row["idServico"]);
+                luthier.id = Convert.ToInt32(row["id"]);
+                luthier.nome = row["nome"].ToString();
+                luthier.cpf = row["cpf"].ToString();
+                luthier.cnpj = row["cnpj"].ToString();
+                luthier.email = row["email"].ToString();
+                luthier.usuario = Convert.ToInt32(row["usuario"]);
+                luthier.dataCriacao = Convert.ToDateTime(row["dataCriacao"]);
                 lista.Add(luthier);
             }
             return lista; 
@@ -81,6 +92,7 @@ namespace Business
                 luthier.cnpj = row["cnpj"].ToString();
                 luthier.email = row["email"].ToString();
                 luthier.usuario = Convert.ToInt32(row["usuario"]);
+                luthier.dataCriacao = Convert.ToDateTime(row["dataCriacao"]);
             }
             return luthier;
         }
@@ -98,6 +110,7 @@ namespace Business
                 luthier.cnpj = row["cnpj"].ToString();
                 luthier.email = row["email"].ToString();
                 luthier.usuario = Convert.ToInt32(row["usuario"]);
+                luthier.dataCriacao = Convert.ToDateTime(row["dataCriacao"]);
                 lista.Add(luthier);
             }
             return lista;
@@ -117,6 +130,26 @@ namespace Business
                 luthier.email = row["email"].ToString();
                 luthier.img = row["img"].ToString();
                 luthier.usuario = Convert.ToInt32(row["usuario"]);
+                luthier.dataCriacao = Convert.ToDateTime(row["dataCriacao"]);
+                lista.Add(luthier);
+            }
+            return lista;
+        }
+
+        public List<Luthier> BuscarTodasInfoPorId(int id)
+        {
+            var lista = new List<Luthier>();
+            var luthierDb = new Database.Luthier();
+            foreach (DataRow row in luthierDb.BuscaTudoPorId(id).Rows)
+            {
+                var luthier = new Luthier();
+                luthier.id = Convert.ToInt32(row["id"]);
+                luthier.nome = row["nome"].ToString();
+                luthier.cpf = row["cpf"].ToString();
+                luthier.cnpj = row["cnpj"].ToString();
+                luthier.email = row["email"].ToString();
+                luthier.usuario = Convert.ToInt32(row["usuario"]);
+                luthier.dataCriacao = Convert.ToDateTime(row["dataCriacao"]);
                 lista.Add(luthier);
             }
             return lista;

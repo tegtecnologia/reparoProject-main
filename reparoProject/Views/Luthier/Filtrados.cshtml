@@ -1,5 +1,7 @@
 ﻿@{
     List<Business.Luthier> luthiersEncontrados = (List<Business.Luthier>)TempData["luthiersPreparados"];
+    List<Business.Luthier> luthiersPreparados = new List<Business.Luthier> { };
+
     string instrumentoFiltrado = "";
     string servicoFiltrado = "";
     if (TempData["instrumentoBuscado"] != null)
@@ -11,6 +13,8 @@
     {
         servicoFiltrado = TempData["servicoBuscado"].ToString();
     }
+
+
 }
 
 @{
@@ -36,17 +40,24 @@
 
 <table class="table">
     <tr>
-        <td>ID do Luthier</td>
-        <td>Acesso ao perfil do profissional</td>
+        <td><b>Nome do Luthier</b></td>
+        <td><b>Usuário desde</b></td>
+        <td><b>Pedidos recebidos</b></td>
+        <td><b>Acesso ao perfil do profissional</b></td>
     </tr>
     @{
         if (luthiersEncontrados != null)
         {
             foreach (var luthier in luthiersEncontrados)
             {
+                var dadosLuthier = new Business.Luthier().BuscarTodasInfoPorId(luthier.id);
+                var qtdPedidosDoLuthier = new Business.Pedido().BuscarPedidoPorLuthier(luthier.id);
+                var dataCriacao = dadosLuthier[0].dataCriacao.ToString("dd/MM/yyyy");
                 <tr>
-                    <td>@luthier.id</td>
-                    <td><a href="/luthier/perfil/@luthier.id" class="btn btn-secondary" style="background: #ffd42a; color: #545255; border: white; ">Clique aqui</a></td>
+                    <td>@dadosLuthier[0].nome</td>
+                    <td>@dataCriacao</td>
+                    <td>@qtdPedidosDoLuthier.Count</td>
+                    <td><a target="_blank" href="/luthier/perfil/@luthier.id" class="btn btn-secondary" style="background: #ffd42a; color: #545255; border: white; ">Clique aqui</a></td>
                 </tr>
             }
         }
