@@ -472,7 +472,7 @@
         var id = 0;
         avaliacao = avaliacao.replace(",", ".");
 
-        if (parseInt(avaliacao) > 0 && parseInt(avaliacao) < 11) {
+        if (parseFloat(avaliacao) > 0 && parseFloat(avaliacao) <= 10) {
             $.ajax(
                 {
                     type: 'POST',
@@ -501,7 +501,7 @@
         else {
             swal({
                 title: "Opa, calma aí...",
-                text: "A sua nota para o desempenho de @luthierResponsavel.nome precisa estar entre 0 e 10.",
+                text: "A sua nota para o desempenho de @luthierResponsavel.nome precisa estar entre 0,1 e 10.",
                 icon: "error",
                 buttons: false
             });
