@@ -10,9 +10,9 @@
     var contatosLuthier = new Business.Contato().BuscaContatosDeLuthiersPorId(luthierResponsavel.id);
     string celularLuthier = "";
 
-    foreach(var contato in contatosLuthier)
+    foreach (var contato in contatosLuthier)
     {
-        if(contato.celular == 1)
+        if (contato.celular == 1)
         {
             celularLuthier = "55" + contato.codigo + contato.numero;
         }
@@ -100,10 +100,29 @@
 @{
     if (luthierResponsavel.id == Convert.ToInt32(ViewBag.IdLuthierLogado) || clienteDoPedido.id == Convert.ToInt32(ViewBag.IdClienteLogado))
     {
+        <h1>
+            Status do pedido: @if (ViewBag.StatusPedido.Count > 0)
+            {
+                @statusPedido.descricao
+            }
+            else
+            {
+                <label>Desconhecido</label>
+            }
+        </h1>
+
+        if (ViewBag.StatusPedido.Count > 0 && statusPedido.descricao == "Finalizado")
+        {
+            if (clienteDoPedido.id == Convert.ToInt32(ViewBag.IdClienteLogado) && Convert.ToDouble(pedido.avaliacao) <= 0)
+            {
+                <label>Que tal avaliar o trabalho e atendimento de @luthierResponsavel.nome? É só clicar <a style="color:blueviolet" id="lblModalAvalia" name="lblModalAvalia" onclick="abrirModalAvalia()">aqui</a> e seguir os passos. <span style='font-size:35px;'>&#9996;</span></label>
+            }
+        }
         string textoWpp = "Olá, eu sou " + clienteDoPedido.nome + ", dono do pedido " + pedido.id + " no Réparo.";
         <h3>Fale com o Luthier via WhatsApp</h3>
-        <a href="https://wa.me/@celularLuthier?text=@textoWpp" class="btn btn-secondary" style="width: 300px; background: #ffd42a; color: rgba(0,0,0,.5); border: white;">Abrir conversa</a>
-        <br /><hr class="my-4" />
+        <a href="https://wa.me/@celularLuthier?text=@textoWpp" target="_blank" class="btn btn-secondary" style="width: 300px; background: #ffd42a; color: rgba(0,0,0,.5); border: white;">Abrir conversa</a>
+        <br />
+        <hr class="my-4" />
         <h3>Informações do pedido</h3>
 
         <table class="table">
@@ -290,7 +309,29 @@
                 </table>
             </div>
         </div>
-        <br /><br /><br /><br /><br /><br /> <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><label></label>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br /><label></label>
     }
     else
     {
@@ -311,6 +352,35 @@
 
     }
 }
+
+<button style="display:none;" type="button" class="btn btn-primary" id="btnModalAvalia" name="btnModalAvalia" data-toggle="modal" data-target="#modalAvalia">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="modalAvalia" name="modalAvalia" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Avalie o trabalho de @luthierResponsavel.nome</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label style="color: black;">Insira sua avaliação do trabalho e atendimento do Luthier</label><span style="color: red; margin-left: 2px;">*</span>
+                    <small id="emailHelp" class="form-text text-muted">Escolha um número de 0 a 10 e confirme a avaliação</small>
+                    <input type="text" class="form-control" id="txtAvaliacao" name="txtAvaliacao" placeholder="Insira apenas números">
+                </div><br />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" onclick="avaliarLuthier()" style="background-color: #ffd42a; border-color: #ffd42a ">Confirmar avaliação</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script>
@@ -390,5 +460,54 @@
                         alert("Error: " + response);
                     }
             });
+    }
+
+    function abrirModalAvalia() {
+        document.getElementById('btnModalAvalia').click();
+    }
+
+    function avaliarLuthier() {
+        var avaliacao = document.getElementById('txtAvaliacao').value;
+        var idPedido = '@pedido.id';
+        var id = 0;
+        avaliacao = avaliacao.replace(",", ".");
+
+        if (parseInt(avaliacao) > 0 && parseInt(avaliacao) < 11) {
+            $.ajax(
+                {
+                    type: 'POST',
+                    dataType: 'JSON',
+                    url: '@Url.Action("AvaliarPedido", "Pedido")' + '/' + id,
+                    data: { 'idPedido': idPedido, 'avaliacao': avaliacao },
+                    success:
+                        function (response) {
+                            console.log(response);
+                            swal({
+                                title: "Feedback é sempre importante!",
+                                text: "Sua avaliação foi computada com sucesso.",
+                                icon: "success",
+                                buttons: false
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 4500);
+                        },
+                    error:
+                        function (response) {
+                            alert("Error: " + response);
+                        }
+                });
+        }
+        else {
+            swal({
+                title: "Opa, calma aí...",
+                text: "A sua nota para o desempenho de @luthierResponsavel.nome precisa estar entre 0 e 10.",
+                icon: "error",
+                buttons: false
+            });
+            document.getElementById('txtAvaliacao').value = "";
+        }
+
+        console.log("Número do pedido: " + '@pedido.id' + "\nAvaliação: " + document.getElementById('txtAvaliacao').value);
     }
 </script>

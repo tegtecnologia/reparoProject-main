@@ -213,5 +213,10 @@ namespace Business
         {
             new Database.Pedido().AtualizarStatus(idPedido, idStatus);
         }
+
+        public void AvaliaPedido(int idPedido, string avaliacao)
+        {
+            new Database.Pedido().AvaliarPedido(idPedido, avaliacao);
+        }
     }
 }

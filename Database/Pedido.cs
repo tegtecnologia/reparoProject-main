@@ -130,5 +130,16 @@ namespace Database
                 command.ExecuteNonQuery();
             }
         }
+
+        public void AvaliarPedido(int idPedido, string avaliacao)
+        {
+            using (SqlConnection connection = new SqlConnection(sqlConn()))
+            {
+                string queryString = "update pedidos set avaliacao = " + avaliacao + " where id = " + idPedido;
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }

@@ -260,5 +260,21 @@ namespace reparoProject.Controllers
             result = this.Json(JsonConvert.SerializeObject(p[0]), JsonRequestBehavior.AllowGet);
             return result;
         }
+
+        public ActionResult AvaliarPedido(int idPedido, string avaliacao)
+        {
+            var p = new Pedido().BuscarPedidoPorId(idPedido);
+            var pedidoAtual = new Pedido();
+
+            if (p != null)
+            {
+                pedidoAtual = p[0];
+                pedidoAtual.AvaliaPedido(idPedido, avaliacao);
+            }
+
+            JsonResult result = new JsonResult();
+            result = this.Json(JsonConvert.SerializeObject(p[0]), JsonRequestBehavior.AllowGet);
+            return result;
+        }
     }
 }
