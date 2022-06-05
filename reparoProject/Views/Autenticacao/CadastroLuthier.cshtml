@@ -122,26 +122,26 @@
                     </div><br />
 
                     <!---<h3 style="color: white; font-weight: 300;"><u>Instrumentos</u></h3><span style="color: darkseagreen; margin-left: 225px;"><input type="button" id="btnInstrumentos" name="btnInstrumentos" onclick="revelaListaInstrumentos();" class="btn-info" value="Revelar lista de instrumentos" style="background-color: darkseagreen; border-color: darkseagreen" /></span>
-                    <div class="form-group">
-                        <div id="divInstrumentos" name="divInstrumentos" style="display:none;"><br />
-                            <table class="table" style="color:white;">
-                                <tr>
-                                    <td><center style="font-size: 20px;">Instrumento</center></td>
-                                    <td><center style="font-size: 20px;">Domino/Não domino</center></td>
-                                </tr>
-                                @{/*
+    <div class="form-group">
+        <div id="divInstrumentos" name="divInstrumentos" style="display:none;"><br />
+            <table class="table" style="color:white;">
+                <tr>
+                    <td><center style="font-size: 20px;">Instrumento</center></td>
+                    <td><center style="font-size: 20px;">Domino/Não domino</center></td>
+                </tr>
+                @{/*
 
-                                    foreach (var instrumento in instrumentos)
-                                    {
-                                        <tr>
-                                            <td><center>@instrumento.nome</center></td>
-                                            <td><center><input type="checkbox" onclick="coletaInstrumento(this);" id="cbInstrumento/@instrumento.id" name="cbInstrumento/@instrumento.id" class="form-check-input" value="@instrumento.id" /></center></td>
-                                        </tr>
-                                    }
-                                */}
-                            </table>
-                        </div>
-                    </div>-->
+                    foreach (var instrumento in instrumentos)
+                    {
+                        <tr>
+                            <td><center>@instrumento.nome</center></td>
+                            <td><center><input type="checkbox" onclick="coletaInstrumento(this);" id="cbInstrumento/@instrumento.id" name="cbInstrumento/@instrumento.id" class="form-check-input" value="@instrumento.id" /></center></td>
+                        </tr>
+                    }
+                */}
+            </table>
+        </div>
+    </div>-->
 
                     <h3 style="color: white; font-weight: 300;"><u>Serviços e instrumentos</u></h3>
 
@@ -229,6 +229,8 @@
                         <input type="text" class="form-control" id="txtUf" name="txtUf">
                     </div><br />
 
+                    <input type="text" id="txtLatitude" name="txtLatitude" style="display:none;" />
+                    <input type="text" id="txtLongitude" name="txtLongitude" style="display:none;" />
                     <input type="text" name="instrumentosSelecionados" id="instrumentosSelecionados" style="display:none;" />
                     <input type="text" name="habilidadesSelecionadas" id="habilidadesSelecionadas" value="" style="display:none;" />
                     <div class="centraliza">
@@ -265,7 +267,7 @@
     }
 
     jQuery(function ($) {
-        $("input[name='txtCep']").change(function () { // Mudar para .change depois dos testes
+        $("input[name='txtCep']").change(function () {
             var cep_code = $(this).val();
             if (cep_code.length <= 0) return;
             $.get("http://viacep.com.br/ws/" + cep_code + "/json/", { code: cep_code }, function (resultado) {
@@ -282,6 +284,26 @@
                     $("input[name='txtBairro']").val(resultado.bairro);
                     $("input[name='txtLogradouro']").val(resultado.logradouro);
                     $("input[name='txtUf']").val(resultado.uf);
+
+                    jQuery(function ($) {
+                        var linkRequisicao = "https://nominatim.openstreetmap.org/search.php?street=" + resultado.logradouro + "&city=" + resultado.localidade + "&state=" + resultado.uf + "&format=jsonv2";
+                        console.log(linkRequisicao);
+
+                        $.get(linkRequisicao, function (resultado) {
+                            if (resultado.length >= 1) {
+                                validaSeAchou = true;
+                                console.log(resultado.length);
+                                if (resultado.length == 0) {
+                                }
+                                else {
+                                    document.getElementById('txtLatitude').value = resultado[0].lat;
+                                    document.getElementById('txtLongitude').value = resultado[0].lon;
+                                    console.log(document.getElementById('txtLongitude').value);
+                                    console.log(document.getElementById('txtLatitude').value);
+                                }
+                            }
+                        });
+                    });
                 }
             });
         });

@@ -1,6 +1,7 @@
 ﻿@{
     List<Business.Luthier> luthiersEncontrados = (List<Business.Luthier>)TempData["luthiersPreparados"];
     List<Business.Luthier> luthiersPreparados = new List<Business.Luthier> { };
+    int iterador = 0;
 
     string instrumentoFiltrado = "";
     string servicoFiltrado = "";
@@ -9,32 +10,88 @@
         instrumentoFiltrado = TempData["instrumentoBuscado"].ToString();
     }
 
-    if(TempData["servicoBuscado"] != null)
+    if (TempData["servicoBuscado"] != null)
     {
         servicoFiltrado = TempData["servicoBuscado"].ToString();
     }
 
+    List<Business.LocalLuthier> locaisDosLuthiersEncontrados = new List<Business.LocalLuthier> { };
 
+    if (luthiersEncontrados != null)
+    {
+        foreach (var prof in luthiersEncontrados)
+        {
+            var localDoLuthier = new Business.LocalLuthier().BuscaPorLuthier(prof.id);
+
+            if (localDoLuthier.Count > 0)
+            {
+                locaisDosLuthiersEncontrados.Add(localDoLuthier[0]);
+            }
+        }
+    }
+
+    int qtdLocais = locaisDosLuthiersEncontrados.Count;
+    string latitude = "";
+    string longitude = "";
+
+    Dictionary<int, string> nomesPorLuthier = new Dictionary<int, string>();
+    int idLuthier = 0;
+
+    foreach (var luthier in luthiersEncontrados)
+    {
+        var dadosLuthier = new Business.Luthier().BuscarTodasInfoPorId(luthier.id);
+        nomesPorLuthier.Add(luthier.id, dadosLuthier[0].nome);
+    }
 }
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+      crossorigin="" />
+
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin=""></script>
+
+<style>
+    #map {
+        height: 400px;
+    }
+</style>
 
 @{
     if (luthiersEncontrados != null)
     {
         <h1>Luthiers encontrados</h1>
         <h3>@instrumentoFiltrado > @servicoFiltrado</h3>
-        if(@luthiersEncontrados.Count == 1)
+        if (@luthiersEncontrados.Count == 1)
         {
-            <small>1 profissional foi encontrado!</small><br /><br />
+            <small>1 profissional foi encontrado!</small>
+            <br />
+            <br />
         }
         else
         {
-            <small>@luthiersEncontrados.Count profissionais foram encontrados!</small><br /><br />
+            <small>@luthiersEncontrados.Count profissionais foram encontrados!</small>
+            <br />
+            <br />
         }
-        
+
     }
     else
     {
         <h1>Não foram encontrados profissionais...</h1>
+    }
+}
+<input type="text" id="qtdLocais" name="qtdLocais" value="@qtdLocais" style="display:none;" />
+
+@{
+    foreach (var local in locaisDosLuthiersEncontrados)
+    {
+        latitude = local.latitude.ToString().Replace(",", ".");
+        longitude = local.longitude.ToString().Replace(",", ".");
+        <input type="text" id="local/@local.id" name="local/@local.id" value="[@latitude,@longitude]" style="display:none;" />
+        <input type="text" id="nomeLocal/@local.id" name="@local.id" value="@local.nomeLocal" style="display:none;" />
     }
 }
 
@@ -63,3 +120,38 @@
         }
     }
 </table>
+
+<div id="map"></div>
+
+<script>
+    var tileLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+        {
+            attribution: false
+        });
+
+    var map = L.map('map',
+        {
+            zoomControl: true,
+            layers: [tileLayer],
+            maxZoom: 18,
+            minZoom: 1
+        })
+        .setView([43.64701, -79.39425], 15);
+
+    setTimeout(function () { map.invalidateSize() }, 800);
+
+    jQuery(function ($) {
+        $(document).ready(function () {
+            for (i = 1; i <= document.getElementById('qtdLocais').value; i++) {
+                var valores = JSON.parse(document.getElementById('local/' + i).value);
+                console.log("Local " + i + "\nLatitude: " + valores[0] + "\nLongitude: " + valores[1]);
+                var latitude = valores[0];
+                var longitude = valores[1];
+                var nomeDoLocal = document.getElementById('nomeLocal/' + i).value;
+
+                var marcador = L.marker([latitude, longitude]).addTo(map);
+                marcador.bindPopup("<b>Luthier: " + i + "</b><br> Lesgo").openPopup();
+            }
+        });
+    });
+</script>

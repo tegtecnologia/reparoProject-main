@@ -203,6 +203,17 @@ namespace freeCommerce.Controllers
                 endereco.idElemento = lastLuthierCreated.id;
                 endereco.SaveLuthier();
 
+                var localDoLuthier = new LocalLuthier();
+                localDoLuthier.idLuthier = lastLuthierCreated.id;
+                localDoLuthier.nomeLocal = "Residência";
+                localDoLuthier.logradouro = Request["txtLogradouro"];
+                localDoLuthier.cidade = Request["txtCidade"];
+                localDoLuthier.bairro = Request["txtBairro"];
+                localDoLuthier.estado = Request["txtUf"];
+                localDoLuthier.longitude = Request["txtLongitude"];
+                localDoLuthier.latitude = Request["txtLatitude"];
+                localDoLuthier.Salvar();
+
                 string habilidadesDoLuthier = Request["habilidadesSelecionadas"];
                 JavaScriptSerializer j = new JavaScriptSerializer();
                 object a = j.Deserialize(habilidadesDoLuthier, typeof(object));
