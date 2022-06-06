@@ -72,7 +72,7 @@
             <div class="form-group">
                 <h3 style="color: white; font-weight: 300;"><u>Instrumento</u></h3>
                 <label style="color: white;">Nome do instrumento</label>
-                <input type="text" class="form-control" id="txtNome" name="txtNome" onchange="formataInicial()" placeholder="Ex: Piano"><br />
+                <input type="text" class="form-control" id="txtNome" name="txtNome" placeholder="Ex: Piano"><br />
                 <h3 style="color: white; font-weight: 300;"><u>Serviços</u></h3>
 
                 <small id="emailHelp" class="form-text text-muted"><i style="color: white">Marque ao menos 1 serviço que possa ser feito no novo instrumento.</i></small><br />
@@ -221,11 +221,5 @@
                     swal("Ok, o instrumento não será deletado.");
                 }
             });
-    }
-
-    function formataInicial() {
-        var nomeInserido = document.getElementById('txtNome').value;
-        nomeInserido[0] = nomeInserido[0].toUpperCase();
-        document.getElementById('txtNome').value = nomeInserido[0].toUpperCase() + nomeInserido.slice(1).toLowerCase();
     }
 </script>

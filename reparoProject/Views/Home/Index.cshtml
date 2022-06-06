@@ -13,7 +13,7 @@
     {
         foreach (var item in instrumentos)
         {
-            if(servicosDoInstrumento.Count > 0)
+            if (servicosDoInstrumento.Count > 0)
             {
                 if (servicosDoInstrumento[0] != null)
                 {
@@ -27,7 +27,7 @@
         }
     }
 
-    if(servicosDoInstrumento != null)
+    if (servicosDoInstrumento != null)
     {
         manageBotao = "block";
     }
@@ -191,14 +191,10 @@
                     <img src="~/UploadedFiles/src/espe-removebg-preview.png" width="33%" />
                 </div>
             </div>
+            <input style="display:none" type="text" id="btnLocaliza" onclick="getLocation()">Try It</input>
 
-
-
-
-
-
-
-
+            
+            <input type="text" name="localizacaoUsuario" id="localizacaoUsuario" style="display:none;"/>
             <input type="text" name="instrumento" id="instrumento" style="display:none;" value="1" />
             <input type="text" name="idInstrumentoFinal" id="idInstrumentoFinal" style="display:none;" />
             <input type="text" name="idServicoFinal" id="idServicoFinal" style="display:none;" />
@@ -221,6 +217,31 @@
         var opcaoTexto = select.options[select.selectedIndex].text;
         var opcaoValor = select.options[select.selectedIndex].value;
         document.getElementById('idServicoFinal').value = opcaoValor;
+    }
+
+
+
+    jQuery(function ($) {
+        $(document).ready(function () {
+            document.getElementById('btnLocaliza').click();
+            console.log(document.getElementById('demo').innerHTML);
+            var localizacaoDoUsuario = document.getElementById('demo').innerHTML;
+        });
+    });
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        }
+    }
+
+    function showPosition(position) {
+        var array = [];
+        array.push(position.coords.latitude);
+        array.push(position.coords.longitude);
+        var dado = JSON.stringify(array);
+        document.getElementById('localizacaoUsuario').value = dado;
+        
     }
 
     jQuery(function ($) {

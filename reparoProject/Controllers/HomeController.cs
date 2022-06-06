@@ -1,9 +1,12 @@
 ﻿using Business;
+using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace reparoProject.Controllers
 {
@@ -61,7 +64,19 @@ namespace reparoProject.Controllers
             TempData["instrumentoEscolhido"] = instrumento;
             TempData["servicoEscolhido"] = servico;
 
-            if(servico == "")
+            string localizacao = Request["localizacaoUsuario"];
+            JavaScriptSerializer j = new JavaScriptSerializer();
+            object a = j.Deserialize(localizacao, typeof(object));
+            IList localizacaoDoUsuario = a as IList;
+            TempData["localizacaoDoUsuario"] = localizacaoDoUsuario;
+
+            if (localizacaoDoUsuario.Count > 1)
+            {
+                TempData["latitudeUsuario"] = localizacaoDoUsuario[0];
+                TempData["longitudeUsuario"] = localizacaoDoUsuario[1];
+            }
+
+            if (servico == "")
             {
                 servico = "0";
             }
