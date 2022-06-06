@@ -102,13 +102,15 @@
 <input type="text" id="qtdLocais" name="qtdLocais" value="@qtdLocais" style="display:none;" />
 
 @{
+    iterador = 1;
     foreach (var local in locaisDosLuthiersEncontrados)
     {
         latitude = local.latitude.ToString().Replace(",", ".");
         longitude = local.longitude.ToString().Replace(",", ".");
-        <input type="text" id="local/@local.id" name="local/@local.id" value="[@latitude,@longitude]" style="display:none;" />
-        <input type="text" id="nomeLuthier/@local.id" name="nomeLuthier/@local.id" value="@nomesPorLuthier[local.idLuthier]" style="display:none;" />
-        <input type="text" id="luthierId/@local.id" name="luthierId/@local.id" value="@local.idLuthier" style="display:none;" />
+        <input type="text" id="local/@iterador" name="local/@iterador" value="[@latitude,@longitude]" style="display:none;" />
+        <input type="text" id="nomeLuthier/@iterador" name="nomeLuthier/@iterador" value="@nomesPorLuthier[local.idLuthier]" style="display:none;" />
+        <input type="text" id="luthierId/@iterador" name="luthierId/@iterador" value="@local.idLuthier" style="display:none;" />
+        iterador = iterador + 1;
     }
 }
 
