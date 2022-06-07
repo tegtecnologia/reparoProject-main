@@ -160,7 +160,7 @@ namespace freeCommerce.Controllers
 
                 var ultimoLuthierCadastrado = Luthier.BuscaUltimoLuthierCadastrado();
                 Business.Luthier lastLuthierCreated = (Luthier)ultimoLuthierCadastrado;
-                if (Request["txtCelular"] != null)
+                if (Request["txtCelular"] != "")
                 {
                     var celular = new Contato();
                     celular.codigo = Request["txtDddCelular"];
@@ -173,7 +173,7 @@ namespace freeCommerce.Controllers
                 {
                 }
 
-                if (Request["txtTelefone"] != null)
+                if (Request["txtTelefone"] != "" && Request["txtDddTelefone"] != "")
                 {
                     var telefone = new Contato();
                     telefone.codigo = Request["txtDddTelefone"];
@@ -191,7 +191,9 @@ namespace freeCommerce.Controllers
                 endereco.bairro = Request["txtBairro"];
                 endereco.cidade = Request["txtCidade"];
                 endereco.uf = Request["txtUf"];
-                endereco.cep = int.Parse(Request["txtCep"]);
+                var cep = Request["txtCep"];
+                cep = cep.Replace("-", "");
+                endereco.cep = int.Parse(cep);
                 if(Request["txtNumero"] != null)
                 {
                     endereco.numero = int.Parse(Request["txtNumero"]);

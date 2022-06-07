@@ -50,6 +50,7 @@
 
 }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <style>
     .container {
@@ -93,31 +94,31 @@
                 <form action="/autenticacao/criarLuthier" method="post">
                     <br /><h3 style="color: white; font-weight: 300;"><u>Informações pessoais</u></h3>
                     <div class="form-group">
-                        <label style="color: white;">Nome completo</label>
+                        <label style="color: white;">Nome completo</label><span style="color: red; margin-left: 2px;">*</span>
                         <input type="text" class="form-control" id="txtNome" name="txtNome" placeholder="Insira seu nome completo">
                         <input type="text" class="form-control" id="arrayServicos" name="arrayServicos" style="display:none;" />
                     </div>
 
                     <div class="form-group">
-                        <label style="color: white;">Nome do usuário</label>
+                        <label style="color: white;">Nome do usuário</label><span style="color: red; margin-left: 2px;">*</span>
                         <input type="text" class="form-control" id="txtUsuario" name="txtUsuario" placeholder="Exemplo: mariogioia">
                         <small id="emailHelp" class="form-text text-muted"><i style="color: darkseagreen">Você usará este nome para acessar sua conta</i></small>
                     </div>
 
                     <div class="form-group">
-                        <label style="color: white;"> Senha</label>
+                        <label style="color: white;"> Senha</label><span style="color: red; margin-left: 2px;">*</span>
                         <input type="password" class="form-control" id="txtSenha" name="txtSenha" placeholder="Insira sua senha">
                         <input style="display: none;" type="text" class="form-control" id="idSessao" name="idSessao">
                         <!--<small id="emailHelp" class="form-text text-muted">Nunca compartilhe sua senha com alguém.</small>-->
                     </div>
 
                     <div class="form-group">
-                        <label style="color: white;">CPF</label>
+                        <label style="color: white;">CPF</label><span style="color: red; margin-left: 2px;">*</span>
                         <input type="text" class="form-control" id="txtCpf" name="txtCpf" placeholder="Insira apenas números">
                     </div>
 
                     <div class="form-group">
-                        <label style="color: white;">CNPJ</label>
+                        <label style="color: white;">CNPJ</label><span style="color: red; margin-left: 2px;">*</span>
                         <input type="text" class="form-control" id="txtCnpj" name="txtCnpj" placeholder="Insira apenas números">
                     </div><br />
 
@@ -145,7 +146,7 @@
 
                     <h3 style="color: white; font-weight: 300;"><u>Serviços e instrumentos</u></h3>
 
-                    <small id="emailHelp" class="form-text text-muted"><i style="color: darkseagreen">Marque as opções que correspondem à sua alçada</i></small><br />
+                    <small id="emailHelp" class="form-text text-muted"><i style="color: darkseagreen">Marque as opções que correspondem à sua alçada</i><span style="color: red; margin-left: 2px;">*</span></small><br />
                     <span style="color: darkseagreen; margin-left: 225px;">
                         <input type="button" id="btnServicos" name="btnServicos" onclick="revelaListaServicos();" class="btn-info" value="Revelar lista de serviços" style="background-color: darkseagreen; border-color: darkseagreen" />
                     </span>
@@ -182,9 +183,9 @@
 
                     <div class="form-group" style="display: none;" id="divCelular" name="divCelular">
                         <hr class="my-4" />
-                        <label style="color: white;">DDD</label>
+                        <label style="color: white;">DDD</label><span style="color: red; margin-left: 2px;">*</span>
                         <input type="text" class="form-control" id="txtDddCelular" name="txtDddCelular" placeholder="Exemplo: 13"><br />
-                        <label style="color: white;">Celular</label>
+                        <label style="color: white;">Celular</label><span style="color: red; margin-left: 2px;">*</span>
                         <input type="text" class="form-control" id="txtCelular" name="txtCelular" placeholder="Insira apenas números">
                         <hr class="my-4" />
                     </div>
@@ -199,7 +200,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label style="color: white;">E-mail</label>
+                        <label style="color: white;">E-mail</label><span style="color: red; margin-left: 2px;">*</span>
                         <input type="email" class="form-control" id="txtEmail" name="txtEmail" placeholder="Insira seu e-mail">
                     </div>
 
@@ -207,6 +208,11 @@
                         <h3 style="color: white; font-weight: 300;"><u>Localização</u></h3>
                         <label style="color: white;">CEP</label><span style="color: red; margin-left: 2px;">*</span>
                         <input type="text" class="form-control" id="txtCep" name="txtCep" placeholder="Insira apenas números">
+                    </div><br />
+
+                    <div class="form-group">
+                        <label style="color: white;">Número</label><span style="color: red; margin-left: 2px;">*</span>
+                        <input type="text" class="form-control" id="txtNumero" name="txtNumero" placeholder="Insira apenas números">
                     </div><br />
 
                     <div class="form-group">
@@ -234,7 +240,8 @@
                     <input type="text" name="instrumentosSelecionados" id="instrumentosSelecionados" style="display:none;" />
                     <input type="text" name="habilidadesSelecionadas" id="habilidadesSelecionadas" value="" style="display:none;" />
                     <div class="centraliza">
-                        <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="background-color: white; color: rgba(0,0,0,.5); border-color: white">Cadastro</button>
+                        <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="display:none;">Cadastro</button>
+                        <button type="button" onclick="validaCampos()" id="botaoFake" name="botaoFake" class="btn btn-primary" style="background-color: white; color: rgba(0,0,0,.5); border-color: white">Cadastro</button>
                     </div>
                 </form>
             </div>
@@ -399,6 +406,31 @@
                     console.log("Index do elemento a ser deletado: " + i);
                 }
             }
+        }
+    }
+
+    function validaCampos() {
+        var nome = document.getElementById('txtNome').value;
+        var nomeUsuario = document.getElementById('txtUsuario').value;
+        var senha = document.getElementById('txtSenha').value;
+        var cpf = document.getElementById('txtCpf').value;
+        var dddCelular = document.getElementById('txtDddCelular').value;
+        var celular = document.getElementById('txtCelular').value;
+        var email = document.getElementById('txtEmail').value;
+        var cep = document.getElementById('txtCep').value;
+        var numero = document.getElementById('txtNumero').value;
+        console.log(numero);
+
+        if (nome != "" && nomeUsuario != "" && senha != "" && cpf != "" && dddCelular != "" && celular != "" && email != "" && cep != "" && numero != "") {
+            document.getElementById('botaoCadastro').click();
+        }
+        else {
+            swal({
+                title: "Opa, calma aí...",
+                text: "Para ter uma conta em nosso site, é preciso preencher todos os campos sinalizados com asterisco vermelho (*).",
+                icon: "error",
+                buttons: false
+            });
         }
     }
 </script>
