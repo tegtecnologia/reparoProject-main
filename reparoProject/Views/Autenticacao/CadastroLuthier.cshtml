@@ -297,6 +297,7 @@
                         console.log(linkRequisicao);
 
                         $.get(linkRequisicao, function (resultado) {
+                            console.log("O que achou: " + resultado)
                             if (resultado.length >= 1) {
                                 validaSeAchou = true;
                                 console.log(resultado.length);

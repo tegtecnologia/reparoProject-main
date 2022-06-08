@@ -37,19 +37,6 @@ namespace reparoProject.Controllers
             }
         }*/
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-            return View();
-        }
-
         [HttpPost]
         [ValidateInput(false)]
         public void FiltrarInstrumento()
@@ -92,11 +79,19 @@ namespace reparoProject.Controllers
 
             var vara = new Luthier();
             List<Business.Luthier> luthiersPreparados = new List<Business.Luthier> { };
+            int ultimoLuthierEncontrado = 0;
             foreach (var luthier in luthiersHabilitados)
             {
-                var luthierPreparado = new Luthier();
-                luthierPreparado.id = luthier.idLuthier;
-                luthiersPreparados.Add(luthierPreparado);
+                if (ultimoLuthierEncontrado == luthier.idLuthier)
+                {
+                }
+                else
+                {
+                    var luthierPreparado = new Luthier();
+                    luthierPreparado.id = luthier.idLuthier;
+                    luthiersPreparados.Add(luthierPreparado);
+                    ultimoLuthierEncontrado = luthier.id;
+                }
             }
             var instrumentoBuscado = "";
             var todosInstrumentos = new Instrumento().Listar();
