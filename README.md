@@ -3,7 +3,7 @@
 <h2>How it works</h2>
 <p>If you need maintenance or customization on your instrument, you must access the Reparo's website and carry out the necessary procedures to find a qualified professional for this service.</p>
 <h2>State of the project</h2>
-<p>Is running.</p>
+<p>Paused.</p>
 <h2>Images</h2>
 <details>
    <summary><h3>Perspective of the customer</h2></summary>
