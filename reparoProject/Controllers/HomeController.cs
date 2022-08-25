@@ -57,7 +57,11 @@ namespace reparoProject.Controllers
             IList localizacaoDoUsuario = a as IList;
             TempData["localizacaoDoUsuario"] = localizacaoDoUsuario;
 
-            if (localizacaoDoUsuario.Count > 1)
+            if(localizacaoDoUsuario == null)
+            {
+
+            }
+            else if(localizacaoDoUsuario.Count > 1)
             {
                 TempData["latitudeUsuario"] = localizacaoDoUsuario[0];
                 TempData["longitudeUsuario"] = localizacaoDoUsuario[1];
