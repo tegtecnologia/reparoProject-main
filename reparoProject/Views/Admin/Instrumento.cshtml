@@ -24,7 +24,7 @@
     }
 
     .instrumento:hover {
-        background-color: red;
+        background-color: #ffd42a;
     }
 
     .centraliza {
@@ -109,18 +109,27 @@
         <div class="centraliza">
             <div style="color:white;">
                 <br /><h3>Instrumentos existentes</h3>
-                <small id="emailHelp" class="form-text text-muted"><i style="color: white">Clique em um instrumento caso queira <i style="color:red;">deletá-lo.</i></i></small><br />
+                <small id="emailHelp" class="form-text text-muted"><i style="color: white">Clique em um instrumento caso queira <b><i style="color: darkseagreen;">ativá-lo</i></b> ou <b><i style="color:red;">desativá-lo</i></b>.</i></small><br />
                 <table class="table">
                     <tr>
                         <td><b><i>ID</i></b></td>
                         <td><b><i>Nome</i></b></td>
+                        <td><b><i>Status</i></b></td>
                     </tr>
                     @{
                         foreach (var instrumento in instrumentos)
                         {
-                            <tr class="instrumento" onclick="deletarInstrumento(@instrumento.id, '@instrumento.nome')">
+                            <tr class="instrumento" onclick="desativarInstrumento(@instrumento.id, '@instrumento.nome', @instrumento.status)">
                                 <td>@instrumento.id</td>
                                 <td>@instrumento.nome</td>
+                                @if(instrumento.status == 1)
+                                {
+                                    <td>Ativo</td>
+                                }
+                                else 
+                                { 
+                                    <td>Desativado</td>
+                                }
                             </tr>
                         }
                     }
@@ -185,41 +194,80 @@
         $('#divDeuBom').fadeOut('fast');
     }, 5000);
 
-    function deletarInstrumento(idInstrumento, nomeInstrumento) {
-        swal({
-            title: "Você realmente quer deletar o(a) " + nomeInstrumento + " da Lista de Instrumentos?",
-            text: "É você quem sabe...",
-            icon: "warning",
-            buttons: true,
-            buttons: ["Não, eu desisti.", "Sim, deletar o(a) " + nomeInstrumento + "."],
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    $.ajax(
-                        {
-                            type: 'POST',
-                            dataType: 'JSON',
-                            url: '/Admin/ExcluirInstrumento',
-                            data: { idInstrumento: idInstrumento },
-                            success:
-                                function (response) {
-                                    console.log(response);
-                                },
-                            error:
-                                function (response) {
-                                    alert("Error: " + response);
-                                }
+    function desativarInstrumento(idInstrumento, nomeInstrumento, statusDoInstrumento) {
+        if (statusDoInstrumento == 1 || statusDoInstrumento == "1") {
+            swal({
+                title: "Você realmente quer desativar o(a) " + nomeInstrumento + " da Lista de Instrumentos?",
+                text: "É você quem sabe...",
+                icon: "warning",
+                buttons: true,
+                buttons: ["Não, eu desisti.", "Sim, desativar o(a) " + nomeInstrumento + "."],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax(
+                            {
+                                type: 'POST',
+                                dataType: 'JSON',
+                                url: '/Admin/ExcluirInstrumento',
+                                data: { idInstrumento: idInstrumento },
+                                success:
+                                    function (response) {
+                                        console.log(response);
+                                    },
+                                error:
+                                    function (response) {
+                                        alert("Error: " + response);
+                                    }
+                            });
+                        swal("Pronto! O instrumento foi desativado.", {
+                            icon: "success",
                         });
-                    swal("Pronto! O instrumento foi deletado.", {
-                        icon: "success",
-                    });
-                    setTimeout(function () {
-                        location.reload();
-                    }, 3000);
-                } else {
-                    swal("Ok, o instrumento não será deletado.");
-                }
-            });
+                        setTimeout(function () {
+                            location.reload();
+                        }, 3000);
+                    } else {
+                        swal("Ok, o instrumento não será desativado.");
+                    }
+                });
+        }
+        else {
+            swal({
+                title: "Você realmente quer ativar o(a) " + nomeInstrumento + " na Lista de Instrumentos?",
+                text: "É você quem sabe...",
+                icon: "warning",
+                buttons: true,
+                buttons: ["Não, eu desisti.", "Sim, ativar o(a) " + nomeInstrumento + "."],
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax(
+                            {
+                                type: 'POST',
+                                dataType: 'JSON',
+                                url: '/Admin/AtivarInstrumento',
+                                data: { idInstrumento: idInstrumento },
+                                success:
+                                    function (response) {
+                                        console.log(response);
+                                    },
+                                error:
+                                    function (response) {
+                                        alert("Error: " + response);
+                                    }
+                            });
+                        swal("Pronto! O instrumento foi ativado.", {
+                            icon: "success",
+                        });
+                        setTimeout(function () {
+                            location.reload();
+                        }, 3000);
+                    } else {
+                        swal("Ok, o instrumento não será ativado.");
+                    }
+                });
+        }
     }
 </script>

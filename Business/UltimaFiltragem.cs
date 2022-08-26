@@ -17,13 +17,13 @@ namespace Business
 
         public void Save()
         {
-            new Database.UltimaFiltragem().Salvar(this.idUsuario, this.idUltimoInstrumentoPesq, this.idUltimoServicoPesq);
+            new Database.Filtragem().Salvar(this.idUsuario, this.idUltimoInstrumentoPesq, this.idUltimoServicoPesq);
         }
 
         public static object BuscaUltimaFiltragemPorConta(string idUsuario)
         {
             var ultimaFiltragem = new UltimaFiltragem();
-            var ultimaFiltragemDb = new Database.UltimaFiltragem();
+            var ultimaFiltragemDb = new Database.Filtragem();
             foreach (DataRow row in ultimaFiltragemDb.BuscaUltimaFiltragemPorContaLogada(idUsuario).Rows)
             {
                 ultimaFiltragem.id = Convert.ToInt32(row["id"]);

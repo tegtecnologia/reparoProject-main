@@ -75,24 +75,39 @@ namespace reparoProject.Controllers
 
             var instrumentoQueSeraRemovido = new Instrumento().ListarPorId(idInstrumento);
 
-            var habsAEliminar = new Habilidade().ListarPorInstrumento(idInstrumento);
+            /*var habsAEliminar = new Habilidade().ListarPorInstrumento(idInstrumento);
             foreach(var hab in habsAEliminar)
             {
                 var habEliminarEmLuthiers = new HabilidadePorLuthier();
                 habEliminarEmLuthiers.idHabilidade = hab.id;
                 habEliminarEmLuthiers.Deletar();
-            }
+            }*/
 
-            var habilidadesDoInstrumento = new Habilidade();
+            /*var habilidadesDoInstrumento = new Habilidade();
             habilidadesDoInstrumento.idInstrumento = idInstrumento;
-            habilidadesDoInstrumento.Deletar();
+            habilidadesDoInstrumento.Deletar();*/
 
             var instrumento = new Instrumento();
             instrumento.id = idInstrumento;
-            instrumento.DeletarPorId();
+            instrumento.DesativarPorId();
 
             result = this.Json(JsonConvert.SerializeObject(instrumentoQueSeraRemovido), JsonRequestBehavior.AllowGet);
             
+            return result;
+        }
+
+        public ActionResult AtivarInstrumento(int idInstrumento)
+        {
+            JsonResult result = new JsonResult();
+
+            var instrumentoQueSeraAtivado = new Instrumento().ListarPorId(idInstrumento);
+
+            var instrumento = new Instrumento();
+            instrumento.id = idInstrumento;
+            instrumento.AtivarPorId();
+
+            result = this.Json(JsonConvert.SerializeObject(instrumentoQueSeraAtivado), JsonRequestBehavior.AllowGet);
+
             return result;
         }
     }

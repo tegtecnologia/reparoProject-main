@@ -14,7 +14,7 @@ namespace reparoProject.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Instrumentos = new Instrumento().Listar();
+            ViewBag.Instrumentos = new Instrumento().ListarAtivos();
             return View();
         }
 
@@ -56,18 +56,21 @@ namespace reparoProject.Controllers
             ViewBag.Conta = conta;
             Business.Conta contaLogada = (Business.Conta)conta;
 
-            var lastFiltragem = new UltimaFiltragem();
-            lastFiltragem.idUsuario = contaLogada.id;
-            lastFiltragem.idUltimoInstrumentoPesq = Convert.ToInt32(instrumento);
-            if(servico != "")
+            if(Convert.ToInt32(instrumento) > 0)
             {
-                lastFiltragem.idUltimoServicoPesq = Convert.ToInt32(servico);
+                var lastFiltragem = new UltimaFiltragem();
+                lastFiltragem.idUsuario = contaLogada.id;
+                lastFiltragem.idUltimoInstrumentoPesq = Convert.ToInt32(instrumento);
+                if (servico != "")
+                {
+                    lastFiltragem.idUltimoServicoPesq = Convert.ToInt32(servico);
+                }
+                else
+                {
+                    lastFiltragem.idUltimoServicoPesq = 0;
+                }
+                lastFiltragem.Save();
             }
-            else
-            {
-                lastFiltragem.idUltimoServicoPesq = 0;
-            }
-            lastFiltragem.Save();
 
             string localizacao = Request["localizacaoUsuario"];
             JavaScriptSerializer j = new JavaScriptSerializer();

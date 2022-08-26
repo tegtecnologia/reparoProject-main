@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Home Page";
-    List<Business.Instrumento> instrumentos = ViewBag.Instrumentos;
+    List<Business.Instrumento> instrumentosAtivos = ViewBag.Instrumentos;
     var todosServicos = TempData["servicos"] as List<Business.Servico>;
     var servicosDoInstrumento = TempData["servicosDoInstrumento"] as List<Business.Habilidade>;
     int iterador = 0;
@@ -11,7 +11,7 @@
 
     if (servicosDoInstrumento != null)
     {
-        foreach (var item in instrumentos)
+        foreach (var item in instrumentosAtivos)
         {
             if (servicosDoInstrumento.Count > 0)
             {
@@ -127,7 +127,7 @@
             <label style="color: white">Qual é o seu instrumento com pendência?</label><br />
             <select class="form-select" style="color: black;" onchange="coletarDadosDoSelect();" id="selInstrumentos" name="selInstrumentos">
                 <option id="optionDefault" name="optionDefault" value="@idDoInstrumentoSelecionado">@nomeDoInstrumentoSelecionado</option>
-                @foreach (var instrumento in instrumentos)
+                @foreach (var instrumento in instrumentosAtivos)
                 {
                     <option style="color: rgba(0,0,0,.5);" id="txtInstrumento/@instrumento.id" name="txtInstrumento/@instrumento.id" value="@instrumento.id">@instrumento.nome</option>
                     iterador = iterador + 1;

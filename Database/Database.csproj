@@ -57,7 +57,7 @@
     <Compile Include="Instrumento.cs" />
     <Compile Include="ObsLuthier.cs" />
     <Compile Include="LocalLuthier.cs" />
-    <Compile Include="UltimaFiltragem.cs" />
+    <Compile Include="Filtragem.cs" />
     <Compile Include="StatusPedido.cs" />
     <Compile Include="Servico.cs" />
     <Compile Include="Conta.cs" />

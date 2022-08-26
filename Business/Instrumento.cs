@@ -11,6 +11,7 @@ namespace Business
     {
         public int id { get; set; }
         public string nome { get; set; }
+        public int status { get; set; }
 
         public List<Instrumento> Listar()
         {
@@ -21,6 +22,22 @@ namespace Business
                 var instrumento = new Instrumento();
                 instrumento.id = Convert.ToInt32(row["id"]);
                 instrumento.nome = row["nome"].ToString();
+                instrumento.status = Convert.ToInt32(row["status"]);
+                lista.Add(instrumento);
+            }
+            return lista;
+        }
+
+        public List<Instrumento> ListarAtivos()
+        {
+            var lista = new List<Instrumento>();
+            var itensDoBanco = new Database.Instrumento();
+            foreach (DataRow row in itensDoBanco.ListaInstrumentosAtivos().Rows)
+            {
+                var instrumento = new Instrumento();
+                instrumento.id = Convert.ToInt32(row["id"]);
+                instrumento.nome = row["nome"].ToString();
+                instrumento.status = Convert.ToInt32(row["status"]);
                 lista.Add(instrumento);
             }
             return lista;
@@ -39,6 +56,7 @@ namespace Business
             {
                 instrumento.id = Convert.ToInt32(row["id"]);
                 instrumento.nome = row["nome"].ToString();
+                instrumento.status = Convert.ToInt32(row["status"]);
             }
             return instrumento;
         }
@@ -52,14 +70,20 @@ namespace Business
                 var instrumento = new Instrumento();
                 instrumento.id = Convert.ToInt32(row["id"]);
                 instrumento.nome = row["nome"].ToString();
+                instrumento.status = Convert.ToInt32(row["status"]);
                 lista.Add(instrumento);
             }
             return lista;
         }
 
-        public void DeletarPorId()
+        public void DesativarPorId()
         {
-            new Database.Instrumento().Deletar(this.id);
+            new Database.Instrumento().Desativar(this.id);
+        }
+
+        public void AtivarPorId()
+        {
+            new Database.Instrumento().Ativar(this.id);
         }
     }
 }

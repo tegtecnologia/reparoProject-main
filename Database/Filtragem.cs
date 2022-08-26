@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Database
 {
-    public class UltimaFiltragem
+    public class Filtragem
     {
         private string sqlConn()
         {
@@ -23,7 +23,7 @@ namespace Database
         {
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
-                string queryString = "insert into logUltFiltragem (idUsuario, idUltimoServicoPesq, idUltimoInstrumentoPesq, dataFiltragem) values(" + idUsuario + ", " + idUltimoServicoPesq + ", " + idUltimoInstrumentoPesq + ", getdate())";
+                string queryString = "insert into logFiltragens (idUsuario, idUltimoServicoPesq, idUltimoInstrumentoPesq, dataFiltragem) values(" + idUsuario + ", " + idUltimoServicoPesq + ", " + idUltimoInstrumentoPesq + ", getdate())";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
                 command.ExecuteNonQuery();
@@ -34,7 +34,7 @@ namespace Database
         {
             using (SqlConnection connection = new SqlConnection(sqlConn()))
             {
-                string queryString = "select top 1 * from logUltFiltragem where idUsuario = " + idUsuario + " order by dataFiltragem desc";
+                string queryString = "select top 1 * from logFiltragens where idUsuario = " + idUsuario + " order by dataFiltragem desc";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
 
