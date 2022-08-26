@@ -4,3 +4,9 @@ C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject
 C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\Database\obj\Debug\Database.csproj.CoreCompileInputs.cache
 C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\Database\obj\Debug\Database.dll
 C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\Database\obj\Debug\Database.pdb
+C:\Users\mario\OneDrive\Área de Trabalho\repariano\reparoProject\Database\bin\Debug\Database.dll
+C:\Users\mario\OneDrive\Área de Trabalho\repariano\reparoProject\Database\bin\Debug\Database.pdb
+C:\Users\mario\OneDrive\Área de Trabalho\repariano\reparoProject\Database\obj\Debug\Database.csproj.AssemblyReference.cache
+C:\Users\mario\OneDrive\Área de Trabalho\repariano\reparoProject\Database\obj\Debug\Database.csproj.CoreCompileInputs.cache
+C:\Users\mario\OneDrive\Área de Trabalho\repariano\reparoProject\Database\obj\Debug\Database.dll
+C:\Users\mario\OneDrive\Área de Trabalho\repariano\reparoProject\Database\obj\Debug\Database.pdb

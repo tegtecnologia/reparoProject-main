@@ -7,3 +7,12 @@ C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject
 C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\Business\obj\Debug\Business.csproj.CopyComplete
 C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\Business\obj\Debug\Business.dll
 C:\oneDrive\OneDrive - Fatec Centro Paula Souza\Documents\Projetos\reparoProject\Business\obj\Debug\Business.pdb
+C:\Users\mario\OneDrive\Área de Trabalho\repariano\reparoProject\Business\bin\Debug\Business.dll
+C:\Users\mario\OneDrive\Área de Trabalho\repariano\reparoProject\Business\bin\Debug\Business.pdb
+C:\Users\mario\OneDrive\Área de Trabalho\repariano\reparoProject\Business\bin\Debug\Database.dll
+C:\Users\mario\OneDrive\Área de Trabalho\repariano\reparoProject\Business\bin\Debug\Database.pdb
+C:\Users\mario\OneDrive\Área de Trabalho\repariano\reparoProject\Business\obj\Debug\Business.csproj.AssemblyReference.cache
+C:\Users\mario\OneDrive\Área de Trabalho\repariano\reparoProject\Business\obj\Debug\Business.csproj.CoreCompileInputs.cache
+C:\Users\mario\OneDrive\Área de Trabalho\repariano\reparoProject\Business\obj\Debug\Business.csproj.CopyComplete
+C:\Users\mario\OneDrive\Área de Trabalho\repariano\reparoProject\Business\obj\Debug\Business.dll
+C:\Users\mario\OneDrive\Área de Trabalho\repariano\reparoProject\Business\obj\Debug\Business.pdb
