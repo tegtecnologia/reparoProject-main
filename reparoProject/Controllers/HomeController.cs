@@ -51,6 +51,24 @@ namespace reparoProject.Controllers
             TempData["instrumentoEscolhido"] = instrumento;
             TempData["servicoEscolhido"] = servico;
 
+            // Encontrando conta logada
+            var conta = Business.Conta.BuscaPorStatusLogin(Session.SessionID);
+            ViewBag.Conta = conta;
+            Business.Conta contaLogada = (Business.Conta)conta;
+
+            var lastFiltragem = new UltimaFiltragem();
+            lastFiltragem.idUsuario = contaLogada.id;
+            lastFiltragem.idUltimoInstrumentoPesq = Convert.ToInt32(instrumento);
+            if(servico != "")
+            {
+                lastFiltragem.idUltimoServicoPesq = Convert.ToInt32(servico);
+            }
+            else
+            {
+                lastFiltragem.idUltimoServicoPesq = 0;
+            }
+            lastFiltragem.Save();
+
             string localizacao = Request["localizacaoUsuario"];
             JavaScriptSerializer j = new JavaScriptSerializer();
             object a = j.Deserialize(localizacao, typeof(object));

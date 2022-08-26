@@ -27,8 +27,19 @@
         }
     }
 
+    // Encontrando conta logada
+    var conta = Business.Conta.BuscaPorStatusLogin(Session.SessionID);
+    ViewBag.Conta = conta;
+    Business.Conta contaLogada = (Business.Conta)conta;
+
+    // Coletando os dados da última filtragem realizada pelo usuário
+    var ultimaFiltragem = Business.UltimaFiltragem.BuscaUltimaFiltragemPorConta(contaLogada.id.ToString());
+    Business.UltimaFiltragem lastFiltragemDefinitiva = (Business.UltimaFiltragem)ultimaFiltragem;
+
     // Coletando servico escolhido pelo usuário
-    var idServicoEscolhidoPorUsuario = Convert.ToInt32(TempData["servicoEscolhido"]);
+    var idServicoEscolhidoPorUsuario = lastFiltragemDefinitiva.idUltimoServicoPesq;
+    var testeLesgo = ViewBag.InstrumentoEscolhido;
+    var testeLegoDois = ViewBag.ServicoEscolhido;
     TempData["servFinal"] = idServicoEscolhidoPorUsuario;
     string servicoEscolhidoPorUsuario = "";
     foreach (var ss in todosServicos)
@@ -40,7 +51,7 @@
     }
 
     // Coletando instrumento escolhido pelo usuário
-    var idInstrumentoEscolhidoPorUsuario = Convert.ToInt32(TempData["instrumentoEscolhido"]);
+    var idInstrumentoEscolhidoPorUsuario = lastFiltragemDefinitiva.idUltimoInstrumentoPesq;
     TempData["instFinal"] = idInstrumentoEscolhidoPorUsuario;
     string instrumentoEscolhidoPorUsuario = "";
     foreach (var ii in instrumentos)
