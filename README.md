@@ -1,4 +1,4 @@
-<h1>Réparo Project</h1>
+<h1>Repariano</h1>
 <p>Instrument services's website with ASP .NET and SQL Server in MVC design pattern.</p>
 <h2>How it works</h2>
 <p>If you need maintenance or customization on your instrument, you must access the Reparo's website and carry out the necessary procedures to find a qualified professional for this service.</p>
