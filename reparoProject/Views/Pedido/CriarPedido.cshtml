@@ -1,4 +1,55 @@
 ﻿@{
+    // Encontrando conta logada
+    var conta = Business.Conta.BuscaPorStatusLogin(Session.SessionID);
+    ViewBag.Conta = conta;
+    Business.Conta contaLogada = (Business.Conta)conta;
+
+    // Diferenciando a conta de cliente para luthier
+    var clientesCadastrados = new Business.Cliente().ListarTodosClientes();
+    List<Business.Cliente> clientes = clientesCadastrados;
+
+    bool validaTipoConta = false;
+
+    var luthiersCadastrados = new Business.Luthier().ListarTodosLuthiers();
+    List<Business.Luthier> luthiers = luthiersCadastrados;
+
+    int idClienteLogado = 0;
+    int idLuthierLogado = 0;
+
+    foreach (var luthier in luthiersCadastrados)
+    {
+        if (luthier.usuario == contaLogada.id)
+        {
+            idLuthierLogado = luthier.id;
+            break;
+        }
+        else
+        {
+        }
+    }
+    foreach (var clienteX in clientesCadastrados)
+    {
+        if (clienteX.usuario == contaLogada.id)
+        {
+            validaTipoConta = true;
+            idClienteLogado = clienteX.id;
+            break;
+        }
+        else
+        {
+            validaTipoConta = false;
+        }
+    }
+    string tipoConta = "";
+    if (validaTipoConta == false)
+    {
+        tipoConta = "Luthier";
+    }
+    else
+    {
+        tipoConta = "Cliente";
+    }
+
     string validadorOption = "";
 
     // Coletando luthier escolhido para o serviço
@@ -11,10 +62,6 @@
 
     List<Business.Instrumento> instrumentos = new Business.Instrumento().Listar();
     var iterador = 0;
-
-    // Encontrando conta logada
-    var conta = Business.Conta.BuscaPorStatusLogin(Session.SessionID);
-    Business.Conta contaLogada = (Business.Conta)conta;
 
     // Encontrando cliente logado
     var clienteLogado = new Business.Cliente();
@@ -46,7 +93,7 @@
     var enderecoCliente = new Business.Endereco();
     // Coletando o endereço do cliente
     List<Business.Endereco> enderecos = new Business.Endereco().BuscaEnderecosPorIdCliente(clienteLogado.id);
-    if(enderecos.Count > 0)
+    if (enderecos.Count > 0)
     {
         enderecoCliente = enderecos[0];
     }
@@ -57,93 +104,100 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 
 @{
-    if (TempData["luthierEscolhido"] == null || TempData["instFinal"] == null)
+    if (tipoConta == "Luthier")
     {
-        <label style="font-size: 20px;">Por favor, volte à <a href="/" style="color: rgba(0,0,0,.5); font-size: 40px">página principal</a>, refaça a filtragem e tente realizar seu pedido novamente.</label>
+        <label style="font-size: 20px;">Um Luthier não pode criar um pedido. Crie sua conta Cliente e faça já o seu pedido! &#128516;</label>
     }
-    else if (contaLogada.id != null && contaLogada.usuario != null && contaLogada.email != null && luthierEscolhido != null && clienteLogado.id != 0) // X
+    else
     {
-        <label>Preencha todos os campos e envie seu pedido! &#128516;</label>
+        if (TempData["luthierEscolhido"] == null || TempData["instFinal"] == null)
+        {
+            <label style="font-size: 20px;">Por favor, volte à <a href="/" style="color: rgba(0,0,0,.5); font-size: 40px">página principal</a>, refaça a filtragem e tente realizar seu pedido novamente.</label>
+        }
+        else if (contaLogada.id != null && contaLogada.usuario != null && contaLogada.email != null && luthierEscolhido != null && clienteLogado.id != 0) // X
+        {
+            <label>Preencha todos os campos e envie seu pedido! &#128516;</label>
 
-        <div id="divCadastro">
-            <div class="container">
-                @if (luthierEscolhido != null)
-                {
-                    <h3>Solicitação à luthieria de <u>@luthierEscolhido.nome</u></h3>
-                }
-            <form action="/pedido/realizarPedido" method="post">
-                <br /><h3>Informações pessoais</h3>
-                <div class="form-group">
-                    <label style="color: black;">Nome completo</label>
-                    <input type="text" disabled class="form-control" id="txtNome" value="@clienteLogado.nome" name="txtNome" placeholder="Insira seu nome completo">
-                </div>
+            <div id="divCadastro">
+                <div class="container">
+                    @if (luthierEscolhido != null)
+                    {
+                        <h3>Solicitação à luthieria de <u>@luthierEscolhido.nome</u></h3>
+                    }
+                    <form action="/pedido/realizarPedido" method="post">
+                        <br /><h3>Informações pessoais</h3>
+                        <div class="form-group">
+                            <label style="color: black;">Nome completo</label>
+                            <input type="text" disabled class="form-control" id="txtNome" value="@clienteLogado.nome" name="txtNome" placeholder="Insira seu nome completo">
+                        </div>
 
-                <div class="form-group">
-                    <label style="color: black;">E-mail</label>
-                    <input type="email" class="form-control" id="txtEmail" value="@clienteLogado.email" name="txtEmail" placeholder="Insira seu e-mail">
-                </div>
+                        <div class="form-group">
+                            <label style="color: black;">E-mail</label>
+                            <input type="email" class="form-control" id="txtEmail" value="@clienteLogado.email" name="txtEmail" placeholder="Insira seu e-mail">
+                        </div>
 
-                <div class="form-group">
-                    <h3>Contato</h3>
-                    <label style="color: black;">Celular</label>
-                    <input type="text" class="form-control contato" id="txtCelular" value="@celularCliente" name="txtCelular" placeholder="Insira apenas números">
-                </div>
+                        <div class="form-group">
+                            <h3>Contato</h3>
+                            <label style="color: black;">Celular</label>
+                            <input type="text" class="form-control contato" id="txtCelular" value="@celularCliente" name="txtCelular" placeholder="Insira apenas números">
+                        </div>
 
-                <div class="form-group">
-                    <h3>Entrega</h3>
-                    <label style="color: black;">Endereço</label>
-                    <input type="text" class="form-control" id="txtEndereco" value="@enderecoCliente.logradouro, @enderecoCliente.numero, @enderecoCliente.bairro, @enderecoCliente.cidade, @enderecoCliente.cep" name="txtEndereco">
-                </div>
+                        <div class="form-group">
+                            <h3>Entrega</h3>
+                            <label style="color: black;">Endereço</label>
+                            <input type="text" class="form-control" id="txtEndereco" value="@enderecoCliente.logradouro, @enderecoCliente.numero, @enderecoCliente.bairro, @enderecoCliente.cidade, @enderecoCliente.cep" name="txtEndereco">
+                        </div>
 
-                @if (TempData["instFinal"] != null)
-                {
-                    idInstrumentoEscolhido = Convert.ToInt32(TempData["instFinal"]);
-                }
-
-                <div class="form-group">
-                    <h3>Instrumento</h3>
-                    <label style="color: black;">Instrumento com pendência:</label><br />
-                    <select style="color: black;" id="selInstrumentos" name="selInstrumentos">
-                        @foreach (var instrumento in instrumentos)
+                        @if (TempData["instFinal"] != null)
                         {
-                            if(instrumento.id != idInstrumentoEscolhido)
-                            {
-                                validadorOption = "disabled";
-                                <option @validadorOption style="color: rgba(0,0,0,.5);" value="@instrumento.id">@instrumento.nome</option>
-                            }
-                            if (instrumento.id == idInstrumentoEscolhido)
-                            {
-                                validadorOption = "selected";
-                                <option @validadorOption style="color: rgba(0,0,0,.5);" value="@instrumento.id">@instrumento.nome</option>
-                                
-                            }
-                            iterador = iterador + 1;
+                            idInstrumentoEscolhido = Convert.ToInt32(TempData["instFinal"]);
                         }
-                    </select><br /><br />
-                    <label style="color: black;">Insira uma ou mais imagem(ns) do instrumento:</label><br />
-                    <input type="file" id="FileUpload1" multiple onchange="lesgo()" /><br /><br />
-                    <input onclick="liberarTextArea()" class="btn btn-primary" style="background: darkseagreen; color: white; border: white; " type="button" id="btnUpload" value="Anexar imagens do instrumento" />
-                    <br />
-                </div>
 
-                <div class="form-group">
-                    <h3 onclick="validaUpload()">Situação</h3>
-                    <label style="color: black;">Descreva a situação do seu instrumento (somente após subir ao menos uma imagem do instrumento).</label>
-                    <textarea disabled class="form-control" id="txtSituacao" name="txtSituacao" rows="2"></textarea>
-                </div><br />
-                <input type="text" id="arrayImagens" name="arrayImagens" style="display:none" />
-                <input type="text" id="txtInstrumento" name="txtInstrumento" value="@idInstrumentoEscolhido" style="display:none" />
-                <input type="text" id="txtServico" name="txtServico" style="display:none" value="@idServicoEscolhido" />
-                <input type="text" id="idCliente" name="idCliente" value="@clienteLogado.id" style="display:none" />
-                <input type="text" id="idLuthier" name="idLuthier" value="@luthierEscolhido.id" style="display:none" />
-                <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="background-color: rgba(0,0,0,.5); color: white; border-color: white">Cadastro</button>
-            </form>
+                        <div class="form-group">
+                            <h3>Instrumento</h3>
+                            <label style="color: black;">Instrumento com pendência:</label><br />
+                            <select style="color: black;" id="selInstrumentos" name="selInstrumentos">
+                                @foreach (var instrumento in instrumentos)
+                                {
+                                    if (instrumento.id != idInstrumentoEscolhido)
+                                    {
+                                        validadorOption = "disabled";
+                                        <option @validadorOption style="color: rgba(0,0,0,.5);" value="@instrumento.id">@instrumento.nome</option>
+                                    }
+                                    if (instrumento.id == idInstrumentoEscolhido)
+                                    {
+                                        validadorOption = "selected";
+                                        <option @validadorOption style="color: rgba(0,0,0,.5);" value="@instrumento.id">@instrumento.nome</option>
+
+                                    }
+                                    iterador = iterador + 1;
+                                }
+                            </select><br /><br />
+                            <label style="color: black;">Insira uma ou mais imagem(ns) do instrumento:</label><br />
+                            <input type="file" id="FileUpload1" multiple onchange="lesgo()" /><br /><br />
+                            <input onclick="liberarTextArea()" class="btn btn-primary" style="background: darkseagreen; color: white; border: white; " type="button" id="btnUpload" value="Anexar imagens do instrumento" />
+                            <br />
+                        </div>
+
+                        <div class="form-group">
+                            <h3 onclick="validaUpload()">Situação</h3>
+                            <label style="color: black;">Descreva a situação do seu instrumento (somente após subir ao menos uma imagem do instrumento).</label>
+                            <textarea disabled class="form-control" id="txtSituacao" name="txtSituacao" rows="2"></textarea>
+                        </div><br />
+                        <input type="text" id="arrayImagens" name="arrayImagens" style="display:none" />
+                        <input type="text" id="txtInstrumento" name="txtInstrumento" value="@idInstrumentoEscolhido" style="display:none" />
+                        <input type="text" id="txtServico" name="txtServico" style="display:none" value="@idServicoEscolhido" />
+                        <input type="text" id="idCliente" name="idCliente" value="@clienteLogado.id" style="display:none" />
+                        <input type="text" id="idLuthier" name="idLuthier" value="@luthierEscolhido.id" style="display:none" />
+                        <button type="submit" id="botaoCadastro" name="botaoCadastro" class="btn btn-primary" style="background-color: rgba(0,0,0,.5); color: white; border-color: white">Cadastro</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    }
-    else if (contaLogada.id == null || contaLogada.usuario == null || contaLogada.email == null)
-    {
-        <label>Faça o login para solicitar um serviço!</label>
+        }
+        else if (contaLogada.id == null || contaLogada.usuario == null || contaLogada.email == null)
+        {
+            <label>Faça o login para solicitar um serviço!</label>
+        }
     }
 }
 
@@ -166,28 +220,28 @@
     $(document).ready(function () {
         $('#btnUpload').click(function () {
 
-            // Checking whether FormData is available in browser  
+            // Checking whether FormData is available in browser
             if (window.FormData !== undefined) {
 
                 var fileUpload = $("#FileUpload1").get(0);
                 var files = fileUpload.files;
 
-                // Create FormData object  
+                // Create FormData object
                 var fileData = new FormData();
 
-                // Looping over all files and add it to FormData object  
+                // Looping over all files and add it to FormData object
                 for (var i = 0; i < files.length; i++) {
                     fileData.append(files[i].name, files[i]);
                 }
 
-                // Adding one more key to FormData object  
+                // Adding one more key to FormData object
                 fileData.append('username', "Manas");
 
                 $.ajax({
                     url: '/Pedido/UploadFiles',
                     type: "POST",
-                    contentType: false, // Not to set any content header  
-                    processData: false, // Not to process data  
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
                     data: fileData,
                     success: function (result) {
                         console.log(result);
@@ -228,7 +282,7 @@
     var arrayImagens = [];
     function lesgo() {
         var fileList = document.getElementById("FileUpload1").files;
-        
+
         for (var i = 0; i < fileList.length; i++) {
             console.log(fileList[i]);
 
