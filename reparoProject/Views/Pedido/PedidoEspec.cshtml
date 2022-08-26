@@ -75,6 +75,18 @@
             }
         }
     }*/
+
+    //Coletando o número de celular do cliente dono do pedido
+    var contatosCliente = new Business.Contato().BuscaContatosDeClientesPorId(luthierResponsavel.id);
+    string celularCliente = "";
+
+    foreach (var contato in contatosLuthier)
+    {
+        if (contato.celular == 1)
+        {
+            celularCliente = "55" + contato.codigo + contato.numero;
+        }
+    }
 }
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
@@ -118,10 +130,21 @@
                 <label>Que tal avaliar o trabalho e atendimento de @luthierResponsavel.nome? É só clicar <a style="color:blueviolet" id="lblModalAvalia" name="lblModalAvalia" onclick="abrirModalAvalia()">aqui</a> e seguir os passos. <span style='font-size:35px;'>&#9996;</span></label>
             }
         }
-        string textoWpp = "Olá, eu sou " + clienteDoPedido.nome + ", dono do pedido " + pedido.id + " no Réparo.";
-        <h3>Fale com o Luthier via WhatsApp</h3>
-        <a href="https://wa.me/@celularLuthier?text=@textoWpp" target="_blank" class="btn btn-secondary" style="width: 300px; background: #ffd42a; color: rgba(0,0,0,.5); border: white;">Abrir conversa</a>
-        <br />
+        string textoWppParaLuthier = "Olá, eu sou " + clienteDoPedido.nome + ", dono do pedido " + pedido.id + " no Réparo.";
+        string textoWppParaCliente = "Olá, eu sou " + luthierResponsavel.nome + ", luthier responsável pelo seu pedido (Nº" + pedido.id + "), no Réparo.";
+
+        if (luthierResponsavel.id == Convert.ToInt32(ViewBag.IdLuthierLogado))
+        {
+            <h3>Fale com o Cliente (dono do pedido) via WhatsApp</h3>
+            <a href="https://wa.me/@celularCliente?text=@textoWppParaCliente" target="_blank" class="btn btn-secondary" style="width: 300px; background: #ffd42a; color: rgba(0,0,0,.5); border: white;">Abrir conversa</a>
+            <br />
+        }
+        else
+        {
+            <h3>Fale com o Luthier (responsável pelo pedido) via WhatsApp</h3>
+            <a href="https://wa.me/@celularLuthier?text=@textoWppParaLuthier" target="_blank" class="btn btn-secondary" style="width: 300px; background: #ffd42a; color: rgba(0,0,0,.5); border: white;">Abrir conversa</a>
+            <br />
+        }
         <hr class="my-4" />
         <h3>Informações do pedido</h3>
 
