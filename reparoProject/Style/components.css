@@ -1,0 +1,8 @@
+﻿@font-face {
+    font-family: 'roboto-regular';
+    src: url('roboto/roboto-regular.ttf') format('truetype');
+}
+
+body {
+    font-family: "roboto-regular", Verdana;
+}
