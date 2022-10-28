@@ -143,6 +143,7 @@ namespace reparoProject.Controllers
 
             if (Request["idServicoFinal"] != "")
             {
+                TempData["servicosDoInstrumento"] = null;
                 Response.Redirect("/luthier/encontrar");
             }
             else
