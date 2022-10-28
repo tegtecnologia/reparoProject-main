@@ -125,7 +125,7 @@
         <form action="/filtrar" method="post">
             <h2 style="color: white;">O que você precisa?</h2>
             <label style="color: white">Qual é o seu instrumento com pendência?</label><br />
-            <select class="form-select" style="color: black;" onchange="coletarDadosDoSelect();" id="selInstrumentos" name="selInstrumentos">
+            <select class="form-select" style="color: black; font-size: 12px;" onchange="coletarDadosDoSelect();" id="selInstrumentos" name="selInstrumentos">
                 <option id="optionDefault" name="optionDefault" value="@idDoInstrumentoSelecionado">@nomeDoInstrumentoSelecionado</option>
                 @foreach (var instrumento in instrumentosAtivos)
                 {
@@ -142,7 +142,7 @@
             @{
                 if (servicosDoInstrumento != null)
                 {
-                    <br /><select class="form-select" style="color: black;" id="selServicosDoInst" name="selServicosDoInst" onchange="coletarDadosDoSelectDois();">
+                    <br /><select class="form-select" style="color: black; font-size: 12px;" id="selServicosDoInst" name="selServicosDoInst" onchange="coletarDadosDoSelectDois();">
                         <option id="optionDefaultDois" name="optionDefaultDois">Selecione</option>
                         @foreach (var servicoDoInstrumento in servicosDoInstrumento)
                         {
@@ -169,7 +169,7 @@
                         <div style="color: white; font-size: 13px;">
                             Conheça mais sobre a nossa plataforma e como podemos te ajudar com reparos de seus instrumentos
                         </div> <br />
-                        <button class="btn_about_us">VEJA COMO FUNCIONA</button>
+                        <button class="btn_about_us">Veja como funciona</button>
                     </div>
                 </div>
             </div>
