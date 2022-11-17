@@ -1,0 +1,6 @@
+$MyWebsite= @{
+  target = 'https://www.somewebsite.com';
+  pfcond = 'medium';
+  output = 'report.pdf'
+}
+Start-DynamicScan @MyWebsite
