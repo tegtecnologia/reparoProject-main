@@ -1,5 +1,5 @@
 $MyWebsite= @{
-  target = 'https://www.somewebsite.com';
+  target = 'https://tectecnologia.com.br';
   pfcond = 'medium';
   output = 'report.pdf'
 }
